@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Artist from "./Artist";
 
 const albumSchema = new mongoose.Schema({
   title: {
@@ -6,9 +7,13 @@ const albumSchema = new mongoose.Schema({
     required: true,
   },
   artist: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'Artist',
     required: true,
+    validate: {
+      validator: async (value: mongoose.Types.ObjectId) => await Artist.findById(value),
+      message: 'There is no such an artist'
+    }
   },
   releaseYear: {
     type: String,

@@ -1,7 +1,7 @@
 import express from 'express';
+import mongoose from "mongoose";
 import Artist from "../Models/Artist";
 import {imagesUpload} from "../multer";
-import mongoose from "mongoose";
 
 const artistsRouter = express();
 
@@ -9,23 +9,10 @@ artistsRouter.get('', async (req, res) => {
   try {
     const artists = await Artist.find();
     res.send(artists);
-  } catch (err) {
+  } catch {
     res.status(500).send({ error: 'Something went wrong' });
   }
 });
-
-const run = async () => {
-  const artistData = {
-    name: 'Beka',
-    image: null,
-    info: 'info'
-  };
-
-  const artist = new Artist(artistData);
-  await artist.save();
-};
-
-void run();
 
 artistsRouter.post('', imagesUpload.single('image'), async (req, res, next) => {
   const artistData = {
