@@ -1,13 +1,18 @@
 import express from 'express';
 import cors from 'cors';
 import * as mongoose from 'mongoose';
+import artistsRouter from "./Routers/artistsRouter";
 
 const app = express();
 const port = 8000;
 
-app.use(cors);
-app.use(express.static('public'));
+app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
+app.use('/artists', artistsRouter);
+app.get('', (req, res) => {
+  console.log('hello');
+})
 
 const run = async () => {
   await mongoose.connect('mongodb://localhost/musicApp');
