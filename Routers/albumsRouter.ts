@@ -1,17 +1,19 @@
 import express from 'express';
+import mongoose from "mongoose";
 import Album from "../Models/Album";
 import {imagesUpload} from "../multer";
-import mongoose from "mongoose";
 
 const albumsRouter = express();
 
 albumsRouter.get('', async (req, res) => {
   const queryParams = req.query.artist;
-  const albumsByArtist = await Album.find({ artist: queryParams });
+  const albumsByArtist = await Album.find({ artist: queryParams }) as [];
 
   try {
-    if (albumsByArtist) {
+    if (queryParams && albumsByArtist.length) {
       return res.send(albumsByArtist);
+    } else if (queryParams && !albumsByArtist.length) {
+      return res.sendStatus(404);
     }
 
     const albums = await Album.find();
