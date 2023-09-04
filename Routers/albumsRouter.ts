@@ -7,13 +7,15 @@ const albumsRouter = express();
 
 albumsRouter.get('', async (req, res) => {
   const queryParams = req.query.artist;
-  const albumsByArtist = await Album.find({ artist: queryParams }) as [];
+  const albumsByArtist = await Album.find({ artist: queryParams });
 
   try {
-    if (queryParams && albumsByArtist.length) {
+    if (queryParams && albumsByArtist.length !== 0) {
       return res.send(albumsByArtist);
-    } else if (queryParams && !albumsByArtist.length) {
+    } else if (queryParams && albumsByArtist.length === 0) {
       return res.sendStatus(404);
+    } else if (Object.keys(req.query).length !== 0 && !queryParams) {
+      return res.status(400).send({ error: "It's possibly wrong query param keyname given" });
     }
 
     const albums = await Album.find();
@@ -23,9 +25,19 @@ albumsRouter.get('', async (req, res) => {
   }
 });
 
+albumsRouter.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  const albumById = await Album.findById(id);
+  if (id) {
+    return res.send(albumById);
+  } else if (id && !albumById) {
+    return res.sendStatus(404);
+  }
+});
+
 albumsRouter.post('', imagesUpload.single('albumCover'), async (req, res, next) => {
   const albumData = {
-    title: req.body.name,
+    title: req.body.title,
     artist: req.body.artist,
     releaseYear: req.body.releaseYear,
     albumCover: req.file ? req.file.filename : null,

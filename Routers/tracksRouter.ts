@@ -5,14 +5,16 @@ import Track from "../Models/Track";
 const tracksRouter = express();
 
 tracksRouter.get('', async (req, res) => {
-  const queryParams = req.query.artist;
+  const queryParams = req.query.album;
   const tracksByAlbum = await Track.find({ album: queryParams });
 
   try {
-    if (queryParams && tracksByAlbum.length) {
+    if (queryParams && tracksByAlbum.length !== 0) {
       return res.send(tracksByAlbum);
-    } else if (queryParams && !tracksByAlbum.length) {
+    } else if (queryParams && tracksByAlbum.length === 0) {
       return res.sendStatus(404);
+    } else if (Object.keys(req.query).length !== 0 && !queryParams) {
+      return res.status(400).send({ error: 'Its possibly wrong query param keyname given' });
     }
 
     const albums = await Track.find();
