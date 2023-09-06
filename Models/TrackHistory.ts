@@ -1,12 +1,14 @@
-import { Schema, Types, model, Date } from "mongoose";
+import {model, Schema, Types} from "mongoose";
 
 const TrackHistorySchema = new Schema({
   user: {
     type: Types.ObjectId,
+    ref: 'User',
     required: true
   },
   track: {
     type: Types.ObjectId,
+    ref: 'Track',
     required: true
   },
   datetime: {
