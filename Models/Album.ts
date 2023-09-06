@@ -1,17 +1,17 @@
-import mongoose from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import Artist from "./Artist";
 
-const albumSchema = new mongoose.Schema({
+const albumSchema = new Schema({
   title: {
     type: String,
     required: true,
   },
   artist: {
-    type: mongoose.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'Artist',
     required: true,
     validate: {
-      validator: async (value: mongoose.Types.ObjectId) => await Artist.findById(value),
+      validator: async (value: Types.ObjectId) => await Artist.findById(value),
       message: 'There is no such an artist'
     }
   },
@@ -22,5 +22,5 @@ const albumSchema = new mongoose.Schema({
   albumCover: String,
 });
 
-const Album = mongoose.model('Album', albumSchema);
+const Album = model('Album', albumSchema);
 export default Album;
