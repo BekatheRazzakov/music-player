@@ -6,7 +6,8 @@ import {randomUUID} from "crypto";
 const SALT_WORK_FACTOR = 8;
 
 interface IUserMethods {
-  generateToken(): void
+  checkPassword(password: string): Promise<boolean>,
+  generateToken(): void,
 }
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -33,6 +34,10 @@ UserSchema.pre('save',async function(next) {
 
   next();
 });
+
+UserSchema.methods.checkPassword = function (password) {
+  return bcrypt.compare(password, this.password);
+}
 
 UserSchema.methods.generateToken = function() {
   this.token = randomUUID();
