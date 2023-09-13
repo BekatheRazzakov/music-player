@@ -16,7 +16,7 @@ const albumSchema = new Schema({
     }
   },
   releaseYear: {
-    type: String,
+    type: Number,
     required: true,
   },
   albumCover: String,
