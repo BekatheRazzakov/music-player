@@ -1,7 +1,7 @@
 import express from "express";
-import User from "../Models/User";
-import TrackHistory from "../Models/TrackHistory";
-import Track from "../Models/Track";
+import User from "../models/User";
+import TrackHistory from "../models/TrackHistory";
+import Track from "../models/Track";
 import mongoose from "mongoose";
 
 const trackHistoryRouter = express();

@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from "mongoose";
-import Artist from "../Models/Artist";
+import Artist from "../models/Artist";
 import {imagesUpload} from "../multer";
 
 const artistsRouter = express();

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"../node_modules/.bin/nodemon index.ts"
+    "dev":"nodemon index.ts",
+    "seed": "ts-node fixtures.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from "mongoose";
-import Track from "../Models/Track";
+import Track from "../models/Track";
 
 const tracksRouter = express();
 
@@ -13,12 +13,10 @@ tracksRouter.get('', async (req, res) => {
       return res.send(tracksByAlbum);
     } else if (queryParams && tracksByAlbum.length === 0) {
       return res.sendStatus(404);
-    } else if (Object.keys(req.query).length !== 0 && !queryParams) {
-      return res.status(400).send({ error: 'Its possibly wrong query param keyname given' });
     }
 
-    const albums = await Track.find();
-    res.send(albums);
+    const tracks = await Track.find().sort('trackNumber');
+    res.send(tracks);
   } catch {
     res.status(500).send({ error: 'Something went wrong' });
   }
