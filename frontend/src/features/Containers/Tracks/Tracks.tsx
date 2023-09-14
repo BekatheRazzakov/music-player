@@ -11,8 +11,7 @@ const Tracks = () => {
   const tracksState = useAppSelector(state => state.tracksState);
   const dispatch = useAppDispatch();
 
-  const album = useAppSelector(state => state.albumsState.albums
-    .filter(album => album._id === id)[0]);
+  const album = useAppSelector(state => state.tracksState.album);
 
   useEffect(() => {
     dispatch(getArtists());

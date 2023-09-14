@@ -32,5 +32,6 @@ export interface IAlbumsState {
 
 export interface ITracksState {
   tracks: ITrack[],
-  tracksLoading: boolean
+  tracksLoading: boolean,
+  album: IAlbum | null
 }

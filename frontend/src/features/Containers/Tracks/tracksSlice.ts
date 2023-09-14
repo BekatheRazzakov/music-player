@@ -4,7 +4,8 @@ import {ITracksState} from "../../../type";
 
 const initialState: ITracksState = {
   tracks: [],
-  tracksLoading: false
+  tracksLoading: false,
+  album: null
 };
 
 const TracksSlice = createSlice({
@@ -20,7 +21,8 @@ const TracksSlice = createSlice({
       state.tracksLoading = true;
     });
     builder.addCase(getTracks.fulfilled, (state, action) => {
-      state.tracks = action.payload;
+      state.tracks = action.payload.tracks;
+      state.album = action.payload.album;
       state.tracksLoading = false;
     });
     builder.addCase(getTracks.rejected, state => {
