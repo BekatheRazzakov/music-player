@@ -3,6 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {getArtists} from "./artistsThunks";
 import {apiURL} from "../../../constants";
 import {Link} from "react-router-dom";
+import {resetAlbums} from "../Albums/albumsSlice";
 
 const Artists = () => {
   const artistsState = useAppSelector(state => state.artistsState);
@@ -10,6 +11,7 @@ const Artists = () => {
 
   useEffect(() => {
     dispatch(getArtists());
+    dispatch(resetAlbums());
   }, []);
 
   return (

@@ -1,10 +1,52 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {Link, useParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {getAlbums} from "./albumsThunks";
+import {apiURL} from "../../../constants";
+import {IArtist} from "../../../type";
 
 const Albums = () => {
-  return (
-    <div>
+  const {id} = useParams() as {id: string};
+  const albumsState = useAppSelector(state => state.albumsState);
 
-    </div>
+  const artist = useAppSelector(state => state.artistsState.artists
+    .filter(artist => artist._id === id)[0]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAlbums(id));
+  }, []);
+
+  return (
+    <>
+      <div className='album-info'>
+        <img src={apiURL + artist.image} alt=""/>
+        <span>{artist.name}</span>
+      </div>
+      <div className='albums-list'>
+        {
+          albumsState.albums.map((album, index) => (
+            <Link
+              className='album'
+              to={`tracks/${album._id}`}
+              key={index}
+            >
+              <div className="albumImg">
+                <img
+                  src={apiURL + album.albumCover}
+                  alt="album"
+                />
+              </div>
+              <div className="albumInfo">
+                <h4>{album.title}</h4>
+                <span>{album.releaseYear}</span>
+              </div>
+            </Link>
+          ))
+        }
+      </div>
+    </>
   );
 };
 

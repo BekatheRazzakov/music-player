@@ -9,7 +9,11 @@ const initialState: IAlbumsState = {
 const AlbumsSlice = createSlice({
   name: 'albums',
   initialState,
-  reducers: {},
+  reducers: {
+    resetAlbums: state => {
+      state.albums = [];
+    }
+  },
   extraReducers: builder => {
     builder.addCase(getAlbums.pending, state => {});
     builder.addCase(getAlbums.fulfilled, (state, action) => {
@@ -20,4 +24,4 @@ const AlbumsSlice = createSlice({
 });
 
 export const albumsRouter = AlbumsSlice.reducer;
-export const {} = AlbumsSlice.actions;
+export const {resetAlbums} = AlbumsSlice.actions;
