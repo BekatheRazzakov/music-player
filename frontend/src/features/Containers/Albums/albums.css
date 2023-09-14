@@ -1,0 +1,17 @@
+.albums-list {
+    margin-top: 20px;
+}
+
+.album-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    gap: 20px;
+}
+
+.album-info img {
+    display: inline-block;
+    height: 50px;
+    border-radius: 12px;
+}

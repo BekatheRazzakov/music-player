@@ -21,13 +21,16 @@ export interface ITrack {
 }
 
 export interface IArtistsState {
-  artists: IArtist[]
+  artists: IArtist[],
+  artistsLoading: boolean
 }
 
 export interface IAlbumsState {
-  albums: IAlbum[]
+  albums: IAlbum[],
+  albumsLoading: boolean
 }
 
 export interface ITracksState {
-  tracks: ITrack[]
+  tracks: ITrack[],
+  tracksLoading: boolean
 }

@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {getTracks} from "./tracksThunks";
 import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
+import './tracks.css';
 
 const Tracks = () => {
   const {id} = useParams() as {id: string};
@@ -27,6 +28,10 @@ const Tracks = () => {
               <span>{album.title}</span>
           </div>
       }
+        {
+          tracksState.tracksLoading &&
+            <span className="loader"></span>
+        }
       <div
         className='page-back'
         onClick={() => window.history.back()}

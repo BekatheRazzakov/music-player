@@ -3,7 +3,8 @@ import {getArtists} from "./artistsThunks";
 import {IArtistsState} from "../../../type";
 
 const initialState: IArtistsState = {
-  artists: []
+  artists: [],
+  artistsLoading: false
 };
 
 const ArtistSlice = createSlice({
@@ -11,11 +12,16 @@ const ArtistSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(getArtists.pending, state => {});
+    builder.addCase(getArtists.pending, state => {
+      state.artistsLoading = true;
+    });
     builder.addCase(getArtists.fulfilled, (state, action) => {
       state.artists = action.payload;
+      state.artistsLoading = false;
     });
-    builder.addCase(getArtists.rejected, state => {});
+    builder.addCase(getArtists.rejected, state => {
+      state.artistsLoading = false;
+    });
   }
 });
 

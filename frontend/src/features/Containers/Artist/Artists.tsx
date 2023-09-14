@@ -4,6 +4,7 @@ import {getArtists} from "./artistsThunks";
 import {apiURL} from "../../../constants";
 import {Link} from "react-router-dom";
 import {resetAlbums} from "../Albums/albumsSlice";
+import './artists.css';
 
 const Artists = () => {
   const artistsState = useAppSelector(state => state.artistsState);
@@ -16,6 +17,11 @@ const Artists = () => {
 
   return (
     <div className='artists-list'>
+      <h2>Artists</h2>
+      {
+        artistsState.artistsLoading &&
+          <span className="loader"></span>
+      }
       {
         artistsState.artists.map((artist, index) => (
           <Link to={`albums/${artist._id}`} className='artist' key={index}>

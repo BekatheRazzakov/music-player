@@ -5,6 +5,7 @@ import {getAlbums} from "./albumsThunks";
 import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
 import {resetTracks} from "../Tracks/tracksSlice";
+import './albums.css';
 
 const Albums = () => {
   const {id} = useParams() as {id: string};
@@ -29,6 +30,10 @@ const Albums = () => {
               <img src={apiURL + artist.image} alt=""/>
               <span>{artist.name}</span>
           </div>
+      }
+      {
+        albumsState.albumsLoading &&
+          <span className="loader"></span>
       }
       <div
         className='page-back'

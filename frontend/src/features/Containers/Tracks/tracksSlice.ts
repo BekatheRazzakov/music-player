@@ -3,7 +3,8 @@ import {getTracks} from "./tracksThunks";
 import {ITracksState} from "../../../type";
 
 const initialState: ITracksState = {
-  tracks: []
+  tracks: [],
+  tracksLoading: false
 };
 
 const TracksSlice = createSlice({
@@ -15,11 +16,16 @@ const TracksSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(getTracks.pending, state => {});
+    builder.addCase(getTracks.pending, state => {
+      state.tracksLoading = true;
+    });
     builder.addCase(getTracks.fulfilled, (state, action) => {
       state.tracks = action.payload;
+      state.tracksLoading = false;
     });
-    builder.addCase(getTracks.rejected, state => {});
+    builder.addCase(getTracks.rejected, state => {
+      state.tracksLoading = false;
+    });
 
   }
 });
