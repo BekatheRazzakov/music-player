@@ -1,26 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Route, Routes} from "react-router-dom";
+import Artists from "./features/Containers/Artist/Artists";
+import Albums from "./features/Containers/Albums/Albums";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => (
+  <div className="App">
+    <div className="board">
+      <Routes>
+        <Route path='/' element={<Artists />} />
+        <Route path={'/albums/:id'} element={<Albums />} />
+      </Routes>
     </div>
-  );
-}
+  </div>
+);
 
 export default App;
