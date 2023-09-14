@@ -13,6 +13,8 @@ const run = async () => {
     try {
         await db.dropCollection('users');
         await db.dropCollection('artists');
+        await db.dropCollection('albums');
+        await db.dropCollection('tracks');
     } catch (e) {
         console.log('Collections were not present, skipping drop...');
     }
@@ -80,13 +82,13 @@ const run = async () => {
       title: 'Gasoline',
       album: albumTwo._id,
       duration: '4:50',
-      trackNumber: 8
+      trackNumber: 2
     },
     {
       title: "God's Plan",
       album: albumThree._id,
       duration: '3:19',
-      trackNumber: 12
+      trackNumber: 2
     },
     {
       title: 'Too Late',
@@ -98,13 +100,13 @@ const run = async () => {
       title: 'Here We Go… Again',
       album: albumTwo._id,
       duration: '3:30',
-      trackNumber: 9
+      trackNumber: 4
     },
     {
       title: 'Is There Someone Else?',
       album: albumTwo._id,
       duration: '3:20',
-      trackNumber: 10
+      trackNumber: 1
     },
     {
       title: 'Blinding Lights',
@@ -116,13 +118,13 @@ const run = async () => {
       title: 'Out of Time',
       album: albumTwo._id,
       duration: '3:35',
-      trackNumber: 11
+      trackNumber: 3
     },
     {
       title: 'Childs Play',
       album: albumFour._id,
       duration: '4:01',
-      trackNumber: 19
+      trackNumber: 3
     },
     {
       title: 'Heartless',
@@ -140,49 +142,49 @@ const run = async () => {
       title: 'Redemption',
       album: albumFour._id,
       duration: '5:34',
-      trackNumber: 20
+      trackNumber: 2
     },
     {
       title: 'Faithful',
       album: albumFour._id,
       duration: '4:44',
-      trackNumber: 17
+      trackNumber: 4
     },
     {
       title: 'Don’t Matter To Me',
       album: albumThree._id,
       duration: '4:06',
-      trackNumber: 14
+      trackNumber: 1
     },
     {
       title: 'Sacrifice',
       album: albumTwo._id,
       duration: '3:09',
-      trackNumber: 7
+      trackNumber: 5
     },
     {
       title: 'After Dark',
       album: albumThree._id,
       duration: '4:50',
-      trackNumber: 13
+      trackNumber: 3
     },
     {
       title: 'Pop Style',
       album: albumFour._id,
       duration: '3:33',
-      trackNumber: 21
+      trackNumber: 5
     },
     {
       title: 'Mob Ties',
       album: albumThree._id,
       duration: '3:25',
-      trackNumber: 16
+      trackNumber: 5
     },
     {
       title: 'Finesse',
       album: albumThree._id,
       duration: '3:02',
-      trackNumber: 15
+      trackNumber: 4
     },
     {
       title: 'Blinding Lights',
@@ -194,7 +196,7 @@ const run = async () => {
       title: 'Grammys',
       album: albumFour._id,
       duration: '3:40',
-      trackNumber: 18
+      trackNumber: 1
     },
   );
 

@@ -3,7 +3,8 @@ import {Link, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {getAlbums} from "./albumsThunks";
 import {apiURL} from "../../../constants";
-import {IArtist} from "../../../type";
+import {getArtists} from "../Artist/artistsThunks";
+import {resetTracks} from "../Tracks/tracksSlice";
 
 const Albums = () => {
   const {id} = useParams() as {id: string};
@@ -15,21 +16,30 @@ const Albums = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(getArtists());
     dispatch(getAlbums(id));
+    dispatch(resetTracks());
   }, []);
 
   return (
     <>
-      <div className='album-info'>
-        <img src={apiURL + artist.image} alt=""/>
-        <span>{artist.name}</span>
-      </div>
+      {
+        artist &&
+          <div className='album-info'>
+              <img src={apiURL + artist.image} alt=""/>
+              <span>{artist.name}</span>
+          </div>
+      }
+      <div
+        className='page-back'
+        onClick={() => window.history.back()}
+      />
       <div className='albums-list'>
         {
           albumsState.albums.map((album, index) => (
             <Link
               className='album'
-              to={`tracks/${album._id}`}
+              to={`/tracks/${album._id}`}
               key={index}
             >
               <div className="albumImg">

@@ -5,20 +5,17 @@ import Track from "../models/Track";
 const tracksRouter = express();
 
 tracksRouter.get('', async (req, res) => {
-  const queryParams = req.query.album;
-  const tracksByAlbum = await Track.find({ album: queryParams });
-
   try {
-    if (queryParams && tracksByAlbum.length !== 0) {
-      return res.send(tracksByAlbum);
-    } else if (queryParams && tracksByAlbum.length === 0) {
-      return res.sendStatus(404);
+    if (req.query.album) {
+      const queryId = req.query.album as string;
+      const result = await Track.find({'album': queryId}).sort('trackNumber');
+      return res.send(result);
+    } else {
+      const result = await Track.find();
+      return res.send(result);
     }
-
-    const tracks = await Track.find().sort('trackNumber');
-    res.send(tracks);
   } catch {
-    res.status(500).send({ error: 'Something went wrong' });
+    return res.sendStatus (500);
   }
 });
 

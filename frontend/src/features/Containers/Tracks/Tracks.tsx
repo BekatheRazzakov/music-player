@@ -1,9 +1,50 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {getTracks} from "./tracksThunks";
+import {apiURL} from "../../../constants";
+import {getArtists} from "../Artist/artistsThunks";
 
 const Tracks = () => {
+  const {id} = useParams() as {id: string};
+  const tracksState = useAppSelector(state => state.tracksState);
+  const dispatch = useAppDispatch();
+
+  const album = useAppSelector(state => state.albumsState.albums
+    .filter(album => album._id === id)[0]);
+
+  useEffect(() => {
+    dispatch(getArtists());
+    dispatch(getTracks(id));
+  }, []);
+
   return (
-    <div>
-    </div>
+    <>
+      {
+        album &&
+          <div className='album-info'>
+              <img src={apiURL + album.albumCover} alt=""/>
+              <span>{album.title}</span>
+          </div>
+      }
+      <div
+        className='page-back'
+        onClick={() => window.history.back()}
+      />
+      <div className='tracks-list'>
+        {
+          tracksState.tracks.map((track, index) => (
+            <div className='track' key={index}>
+              <span className="track-number">{track.trackNumber}</span>
+              <div className="trackInfo">
+                <h4>{track.title}</h4>
+                <span>{track.duration}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </>
   );
 };
 

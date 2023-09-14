@@ -29,7 +29,7 @@
     min-width: 25%;
     height: 80%;
     margin: 50px auto 0;
-    padding: 20px 25px;
+    padding: 20px 15px;
     background: rgb(22 22 22 / 38%);
     backdrop-filter: blur(10px);
     border-radius: 14px;
@@ -42,18 +42,36 @@
     overflow-y: auto;
 }
 
-.albums-list,
-.artists-list {
+.albums-list {
     margin-top: 20px;
 }
 
 .artist,
-.album {
+.album,
+.track {
     display: flex;
-    padding: 10px 0;
+    padding: 10px 10px;
     border-bottom: 1px solid rgba(138, 138, 138, 0.39);
     color: white!important;
     text-decoration: none!important;
+    transition: 0.1s;
+}
+
+.artist:hover,
+.album:hover,
+.track:hover {
+    background: linear-gradient(to right,
+    rgba(0, 0, 0, 0),
+    rgba(255, 255, 255, 0.10) 20%,
+    rgba(255, 255, 255, 0.10) 80%,
+    rgba(0, 0, 0, 0)
+    );
+}
+
+.artist:active,
+.album:active,
+.track:active {
+    background: rgba(255, 255, 255, 0.10);
 }
 
 .artistImg,
@@ -100,4 +118,49 @@ h4 {
     display: inline-block;
     height: 50px;
     border-radius: 12px;
+}
+
+.tracks-list {
+    height: 100%;
+    overflow-y: auto;
+    margin-top: 30px;
+}
+
+.track {
+    padding: 20px 10px;
+}
+
+.track-number {
+    align-self: center;
+}
+
+
+.trackInfo {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding-left: 25px;
+}
+
+.page-back {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: rgba(255, 255, 255, 0.10);
+    border-radius: 50%;
+    background-image: url("./assets/pageBack.png");
+    background-size: 10px;
+    background-position: 9px 9px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
+}
+
+.page-back:hover {
+    background-color: rgba(255, 255, 255, 0.30);
+}
+
+.page-back:active {
+    background-color: rgba(255, 255, 255, 0.60);
 }
