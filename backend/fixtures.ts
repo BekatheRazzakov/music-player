@@ -44,7 +44,7 @@ const run = async () => {
       }
     );
 
-    const [albumOne, albumTwo, albumThree, albumFour] = await Album.create(
+    const [albumOne, albumTwo, albumThree, albumFour, albumFive] = await Album.create(
       {
         title: 'After Hours',
         artist: artistOne._id,
@@ -68,6 +68,12 @@ const run = async () => {
         artist: artistTwo._id,
         releaseYear: 2016,
         albumCover: '/images/Drake_-_Views.png'
+      },
+      {
+        title: 'Starboy',
+        artist: artistOne._id,
+        releaseYear: 2016,
+        albumCover: '/images/The_Weeknd_-_Starboy.png'
       }
     );
 
@@ -197,6 +203,30 @@ const run = async () => {
       album: albumFour._id,
       duration: '3:40',
       trackNumber: 1
+    },
+    {
+      title: 'All I Know',
+      album: albumFive._id,
+      duration: '5:21',
+      trackNumber: 3
+    },
+    {
+      title: 'Starboy',
+      album: albumFive._id,
+      duration: '3:50',
+      trackNumber: 1
+    },
+    {
+      title: 'Sidewalks',
+      album: albumFive._id,
+      duration: '3:51',
+      trackNumber: 2
+    },
+    {
+      title: 'I Feel It Coming',
+      album: albumFive._id,
+      duration: '4:29',
+      trackNumber: 4
     },
   );
 

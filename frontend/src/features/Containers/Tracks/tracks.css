@@ -10,6 +10,7 @@
 
 .track-number {
     align-self: center;
+    opacity: 0.5;
 }
 
 .trackInfo {
