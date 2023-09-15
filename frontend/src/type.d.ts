@@ -15,7 +15,7 @@ export interface IAlbum {
 
 export interface ITrack {
   title: string,
-  trackNumber: string,
+  trackNumber: number,
   duration: string,
   album: string,
   _id: string
@@ -24,7 +24,7 @@ export interface ITrack {
 export interface IArtistsState {
   artists: IArtist[],
   artistsLoading: boolean
-  currentTrack: string,
+  currentTrack: ITrack | null,
   trackChanged: boolean,
   showPlayer: boolean
 }

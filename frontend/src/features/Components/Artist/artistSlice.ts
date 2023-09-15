@@ -5,7 +5,7 @@ import {IArtistsState} from "../../../type";
 const initialState: IArtistsState = {
   artists: [],
   artistsLoading: false,
-  currentTrack: '',
+  currentTrack: null,
   trackChanged: false,
   showPlayer: false
 };

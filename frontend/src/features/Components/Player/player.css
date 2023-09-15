@@ -29,10 +29,10 @@
 .volume::before {
     content: "";
     position: absolute;
-    top: 3px;
-    left: -10px;
-    width: 13px;
-    height: 13px;
+    top: 2px;
+    left: -9px;
+    width: 15px;
+    height: 15px;
     background-image: url("../../../assets/volume.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -122,10 +122,11 @@
 
 .song span {
     min-width: 35px;
+    text-align: right;
 }
 
 .duration {
-    text-align: right;
+    text-align: left!important;
 }
 
 input[type=range] {

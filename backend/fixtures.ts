@@ -79,15 +79,15 @@ const run = async () => {
 
   await Track.create(
     {
-      title: 'Faith',
+      title: 'The Weeknd - Faith',
       album: albumOne._id,
       duration: '4:45',
       trackNumber: 4
     },
     {
-      title: 'Gasoline',
+      title: 'The Weeknd - Gasoline',
       album: albumTwo._id,
-      duration: '4:50',
+      duration: '4:51',
       trackNumber: 2
     },
     {
@@ -97,31 +97,31 @@ const run = async () => {
       trackNumber: 2
     },
     {
-      title: 'Too Late',
+      title: 'The Weeknd - Too Late',
       album: albumOne._id,
       duration: '4:01',
       trackNumber: 1
     },
     {
-      title: 'Here We Go… Again',
+      title: 'The Weeknd - Here We Go Again',
       album: albumTwo._id,
       duration: '3:30',
       trackNumber: 4
     },
     {
-      title: 'Is There Someone Else?',
+      title: 'The Weeknd - Is There Someone Else',
       album: albumTwo._id,
       duration: '3:20',
       trackNumber: 1
     },
     {
-      title: 'Blinding Lights',
+      title: 'The Weeknd - Blinding Lights',
       album: albumOne._id,
-      duration: '4:23',
+      duration: '4:22',
       trackNumber: 2
     },
     {
-      title: 'Out of Time',
+      title: 'The Weeknd - Out of Time',
       album: albumTwo._id,
       duration: '3:35',
       trackNumber: 3
@@ -133,13 +133,13 @@ const run = async () => {
       trackNumber: 3
     },
     {
-      title: 'Heartless',
+      title: 'The Weeknd - Heartless',
       album: albumOne._id,
       duration: '4:10',
       trackNumber: 5
     },
     {
-      title: 'Double Fantasy',
+      title: 'The Weeknd - Double Fantasy',
       album: albumOne._id,
       duration: '4:30',
       trackNumber: 3
@@ -163,7 +163,7 @@ const run = async () => {
       trackNumber: 1
     },
     {
-      title: 'Sacrifice',
+      title: 'The Weeknd - Sacrifice',
       album: albumTwo._id,
       duration: '3:09',
       trackNumber: 5
@@ -178,6 +178,12 @@ const run = async () => {
       title: 'Pop Style',
       album: albumFour._id,
       duration: '3:33',
+      trackNumber: 5
+    },
+    {
+      title: 'The Weeknd - Party Monster',
+      album: albumFive._id,
+      duration: '4:12',
       trackNumber: 5
     },
     {
@@ -199,27 +205,27 @@ const run = async () => {
       trackNumber: 1
     },
     {
-      title: 'All I Know',
+      title: 'The Weeknd - All I Know',
       album: albumFive._id,
-      duration: '5:21',
+      duration: '5:22',
       trackNumber: 3
     },
     {
-      title: 'Starboy',
+      title: 'The Weeknd - Starboy',
       album: albumFive._id,
-      duration: '3:50',
+      duration: '3:51',
       trackNumber: 1
     },
     {
-      title: 'Sidewalks',
+      title: 'The Weeknd - Sidewalks',
       album: albumFive._id,
       duration: '3:51',
       trackNumber: 2
     },
     {
-      title: 'I Feel It Coming',
+      title: 'The Weeknd - I Feel It Coming',
       album: albumFive._id,
-      duration: '4:29',
+      duration: '4:30',
       trackNumber: 4
     },
   );

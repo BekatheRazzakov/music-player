@@ -2,13 +2,14 @@ import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import './player.css';
 import {apiURL} from "../../../constants";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {setTrackChange} from "../Artist/artistSlice";
+import {setCurrentTrack, setTrackChange} from "../Artist/artistSlice";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(1);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
+  const tracks = useAppSelector(state => state.tracksState.tracks);
   const currentTrack = useAppSelector(state => state.artistsState.currentTrack);
   const trackChanged = useAppSelector(state => state.artistsState.trackChanged);
   const dispatch = useAppDispatch();
@@ -27,7 +28,12 @@ const Player = () => {
     }
   }, []);
 
-  if (audioRef.current && trackChanged && currentTrack !== '') {
+  if (
+    audioRef.current &&
+    trackChanged &&
+    currentTrack &&
+    currentTrack.title !== ''
+  ) {
     if (trackChanged) {
       dispatch(setTrackChange(false));
       setTimeout(() => {
@@ -67,9 +73,39 @@ const Player = () => {
     setPaused(!paused);
   };
 
+  const prevTrack = () => {
+    if (currentTrack) {
+      if (currentTrack.trackNumber === 1) {
+        dispatch(setCurrentTrack(tracks[tracks.length -1]));
+        dispatch(setTrackChange(true));
+        return dispatch(setTrackChange(true));
+      }
+
+      const newTrack = tracks
+        .filter(track => track.trackNumber === currentTrack.trackNumber - 1)[0];
+      dispatch(setCurrentTrack(newTrack));
+      dispatch(setTrackChange(true));
+    }
+  };
+
+  const nextTrack = () => {
+    if (currentTrack) {
+      if (currentTrack.trackNumber === 5) {
+        dispatch(setCurrentTrack(tracks[0]));
+        dispatch(setTrackChange(true));
+        return dispatch(setTrackChange(true));
+      }
+
+      const newTrack = tracks
+        .filter(track => track.trackNumber === currentTrack.trackNumber + 1)[0];
+      dispatch(setCurrentTrack(newTrack));
+      dispatch(setTrackChange(true));
+    }
+  };
+
   return (
     <div className='player'>
-      <h4 className='song-name'>{currentTrack}</h4>
+      <h4 className='song-name'>{currentTrack && currentTrack.title}</h4>
       <div className="buttons">
         <div className='volume'>
           <input
@@ -81,14 +117,20 @@ const Player = () => {
             onChange={volumeHandler}
           />
         </div>
-        <span className='trackSwitch previous' />
+        <span
+          className='trackSwitch previous'
+          onClick={prevTrack}
+        />
         <span
           className={
             paused ? 'playPause paused' : 'playPause play'
           }
           onClick={playPauseHandler}
         />
-        <span className='trackSwitch next' />
+        <span
+          className='trackSwitch next'
+          onClick={nextTrack}
+        />
       </div>
       <div className='song'>
         <span>
@@ -101,7 +143,7 @@ const Player = () => {
         </span>
         <audio
           ref={audioRef}
-          src={apiURL + 'music/' + currentTrack + '.mp3'}
+          src={currentTrack ? apiURL + 'music/' + currentTrack.title + '.mp3' : ''}
         />
         <input
           type="range"
