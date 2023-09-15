@@ -9,7 +9,8 @@ export interface IAlbum {
   title: string,
   releaseYear: string,
   albumCover: string,
-  _id: string
+  _id: string,
+  artist?: IArtist
 }
 
 export interface ITrack {

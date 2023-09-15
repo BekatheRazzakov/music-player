@@ -22,10 +22,13 @@ const Tracks = () => {
     <>
       {
         album &&
-          <div className='album-info'>
-              <img src={apiURL + album.albumCover} alt=""/>
-              <span>{album.title}</span>
-          </div>
+          <>
+              <h4 className='artist-name'>{album.artist?.name}</h4>
+              <div className='album-info'>
+                  <img src={apiURL + album.albumCover} alt=""/>
+                  <span>{album.title}</span>
+              </div>
+          </>
       }
         {
           tracksState.tracksLoading &&

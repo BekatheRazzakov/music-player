@@ -1,10 +1,11 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
-import Artists from "./features/Containers/Artist/Artists";
-import Albums from "./features/Containers/Albums/Albums";
-import Tracks from "./features/Containers/Tracks/Tracks";
+import Artists from "./features/Components/Artist/Artists";
+import Albums from "./features/Components/Albums/Albums";
+import Tracks from "./features/Components/Tracks/Tracks";
 import './preloader.css';
 import './App.css';
+import Player from "./features/Components/Player/Player";
 
 const App = () => (
   <div className="App">
@@ -15,6 +16,7 @@ const App = () => (
         <Route path={'/tracks/:id'} element={<Tracks />} />
       </Routes>
     </div>
+    <Player />
   </div>
 );
 

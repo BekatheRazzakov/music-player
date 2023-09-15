@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {albumsRouter} from "../features/Containers/Albums/albumsSlice";
-import {artistsRouter} from "../features/Containers/Artist/artistSlice";
-import {tracksRouter} from "../features/Containers/Tracks/tracksSlice";
+import {albumsRouter} from "../features/Components/Albums/albumsSlice";
+import {artistsRouter} from "../features/Components/Artist/artistSlice";
+import {tracksRouter} from "../features/Components/Tracks/tracksSlice";
 
 export const store = configureStore({
   reducer: {
