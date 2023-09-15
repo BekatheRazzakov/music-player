@@ -6,18 +6,25 @@ import Tracks from "./features/Components/Tracks/Tracks";
 import './preloader.css';
 import './App.css';
 import Player from "./features/Components/Player/Player";
+import {useAppSelector} from "./app/hooks";
 
-const App = () => (
-  <div className="App">
-    <div className="board">
-      <Routes>
-        <Route path='/' element={<Artists />} />
-        <Route path={'/albums/:id'} element={<Albums />} />
-        <Route path={'/tracks/:id'} element={<Tracks />} />
-      </Routes>
+const App = () => {
+  const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
+
+  return (
+    <div className="App">
+      <div className="board">
+        <Routes>
+          <Route path='/' element={<Artists />} />
+          <Route path={'/albums/:id'} element={<Albums />} />
+          <Route path={'/tracks/:id'} element={<Tracks />} />
+        </Routes>
+      </div>
+      {
+        showPlayer && <Player />
+      }
     </div>
-    <Player />
-  </div>
-);
+  );
+}
 
 export default App;

@@ -136,12 +136,12 @@ const run = async () => {
       title: 'Heartless',
       album: albumOne._id,
       duration: '4:10',
-      trackNumber: 6
+      trackNumber: 5
     },
     {
-      title: 'Until I Bleed Out',
+      title: 'Double Fantasy',
       album: albumOne._id,
-      duration: '3:11',
+      duration: '4:30',
       trackNumber: 3
     },
     {
@@ -191,12 +191,6 @@ const run = async () => {
       album: albumThree._id,
       duration: '3:02',
       trackNumber: 4
-    },
-    {
-      title: 'Blinding Lights',
-      album: albumOne._id,
-      duration: '4:09',
-      trackNumber: 5
     },
     {
       title: 'Grammys',

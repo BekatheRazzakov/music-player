@@ -24,11 +24,14 @@ export interface ITrack {
 export interface IArtistsState {
   artists: IArtist[],
   artistsLoading: boolean
+  currentTrack: string,
+  trackChanged: boolean,
+  showPlayer: boolean
 }
 
 export interface IAlbumsState {
   albums: IAlbum[],
-  albumsLoading: boolean
+  albumsLoading: boolean,
 }
 
 export interface ITracksState {

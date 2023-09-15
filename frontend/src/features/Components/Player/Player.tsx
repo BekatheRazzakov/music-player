@@ -1,22 +1,47 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import './player.css';
 import {apiURL} from "../../../constants";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {setTrackChange} from "../Artist/artistSlice";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(1);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
+  const currentTrack = useAppSelector(state => state.artistsState.currentTrack);
+  const trackChanged = useAppSelector(state => state.artistsState.trackChanged);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (audioRef.current) {
+      setVolume(audioRef.current?.volume);
       audioRef.current.addEventListener('timeupdate', () => {
         if (audioRef.current) {
+          if ((audioRef.current?.currentTime).toFixed() === audioRef.current?.duration.toFixed()) {
+            setPaused(true);
+          }
           setPlaybackPosition(audioRef.current.currentTime);
         }
       });
     }
   }, []);
+
+  if (audioRef.current && trackChanged && currentTrack !== '') {
+    if (trackChanged) {
+      dispatch(setTrackChange(false));
+      setTimeout(() => {
+        setPaused(false);
+        void audioRef.current?.play();
+      }, 50);
+    }
+  }
+
+  const formatTime = (seconds: number) => {
+    const remainingSeconds = Math.floor(seconds % 60);
+    const minutes = Math.floor(seconds / 60).toFixed();
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
 
   const volumeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setVolume(parseFloat(e.target.value));
@@ -34,9 +59,9 @@ const Player = () => {
 
   const playPauseHandler = () => {
     if (paused) {
-      void audioRef.current?.pause();
-    } else {
       void audioRef.current?.play();
+    } else {
+      void audioRef.current?.pause();
     }
 
     setPaused(!paused);
@@ -44,7 +69,7 @@ const Player = () => {
 
   return (
     <div className='player'>
-      <h4 className='song-name'>Song name</h4>
+      <h4 className='song-name'>{currentTrack}</h4>
       <div className="buttons">
         <div className='volume'>
           <input
@@ -66,20 +91,39 @@ const Player = () => {
         <span className='trackSwitch next' />
       </div>
       <div className='song'>
-        <span>0:00</span>
+        <span>
+          {
+            audioRef.current ?
+              formatTime(audioRef.current?.currentTime)
+              :
+              '0:00'
+          }
+        </span>
         <audio
           ref={audioRef}
-          src={apiURL + 'music/The Weeknd - Too Late.mp3'}
+          src={apiURL + 'music/' + currentTrack + '.mp3'}
         />
         <input
           type="range"
           step='0.01'
           min='0'
-          max={audioRef.current?.duration}
+          max={
+          audioRef.current ?
+            audioRef.current?.duration.toString()
+            :
+            '1'
+          }
           value={playbackPosition}
           onChange={playbackPositionHandler}
         />
-        <span>0:00</span>
+        <span className='duration'>
+          {
+            audioRef.current?.duration ?
+              formatTime(audioRef.current?.duration)
+              :
+              '0:00'
+          }
+        </span>
       </div>
     </div>
   );

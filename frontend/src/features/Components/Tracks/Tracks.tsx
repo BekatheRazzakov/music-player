@@ -5,10 +5,12 @@ import {getTracks} from "./tracksThunks";
 import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
 import './tracks.css';
+import {setCurrentTrack, setShowPlayer, setTrackChange} from "../Artist/artistSlice";
 
 const Tracks = () => {
   const {id} = useParams() as {id: string};
   const tracksState = useAppSelector(state => state.tracksState);
+  const currentTrack = useAppSelector(state => state.artistsState.currentTrack);
   const dispatch = useAppDispatch();
 
   const album = useAppSelector(state => state.tracksState.album);
@@ -17,6 +19,12 @@ const Tracks = () => {
     dispatch(getArtists());
     dispatch(getTracks(id));
   }, []);
+
+  const onTrackClick = (trackTitle: string) => {
+    dispatch(setCurrentTrack(trackTitle));
+    dispatch(setTrackChange(true));
+    dispatch(setShowPlayer(true));
+  };
 
   return (
     <>
@@ -41,7 +49,11 @@ const Tracks = () => {
       <div className='tracks-list'>
         {
           tracksState.tracks.map((track, index) => (
-            <div className='track' key={index}>
+            <div
+              className={`track ${currentTrack === track.title && 'isPlaying'}`}
+              key={index}
+              onClick={() => onTrackClick(track.title)}
+            >
               <span className="track-number">{track.trackNumber}</span>
               <div className="trackInfo">
                 <h4>{track.title}</h4>

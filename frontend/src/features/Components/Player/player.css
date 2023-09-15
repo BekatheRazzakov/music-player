@@ -78,11 +78,11 @@
 
 .play {
     background-image: url("../../../assets/play.png");
+    background-position: 51% 52%;
 }
 
 .paused {
-    background-image: url("../../../assets/pause.png");
-    background-position: 51% 52%;
+    background-image: url("../../../assets/paused.png");
 }
 
 .trackSwitch {
@@ -116,9 +116,16 @@
 }
 
 .song input {
-    width: 80%;
     background: transparent;
     outline: none;
+}
+
+.song span {
+    min-width: 35px;
+}
+
+.duration {
+    text-align: right;
 }
 
 input[type=range] {
