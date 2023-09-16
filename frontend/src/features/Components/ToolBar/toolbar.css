@@ -10,6 +10,12 @@ h1 {
     margin: 0;
 }
 
+.toolbar .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 .toolbar a {
     color: #FFFFFF;
     text-decoration: none;

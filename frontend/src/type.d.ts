@@ -26,7 +26,7 @@ export interface IGetSingleTrackHistory {
   user: string
   track: {
     title: string,
-    album: string,
+    album: IAlbum,
     duration: string,
     trackNumber: string,
   },

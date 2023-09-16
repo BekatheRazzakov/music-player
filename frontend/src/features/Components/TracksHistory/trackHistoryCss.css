@@ -1,0 +1,9 @@
+.tracks-history-list {
+    height: 416px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.track-title {
+    margin: 5px 0;
+}

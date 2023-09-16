@@ -20,7 +20,7 @@ const Albums = () => {
     dispatch(getArtists());
     dispatch(getAlbums(id));
     dispatch(resetTracks());
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <>

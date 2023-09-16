@@ -23,7 +23,7 @@ const Artists = () => {
 
     dispatch(getArtists());
     dispatch(resetAlbums());
-  }, []);
+  }, [dispatch, navigate, userState]);
 
   return (
     <div className='artists-list'>

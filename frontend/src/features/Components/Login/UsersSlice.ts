@@ -32,13 +32,16 @@ const UsersSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(login.pending, () => {});
+    builder.addCase(login.pending, (state) => {
+      state.token = '';
+    });
     builder.addCase(login.fulfilled, (state, action) => {
       if (!action.payload) {
         state.loginFulfilled = false;
         state.showAlert = true;
         return localStorage.setItem('user', JSON.stringify({}));
       }
+      state.token = action.payload.token;
       state.loginFulfilled = true;
       state.showAlert = false;
     });

@@ -27,7 +27,7 @@ const Login = () => {
       dispatch(resetSignedUp());
       alert('You have signed in!');
     }
-  }, []);
+  }, [dispatch, navigate, userState]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;

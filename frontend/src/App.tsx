@@ -12,22 +12,27 @@ import Login from "./features/Components/Login/Login";
 import NotFoundPage from "./features/Components/NotFoundPage/NotFoundPage";
 import SignUp from "./features/Components/SignUp/SignUp";
 import {login} from "./features/Components/Login/UserThunk";
+import TracksHistory from "./features/Components/TracksHistory/TracksHistory";
 
 const App = () => {
   const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
   const userState = useAppSelector(state => state.userState);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  const setData = async () => {
     const user = localStorage.getItem('user');
     let parsed: {token: string, username: string, password: string};
     if (user && user !== '{}') {
       parsed = JSON.parse(user);
-      dispatch(login({
+      await dispatch(login({
         username: parsed.username,
         password: parsed.password
       }));
     }
+  };
+
+  useEffect(() => {
+    void setData();
   }, []);
 
   return (
@@ -42,6 +47,7 @@ const App = () => {
           } />
           <Route path={'/albums/:id'} element={<Albums />} />
           <Route path={'/tracks/:id'} element={<Tracks />} />
+          <Route path={`/track_history`} element={<TracksHistory />} />
         </Routes>
       </div>
       {

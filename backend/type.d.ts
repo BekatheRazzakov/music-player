@@ -4,12 +4,20 @@ export interface IUser {
   token: string
 }
 
+export interface IAlbum {
+  title: string,
+  releaseYear: string,
+  albumCover: string,
+  _id: string,
+  artist?: IArtist
+}
+
 export interface IGetSingleTrackHistory {
   _id: string,
   user: string
   track: {
     title: string,
-    album: string,
+    album: IAlbum,
     duration: string,
     trackNumber: string,
   },

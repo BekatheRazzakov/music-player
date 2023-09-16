@@ -16,7 +16,7 @@ trackHistoryRouter.get('', async (req, res) => {
     }
 
     const tracksByUser = await TrackHistory.find({ user: user._id }).sort('-datetime')
-      .populate('track') as IGetSingleTrackHistory[];
+      .populate({path: 'track', populate: {path: 'album',},}) as IGetSingleTrackHistory[];
 
     res.send(tracksByUser);
   } catch {
