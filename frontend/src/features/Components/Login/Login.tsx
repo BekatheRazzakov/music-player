@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import './login.css';
 import {useLocation, useNavigate} from "react-router-dom";
 import {IUserWithoutToken} from "../../../type";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {useAppDispatch} from "../../../app/hooks";
 import {login} from "./UserThunk";
 
 const Login = () => {

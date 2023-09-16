@@ -9,9 +9,11 @@ import Player from "./features/Components/Player/Player";
 import {useAppSelector} from "./app/hooks";
 import Toolbar from "./features/Components/ToolBar/Toolbar";
 import Login from "./features/Components/Login/Login";
+import NotFoundPage from "./features/Components/NotFoundPage/NotFoundPage";
 
 const App = () => {
   const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
+  const userState = useAppSelector(state => state.userState);
 
   return (
     <div className="App" >
@@ -20,7 +22,9 @@ const App = () => {
         <Routes>
           <Route path={'/'} element={<Login />} />
           <Route path={'/sign-up'} element={<Login />} />
-          <Route path='/artists' element={<Artists />} />
+          <Route path='/artists' element={
+            userState.loginFulfilled ? <Artists /> : <NotFoundPage />
+          } />
           <Route path={'/albums/:id'} element={<Albums />} />
           <Route path={'/tracks/:id'} element={<Tracks />} />
         </Routes>
