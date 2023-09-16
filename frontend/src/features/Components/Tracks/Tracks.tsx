@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {getTracks, postTrackToHistory} from "./tracksThunks";
+import {getTracks, getTracksByHistory, postTrackToHistory} from "./tracksThunks";
 import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
 import './tracks.css';
@@ -20,8 +20,9 @@ const Tracks = () => {
     dispatch(getTracks(id));
   }, []);
 
-  const onTrackClick = (track: ITrack) => {
-    dispatch(postTrackToHistory({track: track._id, token: '66fc45ae-1f0b-4c5c-9451-9e87af7db2d4'}));
+  const onTrackClick = async (track: ITrack) => {
+    await dispatch(postTrackToHistory({track: track._id, token: '66fc45ae-1f0b-4c5c-9451-9e87af7db2d4'}));
+    await dispatch(getTracksByHistory('66fc45ae-1f0b-4c5c-9451-9e87af7db2d4'));
   };
 
   return (

@@ -7,17 +7,20 @@ import './preloader.css';
 import './App.css';
 import Player from "./features/Components/Player/Player";
 import {useAppSelector} from "./app/hooks";
+import Toolbar from "./features/Components/ToolBar/Toolbar";
+import Login from "./features/Components/Login/Login";
 
 const App = () => {
   const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
 
   return (
-    <div
-      className="App"
-    >
+    <div className="App" >
+      <Toolbar />
       <div className="board">
         <Routes>
-          <Route path='/' element={<Artists />} />
+          <Route path={'/'} element={<Login />} />
+          <Route path={'/sign-up'} element={<Login />} />
+          <Route path='/artists' element={<Artists />} />
           <Route path={'/albums/:id'} element={<Albums />} />
           <Route path={'/tracks/:id'} element={<Tracks />} />
         </Routes>

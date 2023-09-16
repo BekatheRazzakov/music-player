@@ -28,7 +28,8 @@ export const getTracksByHistory = createAsyncThunk(
   'tracks/getTracksByHistory',
   async (token: string) => {
     try {
-      await axiosApi('/track_history', { headers: { 'Authorization': token } });
+      const req = await axiosApi('/track_history', { headers: { 'Authorization': token } });
+      return req.data;
     } catch (e) {
       console.log(e);
     }

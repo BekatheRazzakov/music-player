@@ -24,7 +24,7 @@ const Artists = () => {
       }
       {
         artistsState.artists.map((artist, index) => (
-          <Link to={`albums/${artist._id}`} className='artist' key={index}>
+          <Link to={`/albums/${artist._id}`} className='artist' key={index}>
             <div className="artistImg">
               <img
                 src={apiURL + artist.image}

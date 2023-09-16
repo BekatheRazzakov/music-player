@@ -1,0 +1,20 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+    height: 80px;
+}
+
+h1 {
+    margin: 0;
+}
+
+.toolbar a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.toolbar a:hover {
+    text-decoration: underline;
+}

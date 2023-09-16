@@ -35,7 +35,9 @@ const TracksSlice = createSlice({
     builder.addCase(postTrackToHistory.rejected, state => {});
 
     builder.addCase(getTracksByHistory.pending, state => {});
-    builder.addCase(getTracksByHistory.fulfilled, (state, action) => {});
+    builder.addCase(getTracksByHistory.fulfilled, (state, action) => {
+      state.tracksHistory = action.payload;
+    });
     builder.addCase(getTracksByHistory.rejected, state => {});
   }
 });
