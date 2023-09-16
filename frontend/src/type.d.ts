@@ -33,7 +33,10 @@ export interface IGetSingleTrackHistory {
   datetime: string
 }
 
-export type IUserWithoutToken = Omit<IUser, 'token'>;
+export interface ISignUser {
+  username: string,
+  password: string
+}
 
 export interface IArtistsState {
   artists: IArtist[],
@@ -59,5 +62,6 @@ export interface IUserState {
   token: string,
   signedUp: boolean,
   loginFulfilled: boolean,
-  showAlert: boolean
+  showAlert: boolean,
+  signUpAttempt: boolean
 }

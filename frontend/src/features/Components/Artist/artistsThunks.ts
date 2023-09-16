@@ -4,7 +4,11 @@ import {axiosApi} from "../../../axiosApi";
 export const getArtists = createAsyncThunk(
   'artists/getAll',
   async () => {
-    const request = await axiosApi('artists');
-    return request.data;
+    try {
+      const request = await axiosApi('artists');
+      return request.data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 );

@@ -1,12 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IUserState} from "../../../type";
-import {login} from "./UserThunk";
+import {login, signUp} from "./UserThunk";
 
 const initialState: IUserState = {
   token: '',
   signedUp: false,
   loginFulfilled: false,
-  showAlert: false
+  showAlert: false,
+  signUpAttempt: false
 };
 
 const UsersSlice = createSlice({
@@ -22,11 +23,22 @@ const UsersSlice = createSlice({
     },
     setAlert: (state, action) => {
       state.showAlert = action.payload;
+    },
+    resetSignedUp: state => {
+      state.signedUp = false;
+    },
+    resetAttempt: state => {
+      state.signUpAttempt = false;
     }
   },
   extraReducers: builder => {
-    builder.addCase(login.pending, (state) => {});
+    builder.addCase(login.pending, () => {});
     builder.addCase(login.fulfilled, (state, action) => {
+      if (!action.payload) {
+        state.loginFulfilled = false;
+        state.showAlert = true;
+        return localStorage.setItem('user', JSON.stringify({}));
+      }
       state.loginFulfilled = true;
       state.showAlert = false;
     });
@@ -35,8 +47,21 @@ const UsersSlice = createSlice({
       state.showAlert = true;
       localStorage.setItem('user', JSON.stringify({}));
     });
+
+    builder.addCase(signUp.pending, (state) => {
+      state.signUpAttempt = true;
+    });
+    builder.addCase(signUp.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        return;
+      }
+      state.signedUp = true;
+    });
+    builder.addCase(signUp.rejected, (state) => {
+      state.signedUp = false;
+    });
   }
 });
 
 export const userReducer = UsersSlice.reducer;
-export const {logOut, setLoginFulfilled, setAlert} = UsersSlice.actions;
+export const {logOut, setLoginFulfilled, setAlert, resetSignedUp, resetAttempt} = UsersSlice.actions;

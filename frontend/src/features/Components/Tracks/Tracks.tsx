@@ -18,7 +18,7 @@ const Tracks = () => {
   useEffect(() => {
     dispatch(getArtists());
     dispatch(getTracks(id));
-  }, []);
+  }, [dispatch, id]);
 
   const onTrackClick = async (track: ITrack) => {
     await dispatch(postTrackToHistory({track: track._id, token: '66fc45ae-1f0b-4c5c-9451-9e87af7db2d4'}));

@@ -5,7 +5,7 @@ import {apiURL} from "../../../constants";
 import {Link, useNavigate} from "react-router-dom";
 import {resetAlbums} from "../Albums/albumsSlice";
 import './artists.css';
-import {setLoginFulfilled} from "../Login/UsersSlice";
+import {setAlert, setLoginFulfilled} from "../Login/UsersSlice";
 
 const Artists = () => {
   const artistsState = useAppSelector(state => state.artistsState);
@@ -17,6 +17,7 @@ const Artists = () => {
     if (!userState.loginFulfilled && userState.showAlert) {
       alert('Authentication is not passed!');
       dispatch(setLoginFulfilled(false));
+      dispatch(setAlert(false));
       return navigate('/');
     }
 

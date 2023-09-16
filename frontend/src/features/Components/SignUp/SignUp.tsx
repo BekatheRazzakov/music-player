@@ -1,10 +1,9 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import './login.css';
+import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {ISignUser} from "../../../type";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {login} from "./UserThunk";
-import {resetAttempt, resetSignedUp} from "./UsersSlice";
+import {useAppDispatch} from "../../../app/hooks";
+import {signUp} from "../Login/UserThunk";
+import '../Login/login.css';
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
@@ -12,22 +11,7 @@ const Login = () => {
     password: ''
   });
   const dispatch = useAppDispatch();
-  const userState = useAppSelector(state => state.userState);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!userState.signedUp && userState.signUpAttempt) {
-      dispatch(resetAttempt());
-      dispatch(resetSignedUp());
-      alert('Sign up again please, try using another username');
-      navigate('/sign-up');
-    }
-    if (userState.signUpAttempt && userState.signedUp) {
-      dispatch(resetAttempt());
-      dispatch(resetSignedUp());
-      alert('You have signed in!');
-    }
-  }, []);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -40,13 +24,13 @@ const Login = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await dispatch(login(userData));
-    navigate('/artists');
+    await dispatch(signUp(userData));
+    navigate('/');
   };
 
   return (
     <div>
-      <h1 className='title'>Login</h1>
+      <h1 className='title'>Sign up</h1>
       <form onSubmit={onSubmit}>
         <div className="input">
           <input
@@ -70,7 +54,7 @@ const Login = () => {
           />
           <label className="input-label">password</label>
         </div>
-        <button type='submit'>Login</button>
+        <button type='submit'>Sign up</button>
       </form>
     </div>
   );
