@@ -2,15 +2,24 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {getArtists} from "./artistsThunks";
 import {apiURL} from "../../../constants";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {resetAlbums} from "../Albums/albumsSlice";
 import './artists.css';
+import {setLoginFulfilled} from "../Login/UsersSlice";
 
 const Artists = () => {
   const artistsState = useAppSelector(state => state.artistsState);
+  const userState = useAppSelector(state => state.userState);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!userState.loginFulfilled && userState.showAlert) {
+      alert('Authentication is not passed!');
+      dispatch(setLoginFulfilled(false));
+      return navigate('/');
+    }
+
     dispatch(getArtists());
     dispatch(resetAlbums());
   }, []);

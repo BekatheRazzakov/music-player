@@ -33,12 +33,6 @@ export interface IGetSingleTrackHistory {
   datetime: string
 }
 
-export interface IUser {
-  username: string,
-  password: string,
-  token: string
-}
-
 export type IUserWithoutToken = Omit<IUser, 'token'>;
 
 export interface IArtistsState {
@@ -62,7 +56,7 @@ export interface ITracksState {
 }
 
 export interface IUserState {
-  user: IUser | null,
+  token: string,
   signedUp: boolean,
   loginFulfilled: boolean,
   showAlert: boolean

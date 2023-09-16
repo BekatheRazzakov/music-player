@@ -1,7 +1,9 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import './login.css';
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {IUserWithoutToken} from "../../../type";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {login} from "./UserThunk";
 
 const Login = () => {
   const location = useLocation();
@@ -9,6 +11,8 @@ const Login = () => {
     username: '',
     password: ''
   });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -19,8 +23,10 @@ const Login = () => {
     }));
   };
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    await dispatch(login(userData));
+    navigate('/artists');
   };
 
   return (
