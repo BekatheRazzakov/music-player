@@ -158,7 +158,7 @@ const Player = () => {
           value={playbackPosition}
           onChange={playbackPositionHandler}
         />
-        <span className='duration'>
+        <span>
           {
             audioRef.current?.duration ?
               formatTime(audioRef.current?.duration)

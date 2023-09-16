@@ -15,6 +15,7 @@ const run = async () => {
         await db.dropCollection('artists');
         await db.dropCollection('albums');
         await db.dropCollection('tracks');
+      await db.dropCollection('trackhistories');
     } catch (e) {
         console.log('Collections were not present, skipping drop...');
     }
@@ -81,17 +82,17 @@ const run = async () => {
     {
       title: 'The Weeknd - Faith',
       album: albumOne._id,
-      duration: '4:45',
+      duration: '4:44',
       trackNumber: 4
     },
     {
       title: 'The Weeknd - Gasoline',
       album: albumTwo._id,
-      duration: '4:51',
+      duration: '4:50',
       trackNumber: 2
     },
     {
-      title: "God's Plan",
+      title: "Drake - God's Plan",
       album: albumThree._id,
       duration: '3:19',
       trackNumber: 2
@@ -105,13 +106,13 @@ const run = async () => {
     {
       title: 'The Weeknd - Here We Go Again',
       album: albumTwo._id,
-      duration: '3:30',
+      duration: '3:29',
       trackNumber: 4
     },
     {
       title: 'The Weeknd - Is There Someone Else',
       album: albumTwo._id,
-      duration: '3:20',
+      duration: '3:19',
       trackNumber: 1
     },
     {
@@ -123,61 +124,61 @@ const run = async () => {
     {
       title: 'The Weeknd - Out of Time',
       album: albumTwo._id,
-      duration: '3:35',
+      duration: '3:34',
       trackNumber: 3
     },
     {
-      title: 'Childs Play',
+      title: 'Drake - Childs Play',
       album: albumFour._id,
-      duration: '4:01',
+      duration: '4:32',
       trackNumber: 3
     },
     {
       title: 'The Weeknd - Heartless',
       album: albumOne._id,
-      duration: '4:10',
+      duration: '4:02',
       trackNumber: 5
     },
     {
       title: 'The Weeknd - Double Fantasy',
       album: albumOne._id,
-      duration: '4:30',
+      duration: '4:29',
       trackNumber: 3
     },
     {
-      title: 'Redemption',
+      title: 'Drake - Redemption',
       album: albumFour._id,
-      duration: '5:34',
+      duration: '6:04',
       trackNumber: 2
     },
     {
-      title: 'Faithful',
+      title: 'Drake - One Dance',
       album: albumFour._id,
-      duration: '4:44',
+      duration: '2:54',
       trackNumber: 4
     },
     {
-      title: 'Don’t Matter To Me',
+      title: 'Drake - Survival',
       album: albumThree._id,
-      duration: '4:06',
+      duration: '2:16',
       trackNumber: 1
     },
     {
       title: 'The Weeknd - Sacrifice',
       album: albumTwo._id,
-      duration: '3:09',
+      duration: '4:03',
       trackNumber: 5
     },
     {
-      title: 'After Dark',
+      title: 'Drake - Nice For What',
       album: albumThree._id,
-      duration: '4:50',
+      duration: '3:30',
       trackNumber: 3
     },
     {
-      title: 'Pop Style',
+      title: 'Drake - Hotline Bling',
       album: albumFour._id,
-      duration: '3:33',
+      duration: '4:27',
       trackNumber: 5
     },
     {
@@ -187,33 +188,33 @@ const run = async () => {
       trackNumber: 5
     },
     {
-      title: 'Mob Ties',
+      title: 'Drake - Mob Ties',
       album: albumThree._id,
-      duration: '3:25',
+      duration: '3:12',
       trackNumber: 5
     },
     {
-      title: 'Finesse',
+      title: 'Drake - Jaded',
       album: albumThree._id,
-      duration: '3:02',
+      duration: '4:22',
       trackNumber: 4
     },
     {
-      title: 'Grammys',
+      title: 'Drake - Fire & Desire',
       album: albumFour._id,
-      duration: '3:40',
+      duration: '3:58',
       trackNumber: 1
     },
     {
       title: 'The Weeknd - All I Know',
       album: albumFive._id,
-      duration: '5:22',
+      duration: '5:21',
       trackNumber: 3
     },
     {
       title: 'The Weeknd - Starboy',
       album: albumFive._id,
-      duration: '3:51',
+      duration: '3:50',
       trackNumber: 1
     },
     {
@@ -225,7 +226,7 @@ const run = async () => {
     {
       title: 'The Weeknd - I Feel It Coming',
       album: albumFive._id,
-      duration: '4:30',
+      duration: '4:29',
       trackNumber: 4
     },
   );

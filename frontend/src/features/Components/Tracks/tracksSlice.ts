@@ -1,11 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getTracks} from "./tracksThunks";
+import {getTracks, getTracksByHistory, postTrackToHistory} from "./tracksThunks";
 import {ITracksState} from "../../../type";
 
 const initialState: ITracksState = {
   tracks: [],
   tracksLoading: false,
-  album: null
+  album: null,
+  tracksHistory: []
 };
 
 const TracksSlice = createSlice({
@@ -29,6 +30,13 @@ const TracksSlice = createSlice({
       state.tracksLoading = false;
     });
 
+    builder.addCase(postTrackToHistory.pending, state => {});
+    builder.addCase(postTrackToHistory.fulfilled, state => {});
+    builder.addCase(postTrackToHistory.rejected, state => {});
+
+    builder.addCase(getTracksByHistory.pending, state => {});
+    builder.addCase(getTracksByHistory.fulfilled, (state, action) => {});
+    builder.addCase(getTracksByHistory.rejected, state => {});
   }
 });
 

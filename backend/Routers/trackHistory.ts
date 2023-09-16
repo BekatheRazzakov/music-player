@@ -3,8 +3,26 @@ import User from "../models/User";
 import TrackHistory from "../models/TrackHistory";
 import Track from "../models/Track";
 import mongoose from "mongoose";
+import {IGetSingleTrackHistory} from "../type";
 
 const trackHistoryRouter = express();
+
+trackHistoryRouter.get('', async (req, res) => {
+  try {
+    const token = req.get('Authorization');
+    const user = await User.findOne({ token });
+    if (!user) {
+      return res.sendStatus(404);
+    }
+
+    const tracksByUser = await TrackHistory.find({ user: user._id }).sort('-datetime')
+      .populate('track') as IGetSingleTrackHistory[];
+
+    res.send(tracksByUser);
+  } catch {
+    return res.sendStatus(500);
+  }
+});
 
 trackHistoryRouter.post('', async (req, res, next) => {
   try {
@@ -16,22 +34,17 @@ trackHistoryRouter.post('', async (req, res, next) => {
       return res.status(401).send({ error: 'Unauthorized' });
     }
 
-    const track = new TrackHistory({
-      user: req.body.user,
-      track: req.body.track,
-      datetime: new Date()
-    });
-
     const existingTrack = await Track.findOne({ _id: req.body.track });
-
-
-    if (user._id.toString() !== req.body.user) {
-      return res.status(404).send({ error: 'User is not found!' });
-    }
 
     if (!existingTrack) {
       return res.status(404).send({ error: 'Track is not found!' });
     }
+
+    const track = new TrackHistory({
+      user: user._id,
+      track: req.body.track,
+      datetime: new Date()
+    });
 
     await track.save();
     return res.send(track);

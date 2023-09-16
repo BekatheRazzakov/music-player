@@ -12,7 +12,9 @@ const App = () => {
   const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
 
   return (
-    <div className="App">
+    <div
+      className="App"
+    >
       <div className="board">
         <Routes>
           <Route path='/' element={<Artists />} />

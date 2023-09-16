@@ -30,23 +30,31 @@ usersRouter.post('/', async (req, res, next) => {
   }
 });
 
-usersRouter.post('/sessions', async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+usersRouter.post('/sessions', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
 
-  if (!user) {
-    return res.status(401).send({ error: 'Wrong username or password!' });
+    if (!user) {
+      return res.status(401).send({ error: 'Wrong username' });
+    }
+
+    const isMatch = await user.checkPassword(req.body.password);
+
+    if (!isMatch) {
+      return res.status(401).send({ error: 'Wrong password!' });
+    }
+
+    user.generateToken();
+    await user.save();
+
+    res.send({ message: 'Authentication passed!' });
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    }
+
+    return next(e);
   }
-
-  const isMatch = await user.checkPassword(req.body.password);
-
-  if (!isMatch) {
-    return res.status(401).send({ error: 'Wrong username or password!' });
-  }
-
-  user.generateToken();
-  await user.save();
-
-  res.send({ message: 'Authentication passed!' });
 });
 
 export default usersRouter;

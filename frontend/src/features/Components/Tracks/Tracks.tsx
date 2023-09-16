@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {getTracks} from "./tracksThunks";
+import {getTracks, postTrackToHistory} from "./tracksThunks";
 import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
 import './tracks.css';
-import {setCurrentTrack, setShowPlayer, setTrackChange} from "../Artist/artistSlice";
 import {ITrack} from "../../../type";
 
 const Tracks = () => {
@@ -22,9 +21,7 @@ const Tracks = () => {
   }, []);
 
   const onTrackClick = (track: ITrack) => {
-    dispatch(setCurrentTrack(track));
-    dispatch(setTrackChange(true));
-    dispatch(setShowPlayer(true));
+    dispatch(postTrackToHistory({track: track._id, token: '66fc45ae-1f0b-4c5c-9451-9e87af7db2d4'}));
   };
 
   return (

@@ -21,12 +21,18 @@ albumsRouter.get('', async (req, res) => {
 });
 
 albumsRouter.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  const albumById = await Album.findById(id);
-  if (id) {
+  try {
+    const id = req.params.id;
+    if (!id) {
+      return res.status(400).send({ error: 'Id is not provided' });
+    }
+    const albumById = await Album.findById(id);
+    if (!albumById) {
+      return res.sendStatus(404);
+    }
     return res.send(albumById);
-  } else if (id && !albumById) {
-    return res.sendStatus(404);
+  } catch {
+    return res.sendStatus (500);
   }
 });
 
