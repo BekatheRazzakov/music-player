@@ -6,14 +6,14 @@ import {apiURL} from "../../../constants";
 import {getArtists} from "../Artist/artistsThunks";
 import './tracks.css';
 import {ITrack} from "../../../type";
+import {setCurrentTrack, setShowPlayer, setTrackChange} from "./tracksSlice";
 
 const Tracks = () => {
   const {id} = useParams() as {id: string};
   const tracksState = useAppSelector(state => state.tracksState);
-  const currentTrack = useAppSelector(state => state.artistsState.currentTrack);
+  const currentTrack = useAppSelector(state => state.tracksState.currentTrack);
   const userState = useAppSelector(state => state.userState);
   const dispatch = useAppDispatch();
-
   const album = useAppSelector(state => state.tracksState.album);
 
   useEffect(() => {
@@ -23,6 +23,9 @@ const Tracks = () => {
 
   const onTrackClick = (track: ITrack) => {
     dispatch(postTrackToHistory({track: track._id, token: userState.token}));
+    dispatch(setCurrentTrack(track));
+    dispatch(setTrackChange(true));
+    dispatch(setShowPlayer(true));
   };
 
   return (

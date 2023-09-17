@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import './login.css';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {ISignUser} from "../../../type";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {login} from "./UserThunk";
-import {resetAttempt, resetSignedUp} from "./UsersSlice";
+import {logOut, resetAttempt, resetSignedUp} from "./UsersSlice";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({

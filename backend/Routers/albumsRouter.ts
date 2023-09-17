@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from "mongoose";
 import Album from "../models/Album";
 import {imagesUpload} from "../multer";
+import {IAlbum} from "../type";
 
 const albumsRouter = express();
 
@@ -9,7 +10,7 @@ albumsRouter.get('', async (req, res) => {
   try {
     if (req.query.artist) {
       const queryId = req.query.artist as string;
-      const result = await Album.find({'artist': queryId}).sort('-releaseYear');
+      const result: IAlbum[] = await Album.find({'artist': queryId}).sort('-releaseYear');
       return res.send(result);
     } else {
       const result = await Album.find();
@@ -26,7 +27,7 @@ albumsRouter.get('/:id', async (req, res) => {
     if (!id) {
       return res.status(400).send({ error: 'Id is not provided' });
     }
-    const albumById = await Album.findById(id);
+    const albumById: IAlbum | null = await Album.findById(id);
     if (!albumById) {
       return res.sendStatus(404);
     }

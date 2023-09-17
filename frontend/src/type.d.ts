@@ -28,7 +28,8 @@ export interface IGetSingleTrackHistory {
     title: string,
     album: IAlbum,
     duration: string,
-    trackNumber: string,
+    trackNumber: number,
+    _id: string
   },
   datetime: string
 }
@@ -41,9 +42,6 @@ export interface ISignUser {
 export interface IArtistsState {
   artists: IArtist[],
   artistsLoading: boolean
-  currentTrack: ITrack | null,
-  trackChanged: boolean,
-  showPlayer: boolean
 }
 
 export interface IAlbumsState {
@@ -55,7 +53,11 @@ export interface ITracksState {
   tracks: ITrack[],
   tracksLoading: boolean,
   album: IAlbum | null,
-  tracksHistory: IGetSingleTrackHistory[]
+  tracksHistory: IGetSingleTrackHistory[],
+  historyLoading: boolean
+  currentTrack: ITrack | null,
+  trackChanged: boolean,
+  showPlayer: boolean
 }
 
 export interface IUserState {

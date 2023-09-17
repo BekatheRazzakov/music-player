@@ -15,7 +15,7 @@ import {login} from "./features/Components/Login/UserThunk";
 import TracksHistory from "./features/Components/TracksHistory/TracksHistory";
 
 const App = () => {
-  const showPlayer = useAppSelector(state => state.artistsState.showPlayer);
+  const showPlayer = useAppSelector(state => state.tracksState.showPlayer);
   const userState = useAppSelector(state => state.userState);
   const dispatch = useAppDispatch();
 
@@ -47,7 +47,9 @@ const App = () => {
           } />
           <Route path={'/albums/:id'} element={<Albums />} />
           <Route path={'/tracks/:id'} element={<Tracks />} />
-          <Route path={`/track_history`} element={<TracksHistory />} />
+          <Route path='/track_history' element={
+            userState.loginFulfilled ? <TracksHistory /> : <NotFoundPage />
+          } />
         </Routes>
       </div>
       {

@@ -4,26 +4,13 @@ import {IArtistsState} from "../../../type";
 
 const initialState: IArtistsState = {
   artists: [],
-  artistsLoading: false,
-  currentTrack: null,
-  trackChanged: false,
-  showPlayer: false
+  artistsLoading: false
 };
 
 const ArtistSlice = createSlice({
   name: 'artists',
   initialState,
-  reducers: {
-    setShowPlayer: (state, action) => {
-      state.showPlayer = action.payload;
-    },
-    setCurrentTrack: (state, action) => {
-      state.currentTrack = action.payload;
-    },
-    setTrackChange: (state, action) => {
-      state.trackChanged = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getArtists.pending, state => {
       state.artistsLoading = true;
@@ -39,4 +26,4 @@ const ArtistSlice = createSlice({
 });
 
 export const artistsRouter = ArtistSlice.reducer;
-export const {setCurrentTrack, setTrackChange, setShowPlayer} = ArtistSlice.actions;
+export const {} = ArtistSlice.actions;

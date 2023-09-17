@@ -6,10 +6,22 @@ export interface IUser {
 
 export interface IAlbum {
   title: string,
-  releaseYear: string,
-  albumCover: string,
-  _id: string,
-  artist?: IArtist
+  artist: mongoose.Types.ObjectId,
+  releaseYear: number,
+  albumCover?: string | undefined
+}
+
+export interface IArtist {
+  name: string,
+  image: string,
+  info: string
+}
+
+export interface ITrack {
+  title: string,
+  album: mongoose.Types.ObjectId,
+  trackNumber: number,
+  duration?: string
 }
 
 export interface IGetSingleTrackHistory {

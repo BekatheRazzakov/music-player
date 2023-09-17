@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import './player.css';
 import {apiURL} from "../../../constants";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {setCurrentTrack, setTrackChange} from "../Artist/artistSlice";
+import {setCurrentTrack, setTrackChange} from "../Tracks/tracksSlice";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -10,8 +10,8 @@ const Player = () => {
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
   const tracks = useAppSelector(state => state.tracksState.tracks);
-  const currentTrack = useAppSelector(state => state.artistsState.currentTrack);
-  const trackChanged = useAppSelector(state => state.artistsState.trackChanged);
+  const currentTrack = useAppSelector(state => state.tracksState.currentTrack);
+  const trackChanged = useAppSelector(state => state.tracksState.trackChanged);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

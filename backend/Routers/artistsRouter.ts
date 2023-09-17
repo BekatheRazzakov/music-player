@@ -2,12 +2,13 @@ import express from 'express';
 import mongoose from "mongoose";
 import Artist from "../models/Artist";
 import {imagesUpload} from "../multer";
+import {IArtist} from "../type";
 
 const artistsRouter = express();
 
 artistsRouter.get('', async (req, res) => {
   try {
-    const artists = await Artist.find();
+    const artists: IArtist[] = await Artist.find();
     res.send(artists);
   } catch {
     res.status(500).send({ error: 'Something went wrong' });

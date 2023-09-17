@@ -16,6 +16,7 @@ const UsersSlice = createSlice({
   reducers: {
     logOut: (state) => {
         state.token = '';
+        state.loginFulfilled = false;
         localStorage.setItem('user', JSON.stringify({}));
     },
     setLoginFulfilled: (state, action) => {

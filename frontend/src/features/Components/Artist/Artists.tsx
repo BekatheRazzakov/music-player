@@ -26,29 +26,31 @@ const Artists = () => {
   }, [dispatch, navigate, userState]);
 
   return (
-    <div className='artists-list'>
+    <>
       <h2>Artists</h2>
-      {
-        artistsState.artistsLoading &&
-          <span className="loader"></span>
-      }
-      {
-        artistsState.artists.map((artist, index) => (
-          <Link to={`/albums/${artist._id}`} className='artist' key={index}>
-            <div className="artistImg">
-              <img
-                src={apiURL + artist.image}
-                alt="artist"
-              />
-            </div>
-            <div className="artistInfo">
-              <h4>{artist.name}</h4>
-              <span>{artist.info}</span>
-            </div>
-          </Link>
-        ))
-      }
-    </div>
+      <div className='artists-list'>
+        {
+          artistsState.artistsLoading &&
+            <span className="loader"></span>
+        }
+        {
+          artistsState.artists.map((artist, index) => (
+            <Link to={`/albums/${artist._id}`} className='artist' key={index}>
+              <div className="artistImg">
+                <img
+                  src={apiURL + artist.image}
+                  alt="artist"
+                />
+              </div>
+              <div className="artistInfo">
+                <h4>{artist.name}</h4>
+                <span>{artist.info}</span>
+              </div>
+            </Link>
+          ))
+        }
+      </div>
+    </>
   );
 };
 

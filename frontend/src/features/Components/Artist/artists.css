@@ -10,3 +10,7 @@ h4 {
 .artistImg img {
     height: 100%;
 }
+
+.artists-list {
+    height: 425px;
+}
