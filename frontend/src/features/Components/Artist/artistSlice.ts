@@ -26,4 +26,3 @@ const ArtistSlice = createSlice({
 });
 
 export const artistsRouter = ArtistSlice.reducer;
-export const {} = ArtistSlice.actions;
