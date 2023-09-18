@@ -40,13 +40,13 @@ const App = () => {
       <Toolbar />
       <div className="board">
         <Routes>
-          <Route path={'/'} element={<Login />} />
+          <Route path={'/login'} element={<Login />} />
           <Route path={'/sign-up'} element={<SignUp />} />
-          <Route path='/artists' element={
-            userState.loginFulfilled ? <Artists /> : <NotFoundPage />
-          } />
+          <Route path='/' element={<Artists />} />
           <Route path={'/albums/:id'} element={<Albums />} />
-          <Route path={'/tracks/:id'} element={<Tracks />} />
+          <Route path={'/tracks/:id'} element={
+            userState.loginFulfilled ? <Tracks /> : <NotFoundPage />
+          } />
           <Route path='/track_history' element={
             userState.loginFulfilled ? <TracksHistory /> : <NotFoundPage />
           } />

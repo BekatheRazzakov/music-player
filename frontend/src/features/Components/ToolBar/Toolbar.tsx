@@ -21,10 +21,15 @@ const Toolbar = () => {
       <h1>Music App</h1>
       <div className='buttons'>
         {
-          userState.loginFulfilled && location.pathname !== '/' && location.pathname !== '/sign-up' ?
+          !userState.loginFulfilled &&
+          (location.pathname === '/sign-up' || location.pathname === '/login') &&
+              <Link to='/'>Artists</Link>
+        }
+        {
+          userState.loginFulfilled && location.pathname !== '/login' && location.pathname !== '/sign-up' ?
             <Link to={
               location.pathname === '/track_history' ?
-                `/artists` : '/track_history'
+                `/` : '/track_history'
             }>
               {
                 location.pathname === '/track_history' ?
@@ -32,22 +37,22 @@ const Toolbar = () => {
               }
             </Link>
             :
-            userState.loginFulfilled && <Link to='/artists'>Artists</Link>
+            userState.loginFulfilled && <Link to='/'>Artists</Link>
         }
         {
           userState.loginFulfilled &&
             <Link
-                to='/'
+                to='/login'
                 onClick={() => onLogOut()}
             >Logout</Link>
         }
         {
-          location.pathname === '/' && !userState.loginFulfilled &&
+          location.pathname !== '/sign-up' && !userState.loginFulfilled &&
             <Link to='/sign-up'>Sign up</Link>
         }
         {
-          location.pathname === '/sign-up' && !userState.loginFulfilled &&
-            <Link to='/'>Login</Link>
+          location.pathname !== '/login' && !userState.loginFulfilled &&
+            <Link to='/login'>Login</Link>
         }
       </div>
     </div>

@@ -18,7 +18,7 @@ const Artists = () => {
       alert('Authentication is not passed!');
       dispatch(setLoginFulfilled(false));
       dispatch(setAlert(false));
-      return navigate('/');
+      return navigate('/login');
     }
 
     dispatch(getArtists());

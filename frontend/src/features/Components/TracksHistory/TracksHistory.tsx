@@ -48,7 +48,7 @@ const TracksHistory = () => {
               key={index}
             >
               <div className="albumInfo">
-                <span>{singleTrack.track.album.title}</span>
+                <span>{singleTrack.track.album.artist?.name}</span>
                 <h5 className='track-title'>{singleTrack.track.title}</h5>
                 <span>
                   {

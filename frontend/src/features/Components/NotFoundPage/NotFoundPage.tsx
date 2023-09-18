@@ -6,7 +6,7 @@ const NotFoundPage = () => {
   return (
     <div className='notFoundPage'>
       <h3>Sorry, we can't recognize you. Please try again</h3>
-      <Link className='button' to='/'>Login</Link>
+      <Link className='button' to='/login'>Login</Link>
     </div>
   );
 };

@@ -10,10 +10,9 @@ import './albums.css';
 const Albums = () => {
   const {id} = useParams() as {id: string};
   const albumsState = useAppSelector(state => state.albumsState);
-
+  const userState = useAppSelector(state => state.userState);
   const artist = useAppSelector(state => state.artistsState.artists
     .filter(artist => artist._id === id)[0]);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -44,7 +43,11 @@ const Albums = () => {
           albumsState.albums.map((album, index) => (
             <Link
               className='album'
-              to={`/tracks/${album._id}`}
+              to={
+              userState.loginFulfilled ?
+                `/tracks/${album._id}` :
+                `/albums/${id}`
+              }
               key={index}
             >
               <div className="albumImg">

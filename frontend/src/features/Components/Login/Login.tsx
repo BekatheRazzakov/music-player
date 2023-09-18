@@ -41,7 +41,7 @@ const Login = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await dispatch(login(userData));
-    navigate('/artists');
+    navigate('/');
   };
 
   return (
@@ -56,6 +56,7 @@ const Login = () => {
             value={userData.username}
             onChange={onChange}
             required
+            autoComplete='off'
           />
           <label className="input-label">username</label>
         </div>

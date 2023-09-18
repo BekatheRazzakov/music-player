@@ -25,7 +25,7 @@ const Login = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await dispatch(signUp(userData));
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -40,6 +40,7 @@ const Login = () => {
             value={userData.username}
             onChange={onChange}
             required
+            autoComplete='off'
           />
           <label className="input-label">username</label>
         </div>
