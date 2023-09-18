@@ -11,7 +11,6 @@ const Toolbar = () => {
   const dispatch = useAppDispatch();
 
   const onLogOut = () => {
-    location.pathname !== '/' && location.pathname !== '/sign-up' &&
     dispatch(logOut());
     dispatch(setShowPlayer(false));
     dispatch(setCurrentTrack(null));
