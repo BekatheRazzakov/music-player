@@ -1,27 +1,31 @@
 export interface IUser {
   username: string,
   password: string,
-  token: string
+  token: string,
+  role: string
 }
 
 export interface IAlbum {
   title: string,
   artist: mongoose.Types.ObjectId,
   releaseYear: number,
-  albumCover?: string | undefined
+  albumCover?: string | undefined,
+  isPublished: boolean
 }
 
 export interface IArtist {
   name: string,
   image: string,
-  info: string
+  info: string,
+  isPublished: boolean
 }
 
 export interface ITrack {
   title: string,
   album: mongoose.Types.ObjectId,
   trackNumber: number,
-  duration?: string
+  duration?: string,
+  isPublished: boolean
 }
 
 export interface IGetSingleTrackHistory {
