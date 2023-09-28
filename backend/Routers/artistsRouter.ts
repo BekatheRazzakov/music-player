@@ -6,6 +6,7 @@ import {IArtist} from "../type";
 import auth from "../middleware/auth";
 import Album from "../models/Album";
 import permit from "../middleware/permit";
+import tracksRouter from "./tracksRouter";
 
 const artistsRouter = express();
 
@@ -35,6 +36,26 @@ artistsRouter.post('', auth, imagesUpload.single('image'), async (req, res, next
       return res.status(400).send(e);
     }
     next(e);
+  }
+});
+
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res) => {
+  try {
+    const artistId = req.params.id;
+    const artistById = await Album.findById(artistId);
+
+    if (!artistById) {
+      return res.status(404).send({ error: 'Track not found' });
+    }
+
+    artistById.isPublished = !artistById.isPublished;
+    artistById.save();
+    return res.send(
+      {
+        message: `Album switched to ${artistById.isPublished ? 'published mode' : 'not published mode'}`
+      });
+  } catch {
+    return res.status(500);
   }
 });
 

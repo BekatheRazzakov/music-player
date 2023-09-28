@@ -45,6 +45,26 @@ tracksRouter.post('', auth, async (req, res, next) => {
   }
 });
 
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res) => {
+  try {
+    const trackId = req.params.id;
+    const trackById = await Track.findById(trackId);
+
+    if (!trackById) {
+      return res.status(404).send({ error: 'Track not found' });
+    }
+
+    trackById.isPublished = !trackById.isPublished;
+    trackById.save();
+    return res.send(
+      {
+        message: `Track switched to ${trackById.isPublished ? 'published mode' : 'not published mode'}`
+      });
+  } catch {
+    return res.status(500);
+  }
+});
+
 tracksRouter.delete('/:id', auth, permit('admin'), async (req, res) => {
   try {
     const trackId = req.params.id;
