@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import Album from "../models/Album";
 import {imagesUpload} from "../multer";
 import {IAlbum} from "../type";
+import auth from "../middleware/auth";
+import Track from "../models/Track";
+import permit from "../middleware/permit";
 
 const albumsRouter = express();
 
@@ -37,7 +40,7 @@ albumsRouter.get('/:id', async (req, res) => {
   }
 });
 
-albumsRouter.post('', imagesUpload.single('albumCover'), async (req, res, next) => {
+albumsRouter.post('', auth, imagesUpload.single('albumCover'), async (req, res, next) => {
   const albumData = {
     title: req.body.title,
     artist: req.body.artist,
@@ -55,6 +58,28 @@ albumsRouter.post('', imagesUpload.single('albumCover'), async (req, res, next) 
       return res.status(400).send(e);
     }
     next(e);
+  }
+});
+
+albumsRouter.delete('/:id',auth, permit('admin'), async (req, res) => {
+  try {
+    const albumId = req.params.id;
+    const albumById = await Album.findById(albumId);
+
+    if (!albumById) {
+      return res.status(404).send({ error: 'Album not found' });
+    }
+
+    const tracksByAlbum = await Track.find({ album: albumId });
+
+    if (tracksByAlbum.length) {
+      return res.send({ message: 'The album should be empty before deleting it' });
+    }
+
+    await Album.deleteOne({ _id: albumId });
+    return res.send({ message: 'Album deleted' });
+  } catch {
+    return res.sendStatus(500);
   }
 });
 

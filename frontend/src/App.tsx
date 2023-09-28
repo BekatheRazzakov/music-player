@@ -44,9 +44,7 @@ const App = () => {
           <Route path={'/sign-up'} element={<SignUp />} />
           <Route path='/' element={<Artists />} />
           <Route path={'/albums/:id'} element={<Albums />} />
-          <Route path={'/tracks/:id'} element={
-            userState.loginFulfilled ? <Tracks /> : <NotFoundPage />
-          } />
+          <Route path={'/tracks/:id'} element={<Tracks />} />
           <Route path='/track_history' element={
             userState.loginFulfilled ? <TracksHistory /> : <NotFoundPage />
           } />

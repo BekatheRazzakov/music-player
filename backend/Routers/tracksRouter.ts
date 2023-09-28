@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import Track from "../models/Track";
 import Album from "../models/Album";
 import {IAlbum, ITrack} from "../type";
+import auth from "../middleware/auth";
+import permit from "../middleware/permit";
 
 const tracksRouter = express();
 
@@ -22,7 +24,7 @@ tracksRouter.get('', async (req, res) => {
   }
 });
 
-tracksRouter.post('', async (req, res, next) => {
+tracksRouter.post('', auth, async (req, res, next) => {
   const trackData = {
     title: req.body.title,
     album: req.body.album,
@@ -40,6 +42,22 @@ tracksRouter.post('', async (req, res, next) => {
       return res.status(400).send(e);
     }
     next(e);
+  }
+});
+
+tracksRouter.delete('/:id', auth, permit('admin'), async (req, res) => {
+  try {
+    const trackId = req.params.id;
+    const trackById = await Track.findById(trackId);
+
+    if (!trackById) {
+      return res.status(404).send({ error: 'Track not found' });
+    }
+
+    await Track.deleteOne({ _id: trackId });
+    return res.send({ message: 'Track deleted' });
+  } catch {
+    return res.sendStatus(500);
   }
 });
 

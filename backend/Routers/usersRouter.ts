@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/User";
 import mongoose from "mongoose";
+import auth from "../middleware/auth";
 
 const usersRouter = express();
 
@@ -54,6 +55,28 @@ usersRouter.post('/sessions', async (req, res, next) => {
     }
 
     return next(e);
+  }
+});
+
+usersRouter.delete('/logout', auth, async (req, res, next) => {
+  try {
+    const token = req.get('Authorization');
+
+    if (!token) {
+      return res.send({message: 'Success'});
+    }
+
+    const user = await User.findOne({token});
+
+    if (!user) {
+      return res.send({message: 'Success'});
+    }
+
+    user.generateToken();
+    user.save();
+    return res.send({message: 'SUCCESS'});
+  } catch (e) {
+    next(e);
   }
 });
 
