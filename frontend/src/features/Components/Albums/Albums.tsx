@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getAlbums } from "./albumsThunks";
 import { apiURL } from "../../../constants";
-import { getArtists } from "../Artist/artistsThunks";
 import { resetTracks } from "../Tracks/tracksSlice";
 import "./albums.css";
 
@@ -17,7 +16,6 @@ const Albums = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getArtists());
     dispatch(getAlbums(id));
     dispatch(resetTracks());
   }, [dispatch, id]);

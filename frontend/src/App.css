@@ -166,6 +166,10 @@ form {
     top: 1.6rem;
     transition: 0.25s ease;
 }
+.track-number-label {
+    top: 1.5rem;
+    left: 25px;
+}
 .input-field {
     border: 0;
     z-index: 1;
@@ -183,5 +187,11 @@ form {
 .input-field:focus + .input-label,
 .input-field:valid + .input-label {
     transform: translateY(-1.3rem);
+    font-size: 12px;
+}
+.input-field:focus + .track-number-label,
+.input-field:valid + .track-number-label {
+    transform: translateY(-1.3rem);
+    left: 0;
     font-size: 12px;
 }

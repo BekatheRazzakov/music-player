@@ -42,6 +42,13 @@ export interface ITrack {
   _id: string;
 }
 
+export interface ICreateTrack {
+  title: string;
+  album: string;
+  duration: string;
+  trackNumber: number | string;
+}
+
 export interface IGetSingleTrackHistory {
   _id: string;
   user: string;

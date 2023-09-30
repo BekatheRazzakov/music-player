@@ -26,19 +26,17 @@ const Toolbar = () => {
           <>
             <Link to="/new-artist">Add new artist</Link>
             <Link to="/new-album">Add new album</Link>
+            <Link to="/new-track">Add new track</Link>
           </>
         )}
         {!userState.user &&
           (location.pathname === "/sign-up" ||
             location.pathname === "/login") && <Link to="/">Artists</Link>}
-        {userState.user &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/sign-up" ? (
-          <Link to={location.pathname === "/" ? `/track_history` : "/"}>
-            {location.pathname === "/" ? "History" : "Artists"}
-          </Link>
-        ) : (
-          userState.user && <Link to="/">Artists</Link>
+        {userState.user && location.pathname !== "/" && (
+          <Link to="/">Artists</Link>
+        )}
+        {userState.user && location.pathname !== "/track_history" && (
+          <Link to="/track_history">History</Link>
         )}
         {userState.user && (
           <Link to="/login" onClick={() => onLogOut()}>

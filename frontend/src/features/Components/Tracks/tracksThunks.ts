@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosApi } from "../../../axiosApi";
-import { IGetSingleTrackHistory } from "../../../type";
+import { ICreateTrack, IGetSingleTrackHistory } from "../../../type";
 
 export const getTracks = createAsyncThunk(
   "tracks/tracksByAlbum",
@@ -40,3 +40,14 @@ export const getTracksByHistory = createAsyncThunk<
     console.log(e);
   }
 });
+
+export const createTrack = createAsyncThunk(
+  "tracks/create",
+  async (track: ICreateTrack) => {
+    try {
+      await axiosApi.post("/tracks", track);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
