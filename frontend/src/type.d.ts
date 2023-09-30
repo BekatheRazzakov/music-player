@@ -20,6 +20,20 @@ export interface IAlbum {
   artist?: IArtist;
 }
 
+export interface ICreateAlbumState {
+  title: string;
+  artist: string;
+  releaseYear: number;
+  albumCover: File | null;
+}
+
+export interface ICreateAlbum {
+  title: string;
+  artist: string;
+  releaseYear: string;
+  albumCover: File | null;
+}
+
 export interface ITrack {
   title: string;
   trackNumber: number;

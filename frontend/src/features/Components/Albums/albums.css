@@ -1,13 +1,13 @@
 .albums-list {
   margin-top: 20px;
-  height: 335px;
+  height: 390px;
 }
 
 .albumImg {
   position: relative;
 }
 
-.album-info img {
+.albumImg img {
   position: absolute;
   width: 100%;
   height: 100%;

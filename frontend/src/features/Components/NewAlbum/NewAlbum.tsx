@@ -1,22 +1,30 @@
-import React, { FormEvent, useRef, useState } from "react";
-import { ICreateArtist } from "../../../type";
-import "./newArtist.css";
-import { useAppDispatch } from "../../../app/hooks";
-import { createArtist } from "../Artist/artistsThunks";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { ICreateAlbumState } from "../../../type";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
+import { createAlbum } from "../Albums/albumsThunks";
+import { getArtists } from "../Artist/artistsThunks";
 
-const NewArtist = () => {
+const NewAlbum = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [filename, setFilename] = useState("");
-  const [state, setState] = useState<ICreateArtist>({
-    name: "",
-    info: "",
-    image: null,
+  const [state, setState] = useState<ICreateAlbumState>({
+    title: "",
+    artist: "",
+    releaseYear: 0,
+    albumCover: null,
   });
+  const artists = useAppSelector((state) => state.artistsState.artists);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    dispatch(getArtists());
+  }, [dispatch]);
+
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { value, name } = e.target;
 
     setState((prevState) => {
@@ -24,7 +32,7 @@ const NewArtist = () => {
     });
   };
 
-  const filesInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputFileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const files = e.target.files;
 
@@ -43,7 +51,7 @@ const NewArtist = () => {
       setFilename("");
     }
 
-    filesInputChangeHandler(e);
+    inputFileChangeHandler(e);
   };
 
   const activateInput = () => {
@@ -55,8 +63,13 @@ const NewArtist = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(createArtist(state));
-      navigate("/");
+      await dispatch(
+        createAlbum({
+          ...state,
+          releaseYear: state.releaseYear.toString(),
+        }),
+      );
+      navigate(`/albums/${state.artist}`);
     } catch {
       // nothing
     }
@@ -70,31 +83,50 @@ const NewArtist = () => {
           <input
             className="input-field"
             type="text"
-            name="name"
+            name="title"
             autoComplete="off"
-            value={state.name}
+            value={state.title}
             onChange={onChange}
             required
           />
-          <label className="input-label">Artist</label>
+          <label className="input-label">Title</label>
+        </div>
+        <div className="input">
+          <select
+            className="input-field"
+            value={state.artist}
+            onChange={onChange}
+            name="artist"
+            required
+          >
+            <option disabled value="">
+              Select an artist
+            </option>
+            {artists.map((artist, index) => (
+              <option key={index} value={artist._id}>
+                {artist.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="input">
           <input
             className="input-field"
-            type="text"
-            name="info"
-            value={state.info}
+            type="number"
+            name="releaseYear"
+            min="0"
+            value={state.releaseYear}
             onChange={onChange}
             required
           />
-          <label className="input-label">Info</label>
+          <label className="input-label">Release year</label>
         </div>
         <div className="file-input-block">
           <div className="input">
             <input
               className="input-field file-input"
               type="file"
-              name="image"
+              name="albumCover"
               ref={inputRef}
               onChange={onFileChange}
             />
@@ -117,4 +149,4 @@ const NewArtist = () => {
   );
 };
 
-export default NewArtist;
+export default NewAlbum;

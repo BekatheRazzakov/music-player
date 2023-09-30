@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getTracks, postTrackToHistory } from "./tracksThunks";
 import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
-import "./tracks.css";
 import { ITrack } from "../../../type";
 import { setCurrentTrack } from "./tracksSlice";
+import "./tracks.css";
 
 const Tracks = () => {
   const { id } = useParams() as { id: string };
@@ -38,7 +38,16 @@ const Tracks = () => {
         <>
           <h4 className="artist-name">{album.artist?.name}</h4>
           <div className="album-info">
-            <img src={apiURL + album.albumCover} alt="" />
+            <div className="albumImg">
+              <img
+                src={
+                  album.albumCover
+                    ? apiURL + "images/" + album.albumCover
+                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                }
+                alt="artist"
+              />
+            </div>
             <span>{album.title}</span>
           </div>
         </>
@@ -46,6 +55,15 @@ const Tracks = () => {
       {tracksState.tracksLoading && <span className="loader"></span>}
       <div className="page-back" onClick={() => window.history.back()} />
       <div className="tracks-list">
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          {!tracksState.tracks.length && "No tracks yet"}
+        </span>
         {tracksState.tracks.map((track, index) => (
           <div
             className={`track ${

@@ -22,16 +22,20 @@ const Toolbar = () => {
     <div className="toolbar">
       <h1>Music App</h1>
       <div className="buttons">
+        {userState.user && (
+          <>
+            <Link to="/new-artist">Add new artist</Link>
+            <Link to="/new-album">Add new album</Link>
+          </>
+        )}
         {!userState.user &&
           (location.pathname === "/sign-up" ||
             location.pathname === "/login") && <Link to="/">Artists</Link>}
         {userState.user &&
         location.pathname !== "/login" &&
         location.pathname !== "/sign-up" ? (
-          <Link
-            to={location.pathname === "/track_history" ? `/` : "/track_history"}
-          >
-            {location.pathname === "/track_history" ? "Artists" : "History"}
+          <Link to={location.pathname === "/" ? `/track_history` : "/"}>
+            {location.pathname === "/" ? "History" : "Artists"}
           </Link>
         ) : (
           userState.user && <Link to="/">Artists</Link>

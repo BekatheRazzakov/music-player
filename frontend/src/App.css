@@ -144,3 +144,44 @@
 .white-btn:active {
   background: #d2d2d2;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+    padding: 0 10px;
+}
+
+.input {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    padding-top: 1.5rem;
+}
+
+.input-label {
+    color: rgba(238, 238, 238, 0.7);
+    position: absolute;
+    top: 1.6rem;
+    transition: 0.25s ease;
+}
+.input-field {
+    border: 0;
+    z-index: 1;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(238, 238, 238, 0.7);
+    font: inherit;
+    padding: 0 0 8px;
+    color: #ffffff;
+}
+.input-field:focus,
+.input-field:valid {
+    outline: 0;
+    border-bottom-color: #fff;
+}
+.input-field:focus + .input-label,
+.input-field:valid + .input-label {
+    transform: translateY(-1.3rem);
+    font-size: 12px;
+}

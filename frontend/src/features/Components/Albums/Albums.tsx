@@ -14,7 +14,6 @@ const Albums = () => {
     (state) =>
       state.artistsState.artists.filter((artist) => artist._id === id)[0],
   );
-  const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -56,7 +55,14 @@ const Albums = () => {
         {albumsState.albums.map((album, index) => (
           <Link className="album" to={`/tracks/${album._id}`} key={index}>
             <div className="albumImg">
-              <img src={apiURL + "images/" + album.albumCover} alt="album" />
+              <img
+                src={
+                  album.albumCover
+                    ? apiURL + "images/" + album.albumCover
+                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                }
+                alt="albumCover"
+              />
             </div>
             <div className="albumInfo">
               <h4>{album.title}</h4>
@@ -65,11 +71,6 @@ const Albums = () => {
           </Link>
         ))}
       </div>
-      {userState.user && (
-        <Link className="white-btn add-new-btn" to="/new-artist" type="submit">
-          Add new artist
-        </Link>
-      )}
     </>
   );
 };

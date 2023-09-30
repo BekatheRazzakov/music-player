@@ -41,11 +41,6 @@ const Artists = () => {
           </Link>
         ))}
       </div>
-      {userState.user && (
-        <Link className="white-btn add-new-btn" to="/new-artist" type="submit">
-          Add new artist
-        </Link>
-      )}
     </>
   );
 };
