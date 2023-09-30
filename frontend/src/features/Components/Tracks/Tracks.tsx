@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getTracks, postTrackToHistory } from "./tracksThunks";
+import {
+  deleteTrack,
+  getTracks,
+  postTrackToHistory,
+  togglePublishedTrack,
+} from "./tracksThunks";
 import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
 import { ITrack } from "../../../type";
@@ -17,6 +22,11 @@ const Tracks = () => {
   const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
   const album = useAppSelector((state) => state.tracksState.album);
+  let tracks = tracksState.tracks as ITrack[];
+
+  if (userState.user?.role !== "admin") {
+    tracks = tracks.filter((track) => track.isPublished);
+  }
 
   useEffect(() => {
     dispatch(getArtists());
@@ -30,6 +40,16 @@ const Tracks = () => {
       );
       dispatch(setCurrentTrack(track));
     }
+  };
+
+  const onDelete = async (id: string) => {
+    await dispatch(deleteTrack(id));
+    await dispatch(getTracks(id));
+  };
+
+  const onTogglePublishedClick = async (id: string) => {
+    await dispatch(togglePublishedTrack(id));
+    await dispatch(getTracks(id));
   };
 
   return (
@@ -64,7 +84,7 @@ const Tracks = () => {
         >
           {!tracksState.tracks.length && "No tracks yet"}
         </span>
-        {tracksState.tracks.map((track, index) => (
+        {tracks.map((track, index) => (
           <div
             className={`track ${
               currentTrack && currentTrack.title === track.title && "isPlaying"
@@ -77,6 +97,41 @@ const Tracks = () => {
               <h4>{track.title}</h4>
               <span>{track.duration}</span>
             </div>
+            {userState.user?.role === "admin" && (
+              <div className="admin-buttons">
+                <span
+                  className="delete"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    void onDelete(track._id);
+                  }}
+                >
+                  &#x2715;
+                </span>
+                {track.isPublished ? (
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void onTogglePublishedClick(track._id);
+                    }}
+                  >
+                    &#10004;
+                  </span>
+                ) : (
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void onTogglePublishedClick(track._id);
+                    }}
+                  >
+                    &#x2715;
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

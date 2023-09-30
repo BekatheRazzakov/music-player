@@ -34,7 +34,7 @@ const NewTrack = () => {
     e.preventDefault();
     try {
       await dispatch(createTrack(state));
-      navigate(`/`);
+      navigate(`/tracks/${state.album}`);
     } catch {
       // nothing
     }

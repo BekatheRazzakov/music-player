@@ -18,6 +18,7 @@ export interface IAlbum {
   albumCover: string;
   _id: string;
   artist?: IArtist;
+  isPublished: boolean;
 }
 
 export interface ICreateAlbumState {
@@ -40,6 +41,7 @@ export interface ITrack {
   duration: string;
   album: string;
   _id: string;
+  isPublished: boolean;
 }
 
 export interface ICreateTrack {
@@ -66,7 +68,7 @@ export interface IUser {
   username: string;
   password: string;
   token: string;
-  tole: string;
+  role: string;
 }
 
 export interface ISignUser {
@@ -78,6 +80,10 @@ export interface IArtistsState {
   artists: IArtist[];
   artistsLoading: boolean;
   createLoading: boolean;
+  message: {
+    message: string;
+  } | null;
+  deleteLoading: boolean;
 }
 
 export interface IAlbumsState {

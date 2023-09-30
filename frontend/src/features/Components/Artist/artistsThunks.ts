@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosApi } from "../../../axiosApi";
-import { IArtist, ICreateArtist } from "../../../type";
+import { ICreateArtist } from "../../../type";
 
 export const getArtists = createAsyncThunk("artists/getAll", async () => {
   try {
@@ -27,6 +27,30 @@ export const createArtist = createAsyncThunk<void, ICreateArtist>(
       });
 
       await axiosApi.post("/artists/", itemData);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
+
+export const togglePublishedArtist = createAsyncThunk(
+  "artists/togglePublished",
+  async (id: string) => {
+    try {
+      const request = await axiosApi.patch(`/artists/${id}/togglePublished`);
+      return request.data;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
+
+export const deleteArtist = createAsyncThunk(
+  "artists/deleteOne",
+  async (id: string) => {
+    try {
+      const request = await axiosApi.delete(`/artists/${id}`);
+      return request.data;
     } catch (e) {
       console.log(e);
     }

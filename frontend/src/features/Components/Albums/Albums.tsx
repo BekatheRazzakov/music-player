@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getAlbums } from "./albumsThunks";
+import { deleteAlbum, getAlbums, togglePublishedAlbum } from "./albumsThunks";
 import { apiURL } from "../../../constants";
+import { getArtists } from "../Artist/artistsThunks";
 import { resetTracks } from "../Tracks/tracksSlice";
 import "./albums.css";
+import { IAlbum } from "../../../type";
 
 const Albums = () => {
   const { id } = useParams() as { id: string };
@@ -13,12 +15,29 @@ const Albums = () => {
     (state) =>
       state.artistsState.artists.filter((artist) => artist._id === id)[0],
   );
+  const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
+  let albums = albumsState.albums as IAlbum[];
+
+  if (userState.user?.role !== "admin") {
+    albums = albums.filter((album) => album.isPublished);
+  }
 
   useEffect(() => {
+    dispatch(getArtists());
     dispatch(getAlbums(id));
     dispatch(resetTracks());
   }, [dispatch, id]);
+
+  const onDelete = async (id: string) => {
+    await dispatch(deleteAlbum(id));
+    await dispatch(getAlbums(id));
+  };
+
+  const onTogglePublishedClick = async (id: string) => {
+    await dispatch(togglePublishedAlbum(id));
+    await dispatch(getAlbums(id));
+  };
 
   return (
     <>
@@ -47,10 +66,10 @@ const Albums = () => {
               justifyContent: "center",
             }}
           >
-            No songs yet
+            No albums yet
           </span>
         )}
-        {albumsState.albums.map((album, index) => (
+        {albums.map((album, index) => (
           <Link className="album" to={`/tracks/${album._id}`} key={index}>
             <div className="albumImg">
               <img
@@ -66,6 +85,41 @@ const Albums = () => {
               <h4>{album.title}</h4>
               <span>{album.releaseYear}</span>
             </div>
+            {userState.user?.role === "admin" && (
+              <div className="admin-buttons">
+                <span
+                  className="delete"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    void onDelete(album._id);
+                  }}
+                >
+                  &#x2715;
+                </span>
+                {album.isPublished ? (
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void onTogglePublishedClick(album._id);
+                    }}
+                  >
+                    &#10004;
+                  </span>
+                ) : (
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      void onTogglePublishedClick(album._id);
+                    }}
+                  >
+                    &#x2715;
+                  </span>
+                )}
+              </div>
+            )}
           </Link>
         ))}
       </div>

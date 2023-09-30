@@ -51,3 +51,25 @@ export const createTrack = createAsyncThunk(
     }
   },
 );
+
+export const togglePublishedTrack = createAsyncThunk(
+  "tracks/togglePublished",
+  async (id: string) => {
+    try {
+      await axiosApi.patch(`/tracks/${id}/togglePublished`);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
+
+export const deleteTrack = createAsyncThunk(
+  "tracks/deleteOne",
+  async (id: string) => {
+    try {
+      await axiosApi.delete(`/tracks/${id}`);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);

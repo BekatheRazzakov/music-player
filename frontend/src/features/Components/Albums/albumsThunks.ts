@@ -35,3 +35,25 @@ export const createAlbum = createAsyncThunk<void, ICreateAlbum>(
     }
   },
 );
+
+export const togglePublishedAlbum = createAsyncThunk(
+  "albums/togglePublished",
+  async (id: string) => {
+    try {
+      await axiosApi.patch(`/albums/${id}/togglePublished`);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
+
+export const deleteAlbum = createAsyncThunk(
+  "albums/deleteOne",
+  async (id: string) => {
+    try {
+      await axiosApi.delete(`/albums/${id}`);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);

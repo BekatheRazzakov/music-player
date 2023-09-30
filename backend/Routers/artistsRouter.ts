@@ -1,16 +1,15 @@
-import express from 'express';
+import express from "express";
 import mongoose from "mongoose";
 import Artist from "../models/Artist";
-import {imagesUpload} from "../multer";
-import {IArtist} from "../type";
+import { imagesUpload } from "../multer";
+import { IArtist } from "../type";
 import auth from "../middleware/auth";
 import Album from "../models/Album";
 import permit from "../middleware/permit";
-import tracksRouter from "./tracksRouter";
 
 const artistsRouter = express();
 
-artistsRouter.get('', async (req, res) => {
+artistsRouter.get('', async (_, res) => {
   try {
     const artists: IArtist[] = await Artist.find();
     res.send(artists);
@@ -39,10 +38,10 @@ artistsRouter.post('', auth, imagesUpload.single('image'), async (req, res, next
   }
 });
 
-tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res) => {
+artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res) => {
   try {
     const artistId = req.params.id;
-    const artistById = await Album.findById(artistId);
+    const artistById = await Artist.findById(artistId);
 
     if (!artistById) {
       return res.status(404).send({ error: 'Track not found' });
