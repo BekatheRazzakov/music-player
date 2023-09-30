@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosApi } from "../../../axiosApi";
 import {
   GlobalError,
+  IUser,
   RegisterMutation,
   RegisterResponse,
   ValidationError,
@@ -9,21 +10,17 @@ import {
 import { isAxiosError } from "axios";
 
 export const signUp = createAsyncThunk<
-  RegisterResponse,
+  IUser,
   RegisterMutation,
   { rejectValue: ValidationError }
 >("users/signUp", async (registerMutation, { rejectWithValue }) => {
   try {
-    const response = await axiosApi.post<RegisterResponse>(
-      "/users",
-      registerMutation,
-    );
+    const response = await axiosApi.post<IUser>("/users", registerMutation);
     return response.data;
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {
       return rejectWithValue(e.response.data);
     }
-    console.log(e);
     throw e;
   }
 });

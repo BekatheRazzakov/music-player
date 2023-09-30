@@ -6,6 +6,7 @@ import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
 import "./tracks.css";
 import { ITrack } from "../../../type";
+import { setCurrentTrack } from "./tracksSlice";
 
 const Tracks = () => {
   const { id } = useParams() as { id: string };
@@ -27,6 +28,7 @@ const Tracks = () => {
       dispatch(
         postTrackToHistory({ track: track._id, token: userState.user?.token }),
       );
+      dispatch(setCurrentTrack(track));
     }
   };
 

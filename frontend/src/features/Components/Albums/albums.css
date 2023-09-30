@@ -1,6 +1,17 @@
 .albums-list {
   margin-top: 20px;
-  height: 390px;
+  height: 335px;
+}
+
+.albumImg {
+  position: relative;
+}
+
+.album-info img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .album-info {
@@ -9,10 +20,4 @@
   align-items: center;
   height: 60px;
   gap: 20px;
-}
-
-.album-info img {
-  display: inline-block;
-  height: 50px;
-  border-radius: 12px;
 }

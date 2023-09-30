@@ -12,6 +12,7 @@ import Login from "./features/Components/Login/Login";
 import NotFoundPage from "./features/Components/NotFoundPage/NotFoundPage";
 import SignUp from "./features/Components/SignUp/SignUp";
 import TracksHistory from "./features/Components/TracksHistory/TracksHistory";
+import NewArtist from "./features/Components/NewArtist/NewArtist";
 
 const App = () => {
   const showPlayer = useAppSelector((state) => state.tracksState.showPlayer);
@@ -31,6 +32,7 @@ const App = () => {
             path="/track_history"
             element={userState.user ? <TracksHistory /> : <NotFoundPage />}
           />
+          <Route path={"/new-artist"} element={<NewArtist />} />
         </Routes>
       </div>
       {showPlayer && <Player />}

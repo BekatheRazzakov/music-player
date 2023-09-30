@@ -27,6 +27,8 @@
 }
 
 .board {
+  display: flex;
+  flex-direction: column;
   width: 300px;
   height: 470px;
   margin: 30px auto 0;
@@ -121,4 +123,24 @@
 
 .page-back:active {
   background-color: rgba(255, 255, 255, 0.6);
+}
+
+.white-btn {
+  border: 0;
+  border-radius: 20px;
+  padding: 13px 27px;
+  margin: 15px auto 11px;
+  font: inherit;
+  font-size: 14px;
+  background: #ffffff;
+  color: black;
+  text-decoration: none;
+}
+
+.white-btn:hover {
+  background: #e5e5e5;
+}
+
+.white-btn:active {
+  background: #d2d2d2;
 }

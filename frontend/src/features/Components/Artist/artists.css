@@ -7,10 +7,21 @@ h4 {
   margin: 0;
 }
 
+.artistImg {
+  position: relative;
+}
+
 .artistImg img {
+  position: absolute;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .artists-list {
-  height: 425px;
+  height: 370px;
+}
+
+.add-new-btn {
+  padding: 6px 27px !important;
 }

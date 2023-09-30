@@ -37,13 +37,13 @@ const run = async () => {
     const [artistOne, artistTwo] = await Artist.create(
       {
         name: 'The Weeknd',
-        image: '/images/The_Weeknd.png',
+        image: 'The_Weeknd.png',
         info: 'Canadian singer and songwriter',
         isPublished: true
       },
       {
         name: 'Drake',
-        image: '/images/Drake.png',
+        image: 'Drake.png',
         info: 'Canadian rapper and singer',
         isPublished: false
       }
@@ -54,35 +54,35 @@ const run = async () => {
         title: 'After Hours',
         artist: artistOne._id,
         releaseYear: 2020,
-        albumCover: '/images/The_Weeknd_-_After_Hours.png',
+        albumCover: 'The_Weeknd_-_After_Hours.png',
         isPublished: false
       },
       {
         title: 'Dawn FM',
         artist: artistOne._id,
         releaseYear: 2022,
-        albumCover: '/images/The_Weeknd_-_Dawn_FM.png',
+        albumCover: 'The_Weeknd_-_Dawn_FM.png',
         isPublished: true
       },
       {
         title: 'Scorpion',
         artist: artistTwo._id,
         releaseYear: 2018,
-        albumCover: '/images/Drake_-_Scorpion.png',
+        albumCover: 'Drake_-_Scorpion.png',
         isPublished: false
       },
       {
         title: 'Views',
         artist: artistTwo._id,
         releaseYear: 2016,
-        albumCover: '/images/Drake_-_Views.png',
+        albumCover: 'Drake_-_Views.png',
         isPublished: true
       },
       {
         title: 'Starboy',
         artist: artistOne._id,
         releaseYear: 2016,
-        albumCover: '/images/The_Weeknd_-_Starboy.png',
+        albumCover: 'The_Weeknd_-_Starboy.png',
         isPublished: true
       }
     );

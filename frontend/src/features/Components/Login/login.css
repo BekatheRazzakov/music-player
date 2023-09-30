@@ -43,25 +43,6 @@ form {
   font-size: 12px;
 }
 
-form button {
-  align-self: center;
-  border: 0;
-  border-radius: 20px;
-  padding: 13px 27px;
-  margin-top: 15px;
-  font: inherit;
-  font-size: 14px;
-  background: #ffffff;
-}
-
-form button:hover {
-  background: #d2d2d2;
-}
-
-form button:active {
-  background: #e5e5e5;
-}
-
 .error {
   text-align: center;
   color: red;

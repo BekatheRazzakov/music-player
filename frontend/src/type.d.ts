@@ -3,6 +3,13 @@ export interface IArtist {
   info: string;
   image: string;
   _id: string;
+  isPublished: boolean;
+}
+
+export interface ICreateArtist {
+  name: string;
+  info: string;
+  image: File | null;
 }
 
 export interface IAlbum {
@@ -49,6 +56,7 @@ export interface ISignUser {
 export interface IArtistsState {
   artists: IArtist[];
   artistsLoading: boolean;
+  createLoading: boolean;
 }
 
 export interface IAlbumsState {

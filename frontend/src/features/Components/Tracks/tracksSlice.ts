@@ -51,13 +51,13 @@ const TracksSlice = createSlice({
     });
 
     builder.addCase(postTrackToHistory.pending, (state) => {
-      state.tracksLoading = true;
+      state.historyLoading = true;
     });
     builder.addCase(postTrackToHistory.fulfilled, (state) => {
-      state.tracksLoading = false;
+      state.historyLoading = false;
     });
     builder.addCase(postTrackToHistory.rejected, (state) => {
-      state.tracksLoading = false;
+      state.historyLoading = false;
     });
 
     builder.addCase(getTracksByHistory.pending, (state) => {

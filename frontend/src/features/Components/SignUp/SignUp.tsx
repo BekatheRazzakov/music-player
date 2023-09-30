@@ -1,9 +1,10 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISignUser } from "../../../type";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { signUp } from "../Login/UserThunk";
 import "../Login/login.css";
+import { resetErrors } from "../Login/UsersSlice";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
@@ -13,6 +14,10 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const error = useAppSelector((state) => state.userState.registerError);
+
+  useEffect(() => {
+    dispatch(resetErrors());
+  }, [dispatch]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,8 +32,8 @@ const Login = () => {
     e.preventDefault();
     try {
       await dispatch(signUp(userData)).unwrap();
-      if (error) {
-        navigate("/login");
+      if (!error) {
+        navigate("/");
       }
     } catch {
       // nothing
@@ -62,7 +67,9 @@ const Login = () => {
           />
           <label className="input-label">password</label>
         </div>
-        <button type="submit">Sign up</button>
+        <button className="white-btn" type="submit">
+          Sign up
+        </button>
         {error && <span className="error">{error.message}</span>}
       </form>
     </div>

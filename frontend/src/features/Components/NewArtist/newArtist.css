@@ -1,0 +1,30 @@
+.file-input {
+  display: none;
+}
+
+.disabled-input {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.file-input-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-input-block button {
+  padding: 5px 20px;
+  margin: 7px auto 0;
+  background: transparent;
+  color: white;
+  transition: 0.1s;
+  outline: none;
+}
+
+.file-input-block button:hover {
+  background: transparent;
+  text-shadow: 0 0 10px white;
+}
+
+.file-input-block button:active {
+  background: transparent;
+}

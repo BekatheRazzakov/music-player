@@ -25,7 +25,14 @@ const Artists = () => {
         {artistsState.artists.map((artist, index) => (
           <Link to={`/albums/${artist._id}`} className="artist" key={index}>
             <div className="artistImg">
-              <img src={apiURL + artist.image} alt="artist" />
+              <img
+                src={
+                  artist.image
+                    ? apiURL + "images/" + artist.image
+                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                }
+                alt="artist"
+              />
             </div>
             <div className="artistInfo">
               <h4>{artist.name}</h4>
@@ -34,6 +41,11 @@ const Artists = () => {
           </Link>
         ))}
       </div>
+      {userState.user && (
+        <Link className="white-btn add-new-btn" to="/new-artist" type="submit">
+          Add new artist
+        </Link>
+      )}
     </>
   );
 };

@@ -14,15 +14,20 @@ const initialState: IUsersState = {
 const UsersSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetErrors: (state) => {
+      state.loginError = null;
+      state.registerError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signUp.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
     });
-    builder.addCase(signUp.fulfilled, (state, { payload: userResponse }) => {
+    builder.addCase(signUp.fulfilled, (state, { payload }) => {
       state.registerLoading = false;
-      state.user = userResponse.user;
+      state.user = payload;
     });
     builder.addCase(signUp.rejected, (state, { payload: error }) => {
       state.registerLoading = false;
@@ -56,3 +61,4 @@ const UsersSlice = createSlice({
 });
 
 export const userReducer = UsersSlice.reducer;
+export const { resetErrors } = UsersSlice.actions;
