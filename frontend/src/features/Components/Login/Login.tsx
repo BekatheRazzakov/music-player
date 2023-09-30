@@ -1,62 +1,54 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import './login.css';
-import {useNavigate} from "react-router-dom";
-import {ISignUser} from "../../../type";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {login} from "./UserThunk";
-import {resetAttempt, resetSignedUp} from "./UsersSlice";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "./UserThunk";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { ISignUser } from "../../../type";
+import "./login.css";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
-  const dispatch = useAppDispatch();
-  const userState = useAppSelector(state => state.userState);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userState.signedUp && userState.signUpAttempt) {
-      dispatch(resetAttempt());
-      dispatch(resetSignedUp());
-      alert('Sign up again please, try using another username');
-      navigate('/sign-up');
-    }
-    if (userState.signUpAttempt && userState.signedUp) {
-      dispatch(resetAttempt());
-      dispatch(resetSignedUp());
-      alert('You have signed in!');
-    }
-  }, [dispatch, navigate, userState]);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const error = useAppSelector((state) => state.userState.loginError);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
-    setUserData(prevState => ({
+    setUserData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await dispatch(login(userData));
-    navigate('/');
+    try {
+      await dispatch(login(userData)).unwrap();
+      if (error) {
+        navigate("/");
+      }
+    } catch {
+      // nothing
+    }
   };
 
   return (
     <div>
-      <h1 className='title'>Login</h1>
+      <h1 className="title">Login</h1>
       <form onSubmit={onSubmit}>
         <div className="input">
           <input
             className="input-field"
             type="text"
-            name='username'
+            name="username"
             value={userData.username}
             onChange={onChange}
             required
-            autoComplete='off'
+            autoComplete="off"
           />
           <label className="input-label">username</label>
         </div>
@@ -64,14 +56,15 @@ const Login = () => {
           <input
             className="input-field"
             type="password"
-            name='password'
+            name="password"
             value={userData.password}
             onChange={onChange}
             required
           />
           <label className="input-label">password</label>
         </div>
-        <button type='submit'>Login</button>
+        <button type="submit">Login</button>
+        {error && <span className="error">{error.error}</span>}
       </form>
     </div>
   );

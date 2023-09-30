@@ -1,25 +1,32 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
-import './player.css';
-import {apiURL} from "../../../constants";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {setCurrentTrack, setTrackChange} from "../Tracks/tracksSlice";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import "./player.css";
+import { apiURL } from "../../../constants";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { setCurrentTrack, setTrackChange } from "../Tracks/tracksSlice";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(1);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
-  const tracks = useAppSelector(state => state.tracksState.tracks);
-  const currentTrack = useAppSelector(state => state.tracksState.currentTrack);
-  const trackChanged = useAppSelector(state => state.tracksState.trackChanged);
+  const tracks = useAppSelector((state) => state.tracksState.tracks);
+  const currentTrack = useAppSelector(
+    (state) => state.tracksState.currentTrack,
+  );
+  const trackChanged = useAppSelector(
+    (state) => state.tracksState.trackChanged,
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (audioRef.current) {
       setVolume(audioRef.current?.volume);
-      audioRef.current.addEventListener('timeupdate', () => {
+      audioRef.current.addEventListener("timeupdate", () => {
         if (audioRef.current) {
-          if ((audioRef.current?.currentTime).toFixed() === audioRef.current?.duration.toFixed()) {
+          if (
+            audioRef.current.currentTime.toFixed() ===
+            audioRef.current?.duration.toFixed()
+          ) {
             setPaused(true);
           }
           setPlaybackPosition(audioRef.current.currentTime);
@@ -32,7 +39,7 @@ const Player = () => {
     audioRef.current &&
     trackChanged &&
     currentTrack &&
-    currentTrack.title !== ''
+    currentTrack.title !== ""
   ) {
     if (trackChanged) {
       dispatch(setTrackChange(false));
@@ -46,7 +53,7 @@ const Player = () => {
   const formatTime = (seconds: number) => {
     const remainingSeconds = Math.floor(seconds % 60);
     const minutes = Math.floor(seconds / 60).toFixed();
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   const volumeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,13 +83,14 @@ const Player = () => {
   const prevTrack = () => {
     if (currentTrack) {
       if (currentTrack.trackNumber === 1) {
-        dispatch(setCurrentTrack(tracks[tracks.length -1]));
+        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
         dispatch(setTrackChange(true));
         return dispatch(setTrackChange(true));
       }
 
-      const newTrack = tracks
-        .filter(track => track.trackNumber === currentTrack.trackNumber - 1)[0];
+      const newTrack = tracks.filter(
+        (track) => track.trackNumber === currentTrack.trackNumber - 1,
+      )[0];
       dispatch(setCurrentTrack(newTrack));
       dispatch(setTrackChange(true));
     }
@@ -96,18 +104,19 @@ const Player = () => {
         return dispatch(setTrackChange(true));
       }
 
-      const newTrack = tracks
-        .filter(track => track.trackNumber === currentTrack.trackNumber + 1)[0];
+      const newTrack = tracks.filter(
+        (track) => track.trackNumber === currentTrack.trackNumber + 1,
+      )[0];
       dispatch(setCurrentTrack(newTrack));
       dispatch(setTrackChange(true));
     }
   };
 
   return (
-    <div className='player'>
-      <h4 className='song-name'>{currentTrack && currentTrack.title}</h4>
+    <div className="player">
+      <h4 className="song-name">{currentTrack && currentTrack.title}</h4>
       <div className="buttons">
-        <div className='volume'>
+        <div className="volume">
           <input
             type="range"
             min="0"
@@ -117,54 +126,37 @@ const Player = () => {
             onChange={volumeHandler}
           />
         </div>
+        <span className="trackSwitch previous" onClick={prevTrack} />
         <span
-          className='trackSwitch previous'
-          onClick={prevTrack}
-        />
-        <span
-          className={
-            paused ? 'playPause paused' : 'playPause play'
-          }
+          className={paused ? "playPause paused" : "playPause play"}
           onClick={playPauseHandler}
         />
-        <span
-          className='trackSwitch next'
-          onClick={nextTrack}
-        />
+        <span className="trackSwitch next" onClick={nextTrack} />
       </div>
-      <div className='song'>
+      <div className="song">
         <span>
-          {
-            audioRef.current ?
-              formatTime(audioRef.current?.currentTime)
-              :
-              '0:00'
-          }
+          {audioRef.current
+            ? formatTime(audioRef.current?.currentTime)
+            : "0:00"}
         </span>
         <audio
           ref={audioRef}
-          src={currentTrack ? apiURL + 'music/' + currentTrack.title + '.mp3' : ''}
+          src={
+            currentTrack ? apiURL + "music/" + currentTrack.title + ".mp3" : ""
+          }
         />
         <input
           type="range"
-          step='0.01'
-          min='0'
-          max={
-          audioRef.current ?
-            audioRef.current?.duration.toString()
-            :
-            '1'
-          }
+          step="0.01"
+          min="0"
+          max={audioRef.current ? audioRef.current?.duration.toString() : "1"}
           value={playbackPosition}
           onChange={playbackPositionHandler}
         />
         <span>
-          {
-            audioRef.current?.duration ?
-              formatTime(audioRef.current?.duration)
-              :
-              '0:00'
-          }
+          {audioRef.current?.duration
+            ? formatTime(audioRef.current?.duration)
+            : "0:00"}
         </span>
       </div>
     </div>

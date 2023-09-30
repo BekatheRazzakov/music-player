@@ -1,14 +1,14 @@
 .tracks-history-list {
-    height: 416px;
-    overflow-y: auto;
-    box-sizing: border-box;
+  height: 416px;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .track-title {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 .empty {
-    margin-top: 10px;
-    text-align: center;
+  margin-top: 10px;
+  text-align: center;
 }

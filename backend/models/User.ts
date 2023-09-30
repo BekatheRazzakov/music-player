@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, HydratedDocument} from "mongoose";
 import bcrypt from 'bcrypt';
 import {IUser} from "../type";
 import {randomUUID} from "crypto";
@@ -16,7 +16,15 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    validate: {
+      validator: async function (this: HydratedDocument<IUser>, value: string) {
+        if (!this.isModified("username")) return true;
+        const user = await User.findOne({ username: value });
+        if (user) return false;
+      },
+      message: "Username is already taken",
+    },
   },
   password: {
     type: String,

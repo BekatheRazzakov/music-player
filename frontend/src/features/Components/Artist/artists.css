@@ -1,16 +1,16 @@
 h2 {
-    margin: 0 0 15px;
-    text-align: center;
+  margin: 0 0 15px;
+  text-align: center;
 }
 
 h4 {
-    margin: 0;
+  margin: 0;
 }
 
 .artistImg img {
-    height: 100%;
+  height: 100%;
 }
 
 .artists-list {
-    height: 425px;
+  height: 425px;
 }

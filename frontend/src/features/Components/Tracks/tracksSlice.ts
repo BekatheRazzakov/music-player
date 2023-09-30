@@ -1,6 +1,10 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {getTracks, getTracksByHistory, postTrackToHistory} from "./tracksThunks";
-import {ITracksState} from "../../../type";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getTracks,
+  getTracksByHistory,
+  postTrackToHistory,
+} from "./tracksThunks";
+import { ITracksState } from "../../../type";
 
 const initialState: ITracksState = {
   tracks: [],
@@ -10,18 +14,18 @@ const initialState: ITracksState = {
   historyLoading: false,
   currentTrack: null,
   trackChanged: false,
-  showPlayer: false
+  showPlayer: false,
 };
 
 const TracksSlice = createSlice({
-  name: 'tracks',
+  name: "tracks",
   initialState,
   reducers: {
-    resetTracks: state => {
+    resetTracks: (state) => {
       state.tracks = [];
     },
-    resetHistory: state => {
-      state.tracksHistory = []
+    resetHistory: (state) => {
+      state.tracksHistory = [];
     },
     setShowPlayer: (state, action) => {
       state.showPlayer = action.payload;
@@ -31,10 +35,10 @@ const TracksSlice = createSlice({
     },
     setTrackChange: (state, action) => {
       state.trackChanged = action.payload;
-    }
+    },
   },
-  extraReducers: builder => {
-    builder.addCase(getTracks.pending, state => {
+  extraReducers: (builder) => {
+    builder.addCase(getTracks.pending, (state) => {
       state.tracksLoading = true;
     });
     builder.addCase(getTracks.fulfilled, (state, action) => {
@@ -42,26 +46,38 @@ const TracksSlice = createSlice({
       state.album = action.payload.album;
       state.tracksLoading = false;
     });
-    builder.addCase(getTracks.rejected, state => {
+    builder.addCase(getTracks.rejected, (state) => {
       state.tracksLoading = false;
     });
 
-    builder.addCase(postTrackToHistory.pending, () => {});
-    builder.addCase(postTrackToHistory.fulfilled, () => {});
-    builder.addCase(postTrackToHistory.rejected, () => {});
+    builder.addCase(postTrackToHistory.pending, (state) => {
+      state.tracksLoading = true;
+    });
+    builder.addCase(postTrackToHistory.fulfilled, (state) => {
+      state.tracksLoading = false;
+    });
+    builder.addCase(postTrackToHistory.rejected, (state) => {
+      state.tracksLoading = false;
+    });
 
-    builder.addCase(getTracksByHistory.pending, state => {
+    builder.addCase(getTracksByHistory.pending, (state) => {
       state.historyLoading = true;
     });
     builder.addCase(getTracksByHistory.fulfilled, (state, action) => {
       state.tracksHistory = action.payload;
       state.historyLoading = false;
     });
-    builder.addCase(getTracksByHistory.rejected, state => {
+    builder.addCase(getTracksByHistory.rejected, (state) => {
       state.historyLoading = false;
     });
-  }
+  },
 });
 
 export const tracksRouter = TracksSlice.reducer;
-export const {resetTracks, resetHistory, setCurrentTrack, setTrackChange, setShowPlayer} = TracksSlice.actions;
+export const {
+  resetTracks,
+  resetHistory,
+  setCurrentTrack,
+  setTrackChange,
+  setShowPlayer,
+} = TracksSlice.actions;

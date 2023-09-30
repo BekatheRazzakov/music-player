@@ -1,46 +1,53 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {ISignUser} from "../../../type";
-import {useAppDispatch} from "../../../app/hooks";
-import {signUp} from "../Login/UserThunk";
-import '../Login/login.css';
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ISignUser } from "../../../type";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { signUp } from "../Login/UserThunk";
+import "../Login/login.css";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const error = useAppSelector((state) => state.userState.registerError);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
-    setUserData(prevState => ({
+    setUserData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await dispatch(signUp(userData));
-    navigate('/login');
+    try {
+      await dispatch(signUp(userData)).unwrap();
+      if (error) {
+        navigate("/login");
+      }
+    } catch {
+      // nothing
+    }
   };
 
   return (
     <div>
-      <h1 className='title'>Sign up</h1>
+      <h1 className="title">Sign up</h1>
       <form onSubmit={onSubmit}>
         <div className="input">
           <input
             className="input-field"
             type="text"
-            name='username'
+            name="username"
             value={userData.username}
             onChange={onChange}
             required
-            autoComplete='off'
+            autoComplete="off"
           />
           <label className="input-label">username</label>
         </div>
@@ -48,14 +55,15 @@ const Login = () => {
           <input
             className="input-field"
             type="password"
-            name='password'
+            name="password"
             value={userData.password}
             onChange={onChange}
             required
           />
           <label className="input-label">password</label>
         </div>
-        <button type='submit'>Sign up</button>
+        <button type="submit">Sign up</button>
+        {error && <span className="error">{error.message}</span>}
       </form>
     </div>
   );

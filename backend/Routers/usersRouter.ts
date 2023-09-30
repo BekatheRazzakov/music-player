@@ -12,12 +12,6 @@ usersRouter.post('/', async (req, res, next) => {
       password: req.body.password,
     });
 
-    const userExists = await User.findOne({ username: user.username });
-
-    if (userExists) {
-      return res.send({ error: 'Username is already taken' });
-    }
-
     user.generateToken();
 
     await user.save();
@@ -33,32 +27,31 @@ usersRouter.post('/', async (req, res, next) => {
 
 usersRouter.post('/sessions', async (req, res, next) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.body.username});
 
     if (!user) {
-      return res.status(401).send({ error: 'Wrong username' });
+      return res.status(400).send({error: 'Wrong password or username!'});
     }
 
     const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
-      return res.status(401).send({ error: 'Wrong password!' });
+      return res.status(400).send({error: 'Wrong password or username!'});
     }
 
     user.generateToken();
     await user.save();
 
-    res.send(user);
+    res.send({
+      message: 'Username and password correct!',
+      user,
+    });
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(e);
-    }
-
-    return next(e);
+    next(e);
   }
 });
 
-usersRouter.delete('/logout', auth, async (req, res, next) => {
+usersRouter.delete('/sessions', auth, async (req, res, next) => {
   try {
     const token = req.get('Authorization');
 
@@ -66,7 +59,7 @@ usersRouter.delete('/logout', auth, async (req, res, next) => {
       return res.send({message: 'Success'});
     }
 
-    const user = await User.findOne({token});
+    const user = await User.findOne({ token });
 
     if (!user) {
       return res.send({message: 'Success'});
@@ -74,7 +67,8 @@ usersRouter.delete('/logout', auth, async (req, res, next) => {
 
     user.generateToken();
     user.save();
-    return res.send({message: 'SUCCESS'});
+
+    return res.send({message: 'Success'});
   } catch (e) {
     next(e);
   }
