@@ -1,14 +1,21 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getTracksByHistory } from "../Tracks/tracksThunks";
+import { getTracksByHistory, postTrackToHistory } from "../Tracks/tracksThunks";
 import { Link, useParams } from "react-router-dom";
 import "./trackHistoryCss.css";
 import dayjs from "dayjs";
-import { resetHistory } from "../Tracks/tracksSlice";
+import {
+  resetHistory,
+  setCurrentTrack,
+  setShowPlayer,
+  setTrackChange,
+} from "../Tracks/tracksSlice";
+import { ITrack } from "../../../type";
 
 const TracksHistory = () => {
   const { token } = useParams() as { token: string };
   const tracksState = useAppSelector((state) => state.tracksState);
+  const userState = useAppSelector((state) => state.userState);
 
   const dispatch = useAppDispatch();
 
@@ -16,6 +23,17 @@ const TracksHistory = () => {
     dispatch(resetHistory());
     dispatch(getTracksByHistory(token));
   }, [dispatch, token]);
+
+  const onTrackClick = (track: ITrack) => {
+    if (userState.user) {
+      dispatch(
+        postTrackToHistory({ track: track._id, token: userState.user?.token }),
+      );
+      dispatch(setShowPlayer(true));
+      dispatch(setCurrentTrack(track));
+      dispatch(setTrackChange(true));
+    }
+  };
 
   return (
     <>
@@ -31,6 +49,12 @@ const TracksHistory = () => {
             className="album"
             to={`/tracks/${singleTrack.track.album._id}`}
             key={index}
+            onClick={() =>
+              onTrackClick({
+                ...singleTrack.track,
+                album: singleTrack.track.album.title,
+              })
+            }
           >
             <div className="albumInfo">
               <span>{singleTrack.track.album.artist?.name}</span>

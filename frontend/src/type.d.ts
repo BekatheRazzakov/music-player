@@ -60,6 +60,7 @@ export interface IGetSingleTrackHistory {
     duration: string;
     trackNumber: number;
     _id: string;
+    isPublished: boolean;
   };
   datetime: string;
 }

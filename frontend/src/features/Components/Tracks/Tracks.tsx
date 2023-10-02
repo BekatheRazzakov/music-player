@@ -10,7 +10,7 @@ import {
 import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
 import { ITrack } from "../../../type";
-import { setCurrentTrack } from "./tracksSlice";
+import { setCurrentTrack, setShowPlayer, setTrackChange } from "./tracksSlice";
 import "./tracks.css";
 
 const Tracks = () => {
@@ -38,7 +38,9 @@ const Tracks = () => {
       dispatch(
         postTrackToHistory({ track: track._id, token: userState.user?.token }),
       );
+      dispatch(setShowPlayer(true));
       dispatch(setCurrentTrack(track));
+      dispatch(setTrackChange(true));
     }
   };
 
