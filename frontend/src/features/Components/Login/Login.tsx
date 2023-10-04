@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { ISignUser } from "../../../type";
 import "./login.css";
 import { resetErrors } from "./UsersSlice";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
@@ -44,6 +45,16 @@ const Login = () => {
     <div>
       <h1 className="title">Login</h1>
       <form onSubmit={onSubmit}>
+        <div style={{ margin: "0 auto" }}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+        </div>
         <div className="input">
           <input
             className="input-field"

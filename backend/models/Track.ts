@@ -7,20 +7,20 @@ const trackSchema = new mongoose.Schema({
   },
   album: {
     type: mongoose.Types.ObjectId,
-    ref: 'Album',
+    ref: "Album",
     required: true,
   },
   duration: String,
   trackNumber: {
     type: Number,
-    required: true
+    required: true,
   },
   isPublished: {
     type: Boolean,
     required: true,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const Track = mongoose.model('Track', trackSchema);
+const Track = mongoose.model("Track", trackSchema);
 export default Track;

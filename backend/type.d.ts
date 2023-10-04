@@ -1,41 +1,43 @@
 export interface IUser {
-  username: string,
-  password: string,
-  token: string,
-  role: string
+  username: string;
+  password: string;
+  token: string;
+  role: string;
+  displayName: string;
+  googleId: string;
 }
 
 export interface IAlbum {
-  title: string,
-  artist: mongoose.Types.ObjectId,
-  releaseYear: number,
-  albumCover?: string | undefined,
-  isPublished: boolean
+  title: string;
+  artist: mongoose.Types.ObjectId;
+  releaseYear: number;
+  albumCover?: string | undefined;
+  isPublished: boolean;
 }
 
 export interface IArtist {
-  name: string,
-  image: string,
-  info: string,
-  isPublished: boolean
+  name: string;
+  image: string;
+  info: string;
+  isPublished: boolean;
 }
 
 export interface ITrack {
-  title: string,
-  album: mongoose.Types.ObjectId,
-  trackNumber: number,
-  duration?: string,
-  isPublished: boolean
+  title: string;
+  album: mongoose.Types.ObjectId;
+  trackNumber: number;
+  duration?: string;
+  isPublished: boolean;
 }
 
 export interface IGetSingleTrackHistory {
-  _id: string,
-  user: string
+  _id: string;
+  user: string;
   track: {
-    title: string,
-    artist: IArtist,
-    duration: string,
-    trackNumber: string,
-  },
-  datetime: string
+    title: string;
+    artist: IArtist;
+    duration: string;
+    trackNumber: string;
+  };
+  datetime: string;
 }

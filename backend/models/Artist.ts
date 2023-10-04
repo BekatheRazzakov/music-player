@@ -10,9 +10,9 @@ const artistSchema = new mongoose.Schema({
   isPublished: {
     type: Boolean,
     required: true,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const Artist = mongoose.model('Artist', artistSchema);
+const Artist = mongoose.model("Artist", artistSchema);
 export default Artist;

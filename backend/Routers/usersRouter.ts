@@ -5,7 +5,7 @@ import auth from "../middleware/auth";
 
 const usersRouter = express();
 
-usersRouter.post('/', async (req, res, next) => {
+usersRouter.post("/", async (req, res, next) => {
   try {
     const user = new User({
       username: req.body.username,
@@ -25,25 +25,25 @@ usersRouter.post('/', async (req, res, next) => {
   }
 });
 
-usersRouter.post('/sessions', async (req, res, next) => {
+usersRouter.post("/sessions", async (req, res, next) => {
   try {
-    const user = await User.findOne({ username: req.body.username});
+    const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
-      return res.status(400).send({error: 'Wrong password or username!'});
+      return res.status(400).send({ error: "Wrong password or username!" });
     }
 
     const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
-      return res.status(400).send({error: 'Wrong password or username!'});
+      return res.status(400).send({ error: "Wrong password or username!" });
     }
 
     user.generateToken();
     await user.save();
 
     res.send({
-      message: 'Username and password correct!',
+      message: "Username and password correct!",
       user,
     });
   } catch (e) {
@@ -51,24 +51,24 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 });
 
-usersRouter.delete('/sessions', auth, async (req, res, next) => {
+usersRouter.delete("/sessions", auth, async (req, res, next) => {
   try {
-    const token = req.get('Authorization');
+    const token = req.get("Authorization");
 
     if (!token) {
-      return res.send({message: 'Success'});
+      return res.send({ message: "Success" });
     }
 
     const user = await User.findOne({ token });
 
     if (!user) {
-      return res.send({message: 'Success'});
+      return res.send({ message: "Success" });
     }
 
     user.generateToken();
     user.save();
 
-    return res.send({message: 'Success'});
+    return res.send({ message: "Success" });
   } catch (e) {
     next(e);
   }

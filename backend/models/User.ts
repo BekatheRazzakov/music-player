@@ -1,13 +1,14 @@
-import {Schema, model, Model, HydratedDocument} from "mongoose";
-import bcrypt from 'bcrypt';
-import {IUser} from "../type";
-import {randomUUID} from "crypto";
+import { Schema, model, Model, HydratedDocument } from "mongoose";
+import bcrypt from "bcrypt";
+import { IUser } from "../type";
+import { randomUUID } from "crypto";
 
 const SALT_WORK_FACTOR = 8;
 
 interface IUserMethods {
-  checkPassword(password: string): Promise<boolean>,
-  generateToken(): void,
+  checkPassword(password: string): Promise<boolean>;
+
+  generateToken(): void;
 }
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -28,22 +29,27 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   token: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
     required: true,
-    default: 'user',
-    enum: ['user', 'admin']
-  }
+    default: "user",
+    enum: ["user", "admin"],
+  },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  googleId: String,
 });
 
-UserSchema.pre('save',async function(next) {
-  if (!this.isModified('password')) {
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
 
@@ -55,11 +61,11 @@ UserSchema.pre('save',async function(next) {
 
 UserSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password);
-}
+};
 
-UserSchema.methods.generateToken = function() {
+UserSchema.methods.generateToken = function () {
   this.token = randomUUID();
-}
+};
 
-const User = model('User', UserSchema);
+const User = model("User", UserSchema);
 export default User;

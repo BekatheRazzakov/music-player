@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon index.ts",
-    "seed": "ts-node fixtures.ts"
+    "dev": "nodemon index.ts",
+    "seed": "ts-node fixtures.ts",
+    "eslint": "eslint \"**/*.{.ts,tsx}\"",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noemit"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +28,13 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^20.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "nodemon": "^3.0.1",
+    "prettier": "3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

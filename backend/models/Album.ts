@@ -8,12 +8,12 @@ const albumSchema = new Schema({
   },
   artist: {
     type: Types.ObjectId,
-    ref: 'Artist',
+    ref: "Artist",
     required: true,
     validate: {
       validator: async (value: Types.ObjectId) => await Artist.findById(value),
-      message: 'There is no such an artist'
-    }
+      message: "There is no such an artist",
+    },
   },
   releaseYear: {
     type: Number,
@@ -23,9 +23,9 @@ const albumSchema = new Schema({
   isPublished: {
     type: Boolean,
     required: true,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const Album = model('Album', albumSchema);
+const Album = model("Album", albumSchema);
 export default Album;
