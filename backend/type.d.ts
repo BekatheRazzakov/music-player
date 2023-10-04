@@ -4,7 +4,8 @@ export interface IUser {
   token: string;
   role: string;
   displayName: string;
-  googleId: string;
+  googleId?: string;
+  avatar?: string;
 }
 
 export interface IAlbum {

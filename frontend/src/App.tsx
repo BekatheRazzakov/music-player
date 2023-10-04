@@ -6,7 +6,6 @@ import Tracks from "./features/Components/Tracks/Tracks";
 import "./preloader.css";
 import "./App.css";
 import Player from "./features/Components/Player/Player";
-import { useAppSelector } from "./app/hooks";
 import Toolbar from "./features/Components/ToolBar/Toolbar";
 import Login from "./features/Components/Login/Login";
 import NotFoundPage from "./features/Components/NotFoundPage/NotFoundPage";
@@ -15,6 +14,8 @@ import TracksHistory from "./features/Components/TracksHistory/TracksHistory";
 import NewArtist from "./features/Components/NewArtist/NewArtist";
 import NewAlbum from "./features/Components/NewAlbum/NewAlbum";
 import NewTrack from "./features/Components/NewTrack/NewTrack";
+import { useAppSelector } from "./app/hooks";
+import Menu from "./features/Components/Menu/Menu";
 
 const App = () => {
   const showPlayer = useAppSelector((state) => state.tracksState.showPlayer);
@@ -23,6 +24,7 @@ const App = () => {
   return (
     <div className="App">
       <Toolbar />
+      <Menu />
       <div className="board">
         <Routes>
           <Route path={"/login"} element={<Login />} />

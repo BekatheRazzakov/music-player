@@ -70,8 +70,9 @@ usersRouter.post("/google", async (req, res, next) => {
 
     const email = payload["email"];
     const googleId = payload["sub"];
-    const username = payload["given_name"];
-    const displayName = payload["name"];
+    const displayName = payload["given_name"];
+    const username = payload["name"];
+    const avatar = payload["picture"];
 
     if (!email && !username) {
       return res
@@ -87,6 +88,7 @@ usersRouter.post("/google", async (req, res, next) => {
         password: randomUUID(),
         googleId,
         displayName,
+        avatar,
       });
     }
 

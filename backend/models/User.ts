@@ -11,7 +11,7 @@ interface IUserMethods {
   generateToken(): void;
 }
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+type UserModel = Model<IUser, NonNullable<unknown>, IUserMethods>;
 
 const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   username: {
@@ -46,6 +46,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     required: true,
   },
   googleId: String,
+  avatar: String,
 });
 
 UserSchema.pre("save", async function (next) {

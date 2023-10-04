@@ -28,6 +28,7 @@ const run = async () => {
       role: "user",
       displayName: "user",
       googleId: "",
+      avatar: "",
     },
     {
       username: "admin",
@@ -36,6 +37,7 @@ const run = async () => {
       role: "admin",
       displayName: "admin",
       googleId: "",
+      avatar: "",
     },
   );
 
