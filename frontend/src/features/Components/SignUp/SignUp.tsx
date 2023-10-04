@@ -2,9 +2,10 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISignUser } from "../../../type";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { signUp } from "../Login/UserThunk";
+import { loginWithGoogle, signUp } from "../Login/UserThunk";
 import "../Login/login.css";
 import { resetErrors } from "../Login/UsersSlice";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [userData, setUserData] = useState<ISignUser>({
@@ -40,10 +41,27 @@ const Login = () => {
     }
   };
 
+  const googleLogin = async (credential: string) => {
+    await dispatch(loginWithGoogle(credential)).unwrap();
+    navigate("/");
+  };
+
   return (
     <div>
       <h1 className="title">Sign up</h1>
       <form onSubmit={onSubmit}>
+        <div style={{ margin: "0 auto" }}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              if (credentialResponse.credential) {
+                void googleLogin(credentialResponse.credential);
+              }
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+        </div>
         <div className="input">
           <input
             className="input-field"

@@ -26,12 +26,16 @@ const run = async () => {
       password: "1qaz@WSX29",
       token: randomUUID(),
       role: "user",
+      displayName: "user",
+      googleId: "",
     },
     {
       username: "admin",
       password: "1qaz@WSX29",
       token: randomUUID(),
       role: "admin",
+      displayName: "admin",
+      googleId: "",
     },
   );
 

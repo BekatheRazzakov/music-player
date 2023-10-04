@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IUsersState } from "../../../type";
-import { login, logout, signUp } from "./UserThunk";
+import { login, loginWithGoogle, logout, signUp } from "./UserThunk";
 
 const initialState: IUsersState = {
   user: null,
@@ -43,6 +43,21 @@ const UsersSlice = createSlice({
       state.user = userResponse.user;
     });
     builder.addCase(login.rejected, (state, { payload: error }) => {
+      state.loginLoading = false;
+      state.loginError = error || null;
+    });
+
+    builder.addCase(loginWithGoogle.pending, (state) => {
+      state.loginLoading = true;
+    });
+    builder.addCase(
+      loginWithGoogle.fulfilled,
+      (state, { payload: userResponse }) => {
+        state.loginLoading = false;
+        state.user = userResponse.user;
+      },
+    );
+    builder.addCase(loginWithGoogle.rejected, (state, { payload: error }) => {
       state.loginLoading = false;
       state.loginError = error || null;
     });

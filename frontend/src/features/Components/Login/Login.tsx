@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "./UserThunk";
+import { login, loginWithGoogle } from "./UserThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { ISignUser } from "../../../type";
 import "./login.css";
@@ -41,6 +41,11 @@ const Login = () => {
     }
   };
 
+  const googleLogin = async (credential: string) => {
+    await dispatch(loginWithGoogle(credential)).unwrap();
+    navigate("/");
+  };
+
   return (
     <div>
       <h1 className="title">Login</h1>
@@ -48,7 +53,9 @@ const Login = () => {
         <div style={{ margin: "0 auto" }}>
           <GoogleLogin
             onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
+              if (credentialResponse.credential) {
+                void googleLogin(credentialResponse.credential);
+              }
             }}
             onError={() => {
               console.log("Login Failed");

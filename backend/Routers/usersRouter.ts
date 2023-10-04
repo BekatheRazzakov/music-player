@@ -88,7 +88,6 @@ usersRouter.post("/google", async (req, res, next) => {
         googleId,
         displayName,
       });
-      return;
     }
 
     user.generateToken();
