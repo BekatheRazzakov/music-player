@@ -2,13 +2,13 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, loginWithGoogle } from "./UserThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { ISignUser } from "../../../type";
+import { ILoginUser } from "../../../type";
 import "./login.css";
 import { resetErrors } from "./UsersSlice";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [userData, setUserData] = useState<ISignUser>({
+  const [userData, setUserData] = useState<ILoginUser>({
     username: "",
     password: "",
   });

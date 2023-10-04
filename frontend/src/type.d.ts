@@ -78,6 +78,13 @@ export interface IUser {
 export interface ISignUser {
   username: string;
   password: string;
+  avatar: File | null;
+  displayName: string;
+}
+
+export interface ILoginUser {
+  username: string;
+  password: string;
 }
 
 export interface IArtistsState {
@@ -113,11 +120,6 @@ interface IUsersState {
   loginLoading: boolean;
   loginError: GlobalError | null;
   logoutLoading: boolean;
-}
-
-export interface RegisterMutation {
-  username: string;
-  password: string;
 }
 
 export interface RegisterResponse {

@@ -30,7 +30,7 @@ const Menu = () => {
         <div className="menu-onclick-btn">
           <img
             src={
-              userState.user
+              userState.user?.avatar
                 ? userState.user?.avatar
                 : "https://api-private.atlassian.com/users/6b5c1609134a5887d7f3ab1b73557664/avatar"
             }

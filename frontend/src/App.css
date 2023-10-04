@@ -8,7 +8,7 @@
   left: 0;
   font-family: "Montserrat", sans-serif;
   color: white !important;
-  background-image: url("./assets/background.jpg");
+  background-image: url("./assets/yurt.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -22,7 +22,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.45);
   pointer-events: none;
 }
 
@@ -39,9 +39,9 @@
   display: flex;
   flex-direction: column;
   width: 350px;
-  height: 470px;
+  min-height: 470px;
   margin: 30px auto 0;
-  padding: 20px 15px 0;
+  padding: 20px 15px 10px;
   border-radius: 15px;
   overflow: hidden;
   z-index: 1;
@@ -53,6 +53,10 @@
 .menu {
   background: rgba(45, 45, 45, 0.38);
   backdrop-filter: blur(15px);
+}
+
+.board {
+  backdrop-filter: blur(20px);
 }
 
 .artists-list,

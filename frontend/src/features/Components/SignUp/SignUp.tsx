@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { ISignUser } from "../../../type";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -8,9 +14,13 @@ import { resetErrors } from "../Login/UsersSlice";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [filename, setFilename] = useState("");
   const [userData, setUserData] = useState<ISignUser>({
     username: "",
     password: "",
+    avatar: null,
+    displayName: "",
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -27,6 +37,34 @@ const Login = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const inputFileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const files = e.target.files;
+
+    if (files) {
+      setUserData((prevState) => ({
+        ...prevState,
+        [name]: files[0],
+      }));
+    }
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFilename(e.target.files[0].name);
+    } else {
+      setFilename("");
+    }
+
+    inputFileChangeHandler(e);
+  };
+
+  const activateInput = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
   };
 
   const onSubmit = async (e: FormEvent) => {
@@ -84,6 +122,37 @@ const Login = () => {
             required
           />
           <label className="input-label">password</label>
+        </div>
+        <div className="input">
+          <input
+            className="input-field"
+            type="text"
+            name="displayName"
+            value={userData.displayName}
+            onChange={onChange}
+            required
+          />
+          <label className="input-label">nickname</label>
+        </div>
+        <div className="file-input-block">
+          <div className="input">
+            <input
+              className="input-field file-input"
+              type="file"
+              name="albumCover"
+              ref={inputRef}
+              onChange={onFileChange}
+            />
+            <input
+              className="input-field disabled-input"
+              type="text"
+              value={filename.length ? filename : "browse image"}
+              disabled
+            />
+          </div>
+          <button className="white-btn" onClick={activateInput} type="button">
+            Browse
+          </button>
         </div>
         <button className="white-btn" type="submit">
           Sign up

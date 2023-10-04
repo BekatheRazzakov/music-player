@@ -2,8 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosApi } from "../../../axiosApi";
 import {
   GlobalError,
+  ILoginUser,
+  ISignUser,
   IUser,
-  RegisterMutation,
   RegisterResponse,
   ValidationError,
 } from "../../../type";
@@ -11,11 +12,22 @@ import { isAxiosError } from "axios";
 
 export const signUp = createAsyncThunk<
   IUser,
-  RegisterMutation,
+  ISignUser,
   { rejectValue: ValidationError }
 >("users/signUp", async (registerMutation, { rejectWithValue }) => {
   try {
-    const response = await axiosApi.post<IUser>("/users", registerMutation);
+    const formData = new FormData();
+    const keys = Object.keys(registerMutation) as (keyof ISignUser)[];
+
+    keys.forEach((key) => {
+      const value = registerMutation[key];
+
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+
+    const response = await axiosApi.post<IUser>("/users", formData);
     return response.data;
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {
@@ -27,7 +39,7 @@ export const signUp = createAsyncThunk<
 
 export const login = createAsyncThunk<
   RegisterResponse,
-  RegisterMutation,
+  ILoginUser,
   { rejectValue: GlobalError }
 >("users/login", async (loginMutation, { rejectWithValue }) => {
   try {

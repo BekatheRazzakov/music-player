@@ -72,4 +72,3 @@ const ArtistSlice = createSlice({
 });
 
 export const artistsRouter = ArtistSlice.reducer;
-export const { resetMessage } = ArtistSlice.actions;
