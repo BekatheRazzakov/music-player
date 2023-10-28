@@ -10,33 +10,27 @@ import { imagesUpload } from "../multer";
 const usersRouter = express();
 const client = new OAuth2Client(config.google.clientId);
 
-usersRouter.post(
-  "/",
-  imagesUpload.single("albumCover"),
-  async (req, res, next) => {
-    try {
-      const user = new User({
-        username: req.body.username,
-        password: req.body.password,
-        displayName: req.body.displayName,
-        avatar: req.file
-          ? "http://localhost:8000/images/" + req.file.filename
-          : null,
-      });
+usersRouter.post("/", imagesUpload.single("avatar"), async (req, res, next) => {
+  try {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+      displayName: req.body.displayName,
+      avatar: req.file ? req.file.filename : null,
+    });
 
-      user.generateToken();
+    user.generateToken();
 
-      await user.save();
-      return res.send(user);
-    } catch (e) {
-      if (e instanceof mongoose.Error.ValidationError) {
-        return res.status(400).send(e);
-      }
-
-      return next(e);
+    await user.save();
+    return res.send(user);
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
     }
-  },
-);
+
+    return next(e);
+  }
+});
 
 usersRouter.post("/sessions", async (req, res, next) => {
   try {

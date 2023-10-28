@@ -13,7 +13,7 @@ import "../Login/login.css";
 import { resetErrors } from "../Login/UsersSlice";
 import { GoogleLogin } from "@react-oauth/google";
 
-const Login = () => {
+const SignUp = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [filename, setFilename] = useState("");
   const [userData, setUserData] = useState<ISignUser>({
@@ -139,7 +139,7 @@ const Login = () => {
             <input
               className="input-field file-input"
               type="file"
-              name="albumCover"
+              name="avatar"
               ref={inputRef}
               onChange={onFileChange}
             />
@@ -163,4 +163,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

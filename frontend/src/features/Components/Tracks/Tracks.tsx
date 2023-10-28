@@ -42,13 +42,13 @@ const Tracks = () => {
     }
   };
 
-  const onDelete = async (id: string) => {
-    await dispatch(deleteTrack(id));
+  const onDelete = async (trackId: string) => {
+    await dispatch(deleteTrack(trackId));
     await dispatch(getTracks(id));
   };
 
-  const onTogglePublishedClick = async (id: string) => {
-    await dispatch(togglePublishedTrack(id));
+  const onTogglePublishedClick = async (trackId: string) => {
+    await dispatch(togglePublishedTrack(trackId));
     await dispatch(getTracks(id));
   };
 
@@ -62,7 +62,7 @@ const Tracks = () => {
               <img
                 src={
                   album.albumCover
-                    ? apiURL + "images/" + album.albumCover
+                    ? apiURL + album.albumCover
                     : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
                 }
                 alt="artist"

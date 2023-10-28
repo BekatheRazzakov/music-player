@@ -23,7 +23,7 @@ const run = async () => {
   await User.create(
     {
       username: "user",
-      password: "1qaz@WSX29",
+      password: "user",
       token: randomUUID(),
       role: "user",
       displayName: "user",
@@ -32,7 +32,7 @@ const run = async () => {
     },
     {
       username: "admin",
-      password: "1qaz@WSX29",
+      password: "admin",
       token: randomUUID(),
       role: "admin",
       displayName: "admin",
@@ -44,13 +44,13 @@ const run = async () => {
   const [artistOne, artistTwo] = await Artist.create(
     {
       name: "The Weeknd",
-      image: "The_Weeknd.png",
+      image: "images/The_Weeknd.png",
       info: "Canadian singer and songwriter",
       isPublished: true,
     },
     {
       name: "Drake",
-      image: "Drake.png",
+      image: "images/Drake.png",
       info: "Canadian rapper and singer",
       isPublished: false,
     },
@@ -62,35 +62,35 @@ const run = async () => {
         title: "After Hours",
         artist: artistOne._id,
         releaseYear: 2020,
-        albumCover: "The_Weeknd_-_After_Hours.png",
+        albumCover: "images/The_Weeknd_-_After_Hours.png",
         isPublished: false,
       },
       {
         title: "Dawn FM",
         artist: artistOne._id,
         releaseYear: 2022,
-        albumCover: "The_Weeknd_-_Dawn_FM.png",
+        albumCover: "images/The_Weeknd_-_Dawn_FM.png",
         isPublished: true,
       },
       {
         title: "Scorpion",
         artist: artistTwo._id,
         releaseYear: 2018,
-        albumCover: "Drake_-_Scorpion.png",
+        albumCover: "images/Drake_-_Scorpion.png",
         isPublished: false,
       },
       {
         title: "Views",
         artist: artistTwo._id,
         releaseYear: 2016,
-        albumCover: "Drake_-_Views.png",
+        albumCover: "images/Drake_-_Views.png",
         isPublished: true,
       },
       {
         title: "Starboy",
         artist: artistOne._id,
         releaseYear: 2016,
-        albumCover: "The_Weeknd_-_Starboy.png",
+        albumCover: "images/The_Weeknd_-_Starboy.png",
         isPublished: true,
       },
     );

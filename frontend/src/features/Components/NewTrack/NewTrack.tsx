@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { ICreateTrack } from "../../../type";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import { getAlbums } from "../Albums/albumsThunks";
 import { createTrack } from "../Tracks/tracksThunks";
 
 const NewTrack = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [filename, setFilename] = useState("");
   const [state, setState] = useState<ICreateTrack>({
     title: "",
     album: "",
@@ -28,6 +30,34 @@ const NewTrack = () => {
     setState((prevState) => {
       return { ...prevState, [name]: value };
     });
+  };
+
+  const inputFileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const files = e.target.files;
+
+    if (files) {
+      setState((prevState) => ({
+        ...prevState,
+        [name]: files[0],
+      }));
+    }
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFilename(e.target.files[0].name);
+    } else {
+      setFilename("");
+    }
+
+    inputFileChangeHandler(e);
+  };
+
+  const activateInput = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
   };
 
   const onSubmit = async (e: FormEvent) => {
@@ -96,6 +126,26 @@ const NewTrack = () => {
             required
           />
           <label className="input-label track-number-label">Track number</label>
+        </div>
+        <div className="file-input-block">
+          <div className="input">
+            <input
+              className="input-field file-input"
+              type="file"
+              name="albumCover"
+              ref={inputRef}
+              onChange={onFileChange}
+            />
+            <input
+              className="input-field disabled-input"
+              type="text"
+              value={filename.length ? filename : "Browse image"}
+              disabled
+            />
+          </div>
+          <button className="white-btn" onClick={activateInput} type="button">
+            Browse image
+          </button>
         </div>
         <button className="white-btn" type="submit">
           Add

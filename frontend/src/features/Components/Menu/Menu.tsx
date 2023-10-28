@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MenuBtns from "./MenuBtns";
 import { useAppSelector } from "../../../app/hooks";
+import { apiURL } from "../../../constants";
 
 const Menu = () => {
   const userState = useAppSelector((state) => state.userState);
@@ -31,7 +32,8 @@ const Menu = () => {
           <img
             src={
               userState.user?.avatar
-                ? userState.user?.avatar
+                ? `${!userState.user.avatar.includes("http") ? apiURL : ""}` +
+                  userState.user.avatar
                 : "https://api-private.atlassian.com/users/6b5c1609134a5887d7f3ab1b73557664/avatar"
             }
             onClick={onMenuClick}
