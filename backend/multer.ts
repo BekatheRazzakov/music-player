@@ -6,25 +6,25 @@ import config from "./config";
 
 const imageStorage = multer.diskStorage({
   destination: async (_req, _file, cb) => {
-    const destDir = path.join(config.publicPath, "");
+    const destDir = path.join(config.publicPath, "images");
     await fs.mkdir(destDir, { recursive: true });
     cb(null, destDir);
   },
   filename: (_req, file, cb) => {
     const extension = path.extname(file.originalname);
-    cb(null, "images/" + randomUUID() + extension);
+    cb(null, randomUUID() + extension);
   },
 });
 
 const musicStorage = multer.diskStorage({
   destination: async (_req, _file, cb) => {
-    const destDir = path.join(config.publicPath, "");
+    const destDir = path.join(config.publicPath, "music");
     await fs.mkdir(destDir, { recursive: true });
     cb(null, destDir);
   },
   filename: (_req, file, cb) => {
     const extension = path.extname(file.originalname);
-    cb(null, "music/" + randomUUID() + extension);
+    cb(null, _req.body.title + extension);
   },
 });
 

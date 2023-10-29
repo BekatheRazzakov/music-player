@@ -4,7 +4,12 @@ import { getTracksByHistory, postTrackToHistory } from "../Tracks/tracksThunks";
 import { Link, useParams } from "react-router-dom";
 import "./trackHistoryCss.css";
 import dayjs from "dayjs";
-import { resetHistory, setCurrentTrack } from "../Tracks/tracksSlice";
+import {
+  resetHistory,
+  setCurrentTrack,
+  setShowPlayer,
+  setTrackChange,
+} from "../Tracks/tracksSlice";
 import { ITrack } from "../../../type";
 
 const TracksHistory = () => {
@@ -25,6 +30,8 @@ const TracksHistory = () => {
         postTrackToHistory({ track: track._id, token: userState.user?.token }),
       );
       dispatch(setCurrentTrack(track));
+      dispatch(setShowPlayer(true));
+      dispatch(setTrackChange(true));
     }
   };
 

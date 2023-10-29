@@ -11,14 +11,14 @@ const trackSchema = new mongoose.Schema({
     required: true,
   },
   duration: String,
-  trackNumber: {
-    type: Number,
-    required: true,
-  },
   isPublished: {
     type: Boolean,
     required: true,
-    default: false,
+    default: true,
+  },
+  track: {
+    type: String,
+    required: true,
   },
 });
 

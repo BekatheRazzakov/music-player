@@ -37,7 +37,6 @@ export interface ICreateAlbum {
 
 export interface ITrack {
   title: string;
-  trackNumber: number;
   duration: string;
   album: string;
   _id: string;
@@ -48,7 +47,7 @@ export interface ICreateTrack {
   title: string;
   album: string;
   duration: string;
-  trackNumber: number | string;
+  track: File | null;
 }
 
 export interface IGetSingleTrackHistory {

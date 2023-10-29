@@ -26,7 +26,6 @@ export interface IArtist {
 export interface ITrack {
   title: string;
   album: mongoose.Types.ObjectId;
-  trackNumber: number;
   duration?: string;
   isPublished: boolean;
 }

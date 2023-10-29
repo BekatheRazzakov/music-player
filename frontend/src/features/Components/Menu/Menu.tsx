@@ -27,7 +27,7 @@ const Menu = () => {
       {showMenu && (
         <div className="backdrop" onClick={() => setShowMenu(false)} />
       )}
-      <div className="menu-btn">
+      <div className="menu-btn" onClick={onMenuClick}>
         <div className="menu-onclick-btn">
           <img
             src={
@@ -39,7 +39,7 @@ const Menu = () => {
             onClick={onMenuClick}
             alt="user"
           />
-          <span onClick={onMenuClick}>
+          <span>
             {userState.user ? userState.user.displayName : "Unauthorized"}
           </span>
         </div>

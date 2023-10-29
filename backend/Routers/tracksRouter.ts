@@ -5,6 +5,7 @@ import Album from "../models/Album";
 import { IAlbum, ITrack } from "../type";
 import auth from "../middleware/auth";
 import permit from "../middleware/permit";
+import { musicUpload } from "../multer";
 
 const tracksRouter = express();
 
@@ -28,26 +29,31 @@ tracksRouter.get("", async (req, res) => {
   }
 });
 
-tracksRouter.post("", auth, async (req, res, next) => {
-  const trackData = {
-    title: req.body.title,
-    album: req.body.album,
-    duration: req.body.duration,
-    trackNumber: req.body.trackNumber,
-  };
+tracksRouter.post(
+  "",
+  auth,
+  musicUpload.single("track"),
+  async (req, res, next) => {
+    try {
+      const trackData = {
+        title: req.body.title,
+        album: req.body.album,
+        duration: req.body.duration,
+        track: req.file ? req.file.filename : null,
+      };
 
-  const track = new Track(trackData);
+      const track = new Track(trackData);
 
-  try {
-    await track.save();
-    return res.send(track);
-  } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(e);
+      await track.save();
+      return res.send(track);
+    } catch (e) {
+      if (e instanceof mongoose.Error.ValidationError) {
+        return res.status(400).send(e);
+      }
+      next(e);
     }
-    next(e);
-  }
-});
+  },
+);
 
 tracksRouter.patch(
   "/:id/togglePublished",

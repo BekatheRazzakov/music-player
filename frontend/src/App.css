@@ -35,6 +35,11 @@
   height: 80px;
 }
 
+.toolbar h1 a {
+  color: white!important;
+  text-decoration: none!important;
+}
+
 .board {
   display: flex;
   flex-direction: column;
@@ -224,7 +229,6 @@ form {
   margin-left: auto;
   padding-left: 10px;
   font-size: 20px;
-  max-height: 50px;
 }
 
 .admin-buttons span {

@@ -21,7 +21,7 @@ h1 {
   position: absolute;
   top: 15px;
   right: 140px;
-  width: 100px;
+  max-width: 100px;
   z-index: 3;
 }
 

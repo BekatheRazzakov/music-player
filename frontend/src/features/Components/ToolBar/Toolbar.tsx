@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Toolbar = () => {
   return (
     <div className="toolbar">
-      <h1>Music App</h1>
+      <h1>
+        <Link to="/">Music App</Link>
+      </h1>
     </div>
   );
 };

@@ -82,32 +82,26 @@ const Player = () => {
 
   const prevTrack = () => {
     if (currentTrack) {
-      if (currentTrack.trackNumber === 1) {
-        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
-        dispatch(setTrackChange(true));
-        return dispatch(setTrackChange(true));
-      }
+      const trackIndex = tracks.indexOf(currentTrack);
 
-      const newTrack = tracks.filter(
-        (track) => track.trackNumber === currentTrack.trackNumber - 1,
-      )[0];
-      dispatch(setCurrentTrack(newTrack));
+      if (trackIndex === 0) {
+        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
+      }
       dispatch(setTrackChange(true));
     }
   };
 
   const nextTrack = () => {
     if (currentTrack) {
-      if (currentTrack.trackNumber === 5) {
-        dispatch(setCurrentTrack(tracks[0]));
-        dispatch(setTrackChange(true));
-        return dispatch(setTrackChange(true));
-      }
+      const trackIndex = tracks.indexOf(currentTrack);
 
-      const newTrack = tracks.filter(
-        (track) => track.trackNumber === currentTrack.trackNumber + 1,
-      )[0];
-      dispatch(setCurrentTrack(newTrack));
+      if (trackIndex === tracks.length - 1) {
+        dispatch(setCurrentTrack(tracks[0]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
+      }
       dispatch(setTrackChange(true));
     }
   };

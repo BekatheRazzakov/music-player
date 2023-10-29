@@ -12,7 +12,7 @@ const NewTrack = () => {
     title: "",
     album: "",
     duration: "",
-    trackNumber: 0,
+    track: null,
   });
   const albums = useAppSelector((state) => state.albumsState.albums);
   const dispatch = useAppDispatch();
@@ -63,8 +63,24 @@ const NewTrack = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(createTrack(state));
-      navigate(`/tracks/${state.album}`);
+      if (state.track) {
+        const audioElement = new Audio();
+        audioElement.src = URL.createObjectURL(state.track);
+        audioElement.addEventListener("loadedmetadata", async () => {
+          const durationInSeconds = audioElement.duration;
+          await dispatch(
+            createTrack({
+              ...state,
+              duration: `${Math.floor(durationInSeconds / 60)}:${Math.floor(
+                durationInSeconds % 60,
+              )}`,
+            }),
+          );
+          navigate(`/tracks/${state.album}`);
+        });
+
+        audioElement.load();
+      }
     } catch {
       // nothing
     }
@@ -104,47 +120,24 @@ const NewTrack = () => {
             ))}
           </select>
         </div>
-        <div className="input">
-          <input
-            className="input-field"
-            type="text"
-            name="duration"
-            value={state.duration}
-            onChange={onChange}
-            required
-          />
-          <label className="input-label">Duration</label>
-        </div>
-        <div className="input">
-          <input
-            className="input-field"
-            type="number"
-            min="1"
-            name="trackNumber"
-            value={state.trackNumber}
-            onChange={onChange}
-            required
-          />
-          <label className="input-label track-number-label">Track number</label>
-        </div>
         <div className="file-input-block">
           <div className="input">
             <input
               className="input-field file-input"
               type="file"
-              name="albumCover"
+              name="track"
               ref={inputRef}
               onChange={onFileChange}
             />
             <input
               className="input-field disabled-input"
               type="text"
-              value={filename.length ? filename : "Browse image"}
+              value={filename.length ? filename : "Browse music"}
               disabled
             />
           </div>
           <button className="white-btn" onClick={activateInput} type="button">
-            Browse image
+            Browse music
           </button>
         </div>
         <button className="white-btn" type="submit">

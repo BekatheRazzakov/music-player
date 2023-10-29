@@ -45,7 +45,18 @@ export const createTrack = createAsyncThunk(
   "tracks/create",
   async (track: ICreateTrack) => {
     try {
-      await axiosApi.post("/tracks", track);
+      const trackData = new FormData();
+      const keys = Object.keys(track) as (keyof ICreateTrack)[];
+
+      keys.forEach((key) => {
+        const value = track[key];
+
+        if (value) {
+          trackData.append(key, value);
+        }
+      });
+
+      await axiosApi.post("/tracks", trackData);
     } catch (e) {
       console.log(e);
     }
