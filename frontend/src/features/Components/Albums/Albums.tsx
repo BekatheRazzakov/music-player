@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { deleteAlbum, getAlbums, togglePublishedAlbum } from "./albumsThunks";
 import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
-import { resetTracks } from "../Tracks/tracksSlice";
 import "./albums.css";
 import { IAlbum } from "../../../type";
 
@@ -26,7 +25,6 @@ const Albums = () => {
   useEffect(() => {
     dispatch(getArtists());
     dispatch(getAlbums(id));
-    dispatch(resetTracks());
   }, [dispatch, id]);
 
   const onDelete = async (trackId: string) => {

@@ -16,6 +16,9 @@ const TracksHistory = () => {
   const { token } = useParams() as { token: string };
   const tracksState = useAppSelector((state) => state.tracksState);
   const userState = useAppSelector((state) => state.userState);
+  const currentTrack = useAppSelector(
+    (state) => state.tracksState.currentTrack,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -26,9 +29,14 @@ const TracksHistory = () => {
 
   const onTrackClick = (track: ITrack) => {
     if (userState.user) {
-      dispatch(
-        postTrackToHistory({ track: track._id, token: userState.user?.token }),
-      );
+      if (currentTrack?._id !== track._id) {
+        dispatch(
+          postTrackToHistory({
+            track: track._id,
+            token: userState.user?.token,
+          }),
+        );
+      }
       dispatch(setCurrentTrack(track));
       dispatch(setShowPlayer(true));
       dispatch(setTrackChange(true));

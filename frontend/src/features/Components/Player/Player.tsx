@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./player.css";
 import { apiURL } from "../../../constants";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -18,6 +24,42 @@ const Player = () => {
   );
   const dispatch = useAppDispatch();
 
+  const prevTrack = () => {
+    if (currentTrack) {
+      if (tracks[0].album !== currentTrack.album) {
+        dispatch(setCurrentTrack(tracks[0]));
+        return dispatch(setTrackChange(true));
+      }
+
+      const trackIndex = tracks.indexOf(currentTrack);
+
+      if (trackIndex === 0) {
+        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
+      }
+      dispatch(setTrackChange(true));
+    }
+  };
+
+  const nextTrack = useCallback(() => {
+    if (currentTrack) {
+      if (tracks[0].album !== currentTrack.album) {
+        dispatch(setCurrentTrack(tracks[0]));
+        return dispatch(setTrackChange(true));
+      }
+
+      const trackIndex = tracks.indexOf(currentTrack);
+
+      if (trackIndex === tracks.length - 1) {
+        dispatch(setCurrentTrack(tracks[0]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
+      }
+      dispatch(setTrackChange(true));
+    }
+  }, [currentTrack, dispatch, tracks]);
+
   useEffect(() => {
     if (audioRef.current) {
       setVolume(audioRef.current?.volume);
@@ -28,12 +70,13 @@ const Player = () => {
             audioRef.current?.duration.toFixed()
           ) {
             setPaused(true);
+            nextTrack();
           }
           setPlaybackPosition(audioRef.current.currentTime);
         }
       });
     }
-  }, []);
+  }, [nextTrack]);
 
   if (
     audioRef.current &&
@@ -78,32 +121,6 @@ const Player = () => {
     }
 
     setPaused(!paused);
-  };
-
-  const prevTrack = () => {
-    if (currentTrack) {
-      const trackIndex = tracks.indexOf(currentTrack);
-
-      if (trackIndex === 0) {
-        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
-      }
-      dispatch(setTrackChange(true));
-    }
-  };
-
-  const nextTrack = () => {
-    if (currentTrack) {
-      const trackIndex = tracks.indexOf(currentTrack);
-
-      if (trackIndex === tracks.length - 1) {
-        dispatch(setCurrentTrack(tracks[0]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
-      }
-      dispatch(setTrackChange(true));
-    }
   };
 
   return (

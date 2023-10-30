@@ -24,9 +24,7 @@ const Menu = () => {
 
   return (
     <>
-      {showMenu && (
-        <div className="backdrop" onClick={() => setShowMenu(false)} />
-      )}
+      {showMenu && <div className="backdrop" onClick={onMenuClick} />}
       <div className="menu-btn" onClick={onMenuClick}>
         <div className="menu-onclick-btn">
           <img
@@ -44,7 +42,7 @@ const Menu = () => {
           </span>
         </div>
         <div
-          className={`menu ${showMenu && "show-menu"}`}
+          className={`menu ${showMenu ? "show-menu" : ""}`}
           style={{ display: display ? "block" : "none" }}
           onClick={(e) => e.stopPropagation()}
         >

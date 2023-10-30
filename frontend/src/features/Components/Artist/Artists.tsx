@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { resetAlbums } from "../Albums/albumsSlice";
 import "./artists.css";
 import { IArtist } from "../../../type";
+import { getAlbums } from "../Albums/albumsThunks";
 
 const Artists = () => {
   const artistsState = useAppSelector((state) => state.artistsState);
@@ -24,6 +25,7 @@ const Artists = () => {
 
   useEffect(() => {
     dispatch(getArtists());
+    dispatch(getAlbums(""));
     dispatch(resetAlbums());
   }, [dispatch, navigate, userState]);
 
