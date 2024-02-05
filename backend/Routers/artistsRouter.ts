@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import Artist from "../models/Artist";
-import { imagesUpload } from "../multer";
+import { upload } from "../multer";
 import { IArtist } from "../type";
 import auth from "../middleware/auth";
 import Album from "../models/Album";
 import permit from "../middleware/permit";
+import { cloudinaryFileUploadMethod } from "../uploader";
 
 const artistsRouter = express();
 
@@ -18,30 +19,27 @@ artistsRouter.get("", async (_, res) => {
   }
 });
 
-artistsRouter.post(
-  "",
-  auth,
-  imagesUpload.single("image"),
-  async (req, res, next) => {
-    const artistData = {
-      name: req.body.name,
-      image: req.file ? req.file?.filename : null,
-      info: req.body.info,
-    };
+artistsRouter.post("", auth, upload.single("image"), async (req, res, next) => {
+  const image = await cloudinaryFileUploadMethod(req.file?.path || "");
 
-    const artist = new Artist(artistData);
+  const artistData = {
+    name: req.body.name,
+    image,
+    info: req.body.info,
+  };
 
-    try {
-      await artist.save();
-      res.send(artist);
-    } catch (e) {
-      if (e instanceof mongoose.Error.ValidationError) {
-        return res.status(400).send(e);
-      }
-      next(e);
+  const artist = new Artist(artistData);
+
+  try {
+    await artist.save();
+    res.send(artist);
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
     }
-  },
-);
+    next(e);
+  }
+});
 
 artistsRouter.patch(
   "/:id/togglePublished",

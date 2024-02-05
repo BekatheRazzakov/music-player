@@ -5,18 +5,21 @@ import auth from "../middleware/auth";
 import { OAuth2Client } from "google-auth-library";
 import config from "../config";
 import { randomUUID } from "crypto";
-import { imagesUpload } from "../multer";
+import { upload } from "../multer";
+import { cloudinaryFileUploadMethod } from "../uploader";
 
 const usersRouter = express();
 const client = new OAuth2Client(config.google.clientId);
 
-usersRouter.post("/", imagesUpload.single("avatar"), async (req, res, next) => {
+usersRouter.post("/", upload.single("avatar"), async (req, res, next) => {
   try {
+    const avatar = await cloudinaryFileUploadMethod(req.file?.path || "");
+
     const user = new User({
       username: req.body.username,
       password: req.body.password,
       displayName: req.body.displayName,
-      avatar: req.file ? req.file.filename : null,
+      avatar,
     });
 
     user.generateToken();

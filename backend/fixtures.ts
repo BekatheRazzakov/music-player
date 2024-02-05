@@ -5,6 +5,7 @@ import User from "./models/User";
 import Artist from "./models/Artist";
 import Album from "./models/Album";
 import Track from "./models/Track";
+import { cloudinaryFileUploadMethod } from "./uploader";
 
 const run = async () => {
   await mongoose.connect(config.db);
@@ -44,13 +45,13 @@ const run = async () => {
   const [artistOne, artistTwo] = await Artist.create(
     {
       name: "The Weeknd",
-      image: "images/The_Weeknd.png",
+      image: "The_Weeknd.png",
       info: "Canadian singer and songwriter",
       isPublished: true,
     },
     {
       name: "Drake",
-      image: "images/Drake.png",
+      image: "Drake.png",
       info: "Canadian rapper and singer",
       isPublished: true,
     },
@@ -62,40 +63,40 @@ const run = async () => {
         title: "After Hours",
         artist: artistOne._id,
         releaseYear: 2020,
-        albumCover: "images/The_Weeknd_-_After_Hours.png",
+        albumCover: "The_Weeknd_-_After_Hours.png",
         isPublished: true,
       },
       {
         title: "Dawn FM",
         artist: artistOne._id,
         releaseYear: 2022,
-        albumCover: "images/The_Weeknd_-_Dawn_FM.png",
+        albumCover: "The_Weeknd_-_Dawn_FM.png",
         isPublished: true,
       },
       {
         title: "Scorpion",
         artist: artistTwo._id,
         releaseYear: 2018,
-        albumCover: "images/Drake_-_Scorpion.png",
+        albumCover: "Drake_-_Scorpion.png",
         isPublished: true,
       },
       {
         title: "Views",
         artist: artistTwo._id,
         releaseYear: 2016,
-        albumCover: "images/Drake_-_Views.png",
+        albumCover: "Drake_-_Views.png",
         isPublished: true,
       },
       {
         title: "Starboy",
         artist: artistOne._id,
         releaseYear: 2016,
-        albumCover: "images/The_Weeknd_-_Starboy.png",
+        albumCover: "The_Weeknd_-_Starboy.png",
         isPublished: true,
       },
     );
 
-  await Track.create(
+  const [track1, track2, track3, track4, track5, track6] = await Track.create(
     {
       title: "The Weeknd - Gasoline",
       album: albumTwo._id,
@@ -145,6 +146,31 @@ const run = async () => {
       track: "The Weeknd - I Feel It Coming.mp3",
     },
   );
+
+  // Update tracks
+  for (const track of [track1, track2, track3, track4, track5, track6]) {
+    if (track.track) {
+      const musicPath = "./public/music/" + track.track;
+      const newMp3fileUrl = await cloudinaryFileUploadMethod(musicPath);
+      await Track.findByIdAndUpdate(track._id, { mp3File: newMp3fileUrl });
+    }
+  }
+
+  // Update Artist images
+  for (const artist of [artistOne, artistTwo]) {
+    if (!artist.image) return;
+    const path = "./public/images/" + artist.image;
+    const newImageUrl = await cloudinaryFileUploadMethod(path);
+    await Artist.findByIdAndUpdate(artist._id, { image: newImageUrl });
+  }
+
+  // Update Album images
+  for (const album of [albumOne, albumTwo, albumThree, albumFour, albumFive]) {
+    if (!album.albumCover) return;
+    const path = "./public/images/" + album.albumCover;
+    const newImageUrl = await cloudinaryFileUploadMethod(path);
+    await Album.findByIdAndUpdate(album._id, { image: newImageUrl });
+  }
 
   await db.close();
 };

@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import Album from "../models/Album";
-import { imagesUpload } from "../multer";
 import { IAlbum } from "../type";
 import auth from "../middleware/auth";
 import Track from "../models/Track";
 import permit from "../middleware/permit";
+import { upload } from "../multer";
+import { cloudinaryFileUploadMethod } from "../uploader";
 
 const albumsRouter = express();
 
@@ -45,13 +46,15 @@ albumsRouter.get("/:id", async (req, res) => {
 albumsRouter.post(
   "",
   auth,
-  imagesUpload.single("albumCover"),
+  upload.single("albumCover"),
   async (req, res, next) => {
+    const albumCover = await cloudinaryFileUploadMethod(req.file?.path || "");
+
     const albumData = {
       title: req.body.title,
       artist: req.body.artist,
       releaseYear: parseFloat(req.body.releaseYear),
-      albumCover: req.file ? req.file.filename : null,
+      albumCover,
     };
 
     const album = new Album(albumData);
