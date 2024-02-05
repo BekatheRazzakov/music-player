@@ -149,10 +149,7 @@ const Player = () => {
             ? formatTime(audioRef.current?.currentTime)
             : "0:00"}
         </span>
-        <audio
-          ref={audioRef}
-          src={currentTrack ? "music/" + currentTrack.title + ".mp3" : ""}
-        />
+        <audio ref={audioRef} src={currentTrack ? currentTrack.title : ""} />
         <input
           type="range"
           step="0.01"
