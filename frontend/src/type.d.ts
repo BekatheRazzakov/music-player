@@ -41,7 +41,7 @@ export interface ITrack {
   album: string;
   _id: string;
   isPublished: boolean;
-  track: string;
+  track?: string;
 }
 
 export interface ICreateTrack {
