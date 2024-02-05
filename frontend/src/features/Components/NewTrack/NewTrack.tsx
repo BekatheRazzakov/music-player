@@ -73,7 +73,11 @@ const NewTrack = () => {
               ...state,
               duration: `${Math.floor(durationInSeconds / 60)}:${Math.floor(
                 durationInSeconds % 60,
-              )}`,
+              )}${
+                Math.floor(durationInSeconds % 60).toString().length > 1
+                  ? ""
+                  : "0"
+              }`,
             }),
           );
           navigate(`/tracks/${state.album}`);
