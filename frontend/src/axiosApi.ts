@@ -12,5 +12,5 @@ export const addInterseptors = (store: Store<RootState>) => {
 };
 
 export const axiosApi = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: "https://music-player-57nv.vercel.app/",
 });
