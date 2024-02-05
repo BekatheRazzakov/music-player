@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { deleteAlbum, getAlbums, togglePublishedAlbum } from "./albumsThunks";
-import { apiURL } from "../../../constants";
 import { getArtists } from "../Artist/artistsThunks";
 import "./albums.css";
 import { IAlbum } from "../../../type";
@@ -45,7 +44,7 @@ const Albums = () => {
             <img
               src={
                 artist.image
-                  ? apiURL + artist.image
+                  ? artist.image
                   : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
               }
               alt="artist"
@@ -73,7 +72,7 @@ const Albums = () => {
               <img
                 src={
                   album.albumCover
-                    ? apiURL + album.albumCover
+                    ? album.albumCover
                     : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
                 }
                 alt="albumCover"

@@ -5,7 +5,6 @@ import {
   getArtists,
   togglePublishedArtist,
 } from "./artistsThunks";
-import { apiURL } from "../../../constants";
 import { Link, useNavigate } from "react-router-dom";
 import { resetAlbums } from "../Albums/albumsSlice";
 import "./artists.css";
@@ -50,7 +49,7 @@ const Artists = () => {
               <img
                 src={
                   artist.image
-                    ? apiURL + artist.image
+                    ? artist.image
                     : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
                 }
                 alt="artist"

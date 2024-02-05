@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import "./player.css";
-import { apiURL } from "../../../constants";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { setCurrentTrack, setTrackChange } from "../Tracks/tracksSlice";
 
@@ -152,9 +151,7 @@ const Player = () => {
         </span>
         <audio
           ref={audioRef}
-          src={
-            currentTrack ? apiURL + "music/" + currentTrack.title + ".mp3" : ""
-          }
+          src={currentTrack ? "music/" + currentTrack.title + ".mp3" : ""}
         />
         <input
           type="range"
