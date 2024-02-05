@@ -10,8 +10,11 @@ import config from "./config";
 
 const app = express();
 const port = 8000;
+const corsOptions = {
+  origin: "*",
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/artists", artistsRouter);
@@ -31,3 +34,7 @@ const run = async () => {
 };
 
 void run().catch((e) => console.log(e));
+
+const dbConnection = mongoose.connection;
+dbConnection.on("error", (err) => console.log(`Connection error ${err}`));
+dbConnection.once("open", () => console.log("Connected to DB!"));
