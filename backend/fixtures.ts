@@ -152,7 +152,7 @@ const run = async () => {
     if (track.track) {
       const musicPath = "./public/music/" + track.track;
       const newMp3fileUrl = await cloudinaryFileUploadMethod(musicPath);
-      await Track.findByIdAndUpdate(track._id, { mp3File: newMp3fileUrl });
+      await Track.findByIdAndUpdate(track._id, { track: newMp3fileUrl });
     }
   }
 
@@ -169,7 +169,7 @@ const run = async () => {
     if (!album.albumCover) return;
     const path = "./public/images/" + album.albumCover;
     const newImageUrl = await cloudinaryFileUploadMethod(path);
-    await Album.findByIdAndUpdate(album._id, { image: newImageUrl });
+    await Album.findByIdAndUpdate(album._id, { albumCover: newImageUrl });
   }
 
   await db.close();
