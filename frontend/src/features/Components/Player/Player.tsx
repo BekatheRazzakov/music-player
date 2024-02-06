@@ -8,13 +8,25 @@ import React, {
 import "./player.css";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { setCurrentTrack, setTrackChange } from "../Tracks/tracksSlice";
+import { useLocation } from "react-router-dom";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(1);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
-  const tracks = useAppSelector((state) => state.tracksState.tracks);
+  const userState = useAppSelector((state) => state.userState);
+  const tracks = useAppSelector((state) => {
+    if (
+      userState.user &&
+      userState.user.role !== "admin" &&
+      state.tracksState &&
+      state.tracksState.tracks
+    ) {
+      return state.tracksState.tracks.filter((track) => track.isPublished);
+    }
+    return state.tracksState.tracks;
+  });
   const currentTrack = useAppSelector(
     (state) => state.tracksState.currentTrack,
   );
@@ -22,9 +34,10 @@ const Player = () => {
     (state) => state.tracksState.trackChanged,
   );
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const prevTrack = () => {
-    if (currentTrack) {
+    if (currentTrack && location.pathname !== "/all") {
       if (tracks[0].album !== currentTrack.album) {
         dispatch(setCurrentTrack(tracks[0]));
         return dispatch(setTrackChange(true));
@@ -37,12 +50,21 @@ const Player = () => {
       } else {
         dispatch(setCurrentTrack(tracks[trackIndex - 1]));
       }
-      dispatch(setTrackChange(true));
+      return dispatch(setTrackChange(true));
+    } else if (currentTrack) {
+      const trackIndex = tracks ? tracks.indexOf(currentTrack) : 1;
+
+      if (trackIndex === 0) {
+        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
+      }
+      return dispatch(setTrackChange(true));
     }
   };
 
   const nextTrack = useCallback(() => {
-    if (currentTrack) {
+    if (currentTrack && location.pathname !== "/all") {
       if (tracks[0].album !== currentTrack.album) {
         dispatch(setCurrentTrack(tracks[0]));
         return dispatch(setTrackChange(true));
@@ -55,9 +77,18 @@ const Player = () => {
       } else {
         dispatch(setCurrentTrack(tracks[trackIndex + 1]));
       }
-      dispatch(setTrackChange(true));
+      return dispatch(setTrackChange(true));
+    } else if (currentTrack) {
+      const trackIndex = tracks ? tracks.indexOf(currentTrack) : 1;
+
+      if (trackIndex === tracks.length - 1) {
+        dispatch(setCurrentTrack(tracks[0]));
+      } else {
+        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
+      }
+      return dispatch(setTrackChange(true));
     }
-  }, [currentTrack, dispatch, tracks]);
+  }, [currentTrack, dispatch, location.pathname, tracks]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -75,7 +106,7 @@ const Player = () => {
         }
       });
     }
-  }, [nextTrack]);
+  }, []);
 
   if (
     audioRef.current &&
@@ -83,13 +114,11 @@ const Player = () => {
     currentTrack &&
     currentTrack.title !== ""
   ) {
-    if (trackChanged) {
-      dispatch(setTrackChange(false));
-      setTimeout(() => {
-        setPaused(false);
-        void audioRef.current?.play();
-      }, 50);
-    }
+    dispatch(setTrackChange(false));
+    setTimeout(() => {
+      setPaused(false);
+      void audioRef.current?.play();
+    }, 50);
   }
 
   const formatTime = (seconds: number) => {

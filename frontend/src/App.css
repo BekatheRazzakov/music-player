@@ -37,8 +37,8 @@
 }
 
 .toolbar h1 a {
-  color: white!important;
-  text-decoration: none!important;
+  color: white !important;
+  text-decoration: none !important;
 }
 
 .board {
@@ -288,7 +288,8 @@ form {
     height: 100%;
     box-sizing: border-box;
     border-radius: 0;
-    border-top: 0.5px solid rgba(255, 255, 255, 0.70);
+    border-top: 0.5px solid rgba(255, 255, 255, 0.7);
     margin: 0;
+    padding: 20px 0 10px;
   }
 }

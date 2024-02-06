@@ -36,6 +36,9 @@ const TracksSlice = createSlice({
     setTrackChange: (state, action) => {
       state.trackChanged = action.payload;
     },
+    setGlobalTracks: (state, action) => {
+      state.tracks = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getTracks.pending, (state) => {
@@ -80,4 +83,5 @@ export const {
   setCurrentTrack,
   setTrackChange,
   setShowPlayer,
+  setGlobalTracks,
 } = TracksSlice.actions;

@@ -47,6 +47,7 @@ h1 {
   transition: 0.2s;
   opacity: 0;
   margin-top: -25px;
+  box-sizing: border-box;
 }
 
 .show-menu {
@@ -66,7 +67,7 @@ h1 {
 }
 
 .menu-onclick-btn:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .menu-onclick-btn img {
@@ -77,6 +78,11 @@ h1 {
 }
 
 @media (max-width: 478px) {
+  .menu {
+    top: 65px;
+    right: -15%;
+  }
+
   .menu-btn {
     right: 5%;
   }

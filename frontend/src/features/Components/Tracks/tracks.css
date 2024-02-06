@@ -55,3 +55,9 @@
     rgba(0, 0, 0, 0)
   );
 }
+
+@media (max-width: 478px) {
+  .tracks-list {
+    height: unset;
+  }
+}

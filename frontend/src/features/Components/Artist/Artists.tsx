@@ -10,6 +10,7 @@ import { resetAlbums } from "../Albums/albumsSlice";
 import "./artists.css";
 import { IArtist } from "../../../type";
 import { getAlbums } from "../Albums/albumsThunks";
+import musicImg from "../../../assets/music.jpg";
 
 const Artists = () => {
   const artistsState = useAppSelector((state) => state.artistsState);
@@ -45,59 +46,69 @@ const Artists = () => {
         {artistsState.artistsLoading ? (
           <span className="loader"></span>
         ) : (
-          artists.map((artist, index) => (
-            <Link to={`/albums/${artist._id}`} className="artist" key={index}>
+          <>
+            <Link to="/all" className="artist">
               <div className="artistImg">
-                <img
-                  src={
-                    artist.image
-                      ? artist.image
-                      : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
-                  }
-                  alt="artist"
-                />
+                <img src={musicImg} alt="music" />
               </div>
               <div className="artistInfo">
-                <h4>{artist.name}</h4>
-                <span>{artist.info}</span>
+                <h4>All tracks</h4>
               </div>
-              {userState.user?.role === "admin" && (
-                <div className="admin-buttons">
-                  <span
-                    className="delete"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void onDelete(artist._id);
-                    }}
-                  >
-                    &#x2715;
-                  </span>
-                  {artist.isPublished ? (
+            </Link>
+            {artists.map((artist, index) => (
+              <Link to={`/albums/${artist._id}`} className="artist" key={index}>
+                <div className="artistImg">
+                  <img
+                    src={
+                      artist.image
+                        ? artist.image
+                        : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                    }
+                    alt="artist"
+                  />
+                </div>
+                <div className="artistInfo">
+                  <h4>{artist.name}</h4>
+                  <span>{artist.info}</span>
+                </div>
+                {userState.user?.role === "admin" && (
+                  <div className="admin-buttons">
                     <span
+                      className="delete"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        void onTogglePublishedClick(artist._id);
-                      }}
-                    >
-                      &#10004;
-                    </span>
-                  ) : (
-                    <span
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        void onTogglePublishedClick(artist._id);
+                        void onDelete(artist._id);
                       }}
                     >
                       &#x2715;
                     </span>
-                  )}
-                </div>
-              )}
-            </Link>
-          ))
+                    {artist.isPublished ? (
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          void onTogglePublishedClick(artist._id);
+                        }}
+                      >
+                        &#10004;
+                      </span>
+                    ) : (
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          void onTogglePublishedClick(artist._id);
+                        }}
+                      >
+                        &#x2715;
+                      </span>
+                    )}
+                  </div>
+                )}
+              </Link>
+            ))}
+          </>
         )}
       </div>
     </>

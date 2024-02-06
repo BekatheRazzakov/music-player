@@ -1,36 +1,42 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { getArtists } from "../Artist/artistsThunks";
+import { ITrack } from "../../../type";
+import "../Tracks/tracks.css";
 import {
   deleteTrack,
   getTracks,
   postTrackToHistory,
   togglePublishedTrack,
-} from "./tracksThunks";
-import { getArtists } from "../Artist/artistsThunks";
-import { ITrack } from "../../../type";
-import { setCurrentTrack, setShowPlayer, setTrackChange } from "./tracksSlice";
-import "./tracks.css";
+} from "../Tracks/tracksThunks";
+import {
+  setCurrentTrack,
+  setGlobalTracks,
+  setShowPlayer,
+  setTrackChange,
+} from "../Tracks/tracksSlice";
 
-const Tracks = () => {
-  const { id } = useParams() as { id: string };
+const AllTracks = () => {
   const tracksState = useAppSelector((state) => state.tracksState);
   const currentTrack = useAppSelector(
     (state) => state.tracksState.currentTrack,
   );
-  const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
-  const album = useAppSelector((state) => state.tracksState.album);
-  let tracks = tracksState.tracks as ITrack[];
-
-  if (userState.user?.role !== "admin" && tracks) {
-    tracks = tracks.filter((track) => track.isPublished);
-  }
+  const userState = useAppSelector((state) => state.userState);
+  const [tracks, setTracks] = useState<ITrack[]>([]);
 
   useEffect(() => {
     dispatch(getArtists());
-    dispatch(getTracks(id));
-  }, [dispatch, id]);
+    dispatch(getTracks(""))
+      .unwrap()
+      .then((r) => {
+        if (userState.user && userState.user.role !== "admin" && r) {
+          dispatch(setGlobalTracks(r));
+          return setTracks(r.filter((track: ITrack) => track.isPublished));
+        }
+        setTracks(r);
+      });
+  }, [dispatch, userState.user]);
 
   const onTrackClick = (track: ITrack) => {
     if (userState.user) {
@@ -50,34 +56,17 @@ const Tracks = () => {
 
   const onDelete = async (trackId: string) => {
     await dispatch(deleteTrack(trackId));
-    await dispatch(getTracks(id));
+    await dispatch(getTracks(""));
   };
 
   const onTogglePublishedClick = async (trackId: string) => {
     await dispatch(togglePublishedTrack(trackId));
-    await dispatch(getTracks(id));
+    await dispatch(getTracks(""));
   };
 
   return (
     <>
-      {album && (
-        <>
-          <h4 className="artist-name">{album.artist?.name}</h4>
-          <div className="album-info">
-            <div className="albumImg">
-              <img
-                src={
-                  album.albumCover
-                    ? album.albumCover
-                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
-                }
-                alt="artist"
-              />
-            </div>
-            <span>{album.title}</span>
-          </div>
-        </>
-      )}
+      <h4 className="artist-name">All tracks</h4>
       <div className="page-back" onClick={() => window.history.back()} />
       <div className="tracks-list">
         <span
@@ -87,11 +76,15 @@ const Tracks = () => {
             marginTop: "20px",
           }}
         >
-          {!tracksState.tracks.length && "No tracks yet"}
+          {tracksState &&
+            tracksState.tracks &&
+            !tracksState.tracks.length &&
+            "No tracks yet"}
         </span>
         {tracksState.tracksLoading ? (
           <span className="loader"></span>
         ) : (
+          tracks &&
           tracks.map((track, index) => (
             <div
               className={`track ${
@@ -149,4 +142,4 @@ const Tracks = () => {
   );
 };
 
-export default Tracks;
+export default AllTracks;

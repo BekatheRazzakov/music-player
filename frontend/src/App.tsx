@@ -16,6 +16,7 @@ import NewAlbum from "./features/Components/NewAlbum/NewAlbum";
 import NewTrack from "./features/Components/NewTrack/NewTrack";
 import { useAppSelector } from "./app/hooks";
 import Menu from "./features/Components/Menu/Menu";
+import AllTracks from "./features/Components/AllTracks/AllTracks";
 
 const App = () => {
   const showPlayer = useAppSelector((state) => state.tracksState.showPlayer);
@@ -30,6 +31,7 @@ const App = () => {
           <Route path={"/login"} element={<Login />} />
           <Route path={"/sign-up"} element={<SignUp />} />
           <Route path="/" element={<Artists />} />
+          <Route path="/all" element={<AllTracks />} />
           <Route path={"/albums/:id"} element={<Albums />} />
           <Route path={"/tracks/:id"} element={<Tracks />} />
           <Route
