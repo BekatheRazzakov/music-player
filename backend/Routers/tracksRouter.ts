@@ -25,22 +25,22 @@ tracksRouter.get("", async (req, res) => {
       if (user && user.role === "admin") {
         result = await Track.find({
           album: queryId,
-        }).sort("trackNumber");
+        });
       } else if (user || !user) {
         result = await Track.find({
           album: queryId,
           isPublished: true,
-        }).sort("trackNumber");
+        });
       }
 
       return res.send({ tracks: result, album });
     } else {
       if (user && user.role === "admin") {
-        result = await Track.find().sort("trackNumber");
+        result = await Track.find();
       } else if (user || !user) {
         result = await Track.find({
           isPublished: true,
-        }).sort("trackNumber");
+        });
       }
 
       return res.send(result);
