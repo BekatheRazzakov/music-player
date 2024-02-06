@@ -53,7 +53,6 @@ const Albums = () => {
           <span>{artist.name}</span>
         </div>
       )}
-      {albumsState.albumsLoading && <span className="loader"></span>}
       <div className="page-back" onClick={() => window.history.back()} />
       <div className="albums-list">
         {!albumsState.albums.length && !albumsState.albumsLoading && (
@@ -66,59 +65,63 @@ const Albums = () => {
             No albums yet
           </span>
         )}
-        {albums.map((album, index) => (
-          <Link className="album" to={`/tracks/${album._id}`} key={index}>
-            <div className="albumImg">
-              <img
-                src={
-                  album.albumCover
-                    ? album.albumCover
-                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
-                }
-                alt="albumCover"
-              />
-            </div>
-            <div className="albumInfo">
-              <h4>{album.title}</h4>
-              <span>{album.releaseYear}</span>
-            </div>
-            {userState.user?.role === "admin" && (
-              <div className="admin-buttons">
-                <span
-                  className="delete"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    void onDelete(album._id);
-                  }}
-                >
-                  &#x2715;
-                </span>
-                {album.isPublished ? (
+        {albumsState.albumsLoading ? (
+          <span className="loader"></span>
+        ) : (
+          albums.map((album, index) => (
+            <Link className="album" to={`/tracks/${album._id}`} key={index}>
+              <div className="albumImg">
+                <img
+                  src={
+                    album.albumCover
+                      ? album.albumCover
+                      : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                  }
+                  alt="albumCover"
+                />
+              </div>
+              <div className="albumInfo">
+                <h4>{album.title}</h4>
+                <span>{album.releaseYear}</span>
+              </div>
+              {userState.user?.role === "admin" && (
+                <div className="admin-buttons">
                   <span
+                    className="delete"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      void onTogglePublishedClick(album._id);
-                    }}
-                  >
-                    &#10004;
-                  </span>
-                ) : (
-                  <span
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void onTogglePublishedClick(album._id);
+                      void onDelete(album._id);
                     }}
                   >
                     &#x2715;
                   </span>
-                )}
-              </div>
-            )}
-          </Link>
-        ))}
+                  {album.isPublished ? (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(album._id);
+                      }}
+                    >
+                      &#10004;
+                    </span>
+                  ) : (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(album._id);
+                      }}
+                    >
+                      &#x2715;
+                    </span>
+                  )}
+                </div>
+              )}
+            </Link>
+          ))
+        )}
       </div>
     </>
   );

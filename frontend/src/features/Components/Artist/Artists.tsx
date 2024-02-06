@@ -42,60 +42,63 @@ const Artists = () => {
     <>
       <h2>Artists</h2>
       <div className="artists-list">
-        {artistsState.artistsLoading && <span className="loader"></span>}
-        {artists.map((artist, index) => (
-          <Link to={`/albums/${artist._id}`} className="artist" key={index}>
-            <div className="artistImg">
-              <img
-                src={
-                  artist.image
-                    ? artist.image
-                    : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
-                }
-                alt="artist"
-              />
-            </div>
-            <div className="artistInfo">
-              <h4>{artist.name}</h4>
-              <span>{artist.info}</span>
-            </div>
-            {userState.user?.role === "admin" && (
-              <div className="admin-buttons">
-                <span
-                  className="delete"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    void onDelete(artist._id);
-                  }}
-                >
-                  &#x2715;
-                </span>
-                {artist.isPublished ? (
+        {artistsState.artistsLoading ? (
+          <span className="loader"></span>
+        ) : (
+          artists.map((artist, index) => (
+            <Link to={`/albums/${artist._id}`} className="artist" key={index}>
+              <div className="artistImg">
+                <img
+                  src={
+                    artist.image
+                      ? artist.image
+                      : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+                  }
+                  alt="artist"
+                />
+              </div>
+              <div className="artistInfo">
+                <h4>{artist.name}</h4>
+                <span>{artist.info}</span>
+              </div>
+              {userState.user?.role === "admin" && (
+                <div className="admin-buttons">
                   <span
+                    className="delete"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      void onTogglePublishedClick(artist._id);
-                    }}
-                  >
-                    &#10004;
-                  </span>
-                ) : (
-                  <span
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void onTogglePublishedClick(artist._id);
+                      void onDelete(artist._id);
                     }}
                   >
                     &#x2715;
                   </span>
-                )}
-              </div>
-            )}
-          </Link>
-        ))}
+                  {artist.isPublished ? (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(artist._id);
+                      }}
+                    >
+                      &#10004;
+                    </span>
+                  ) : (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(artist._id);
+                      }}
+                    >
+                      &#x2715;
+                    </span>
+                  )}
+                </div>
+              )}
+            </Link>
+          ))
+        )}
       </div>
     </>
   );

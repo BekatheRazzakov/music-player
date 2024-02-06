@@ -2,7 +2,7 @@
   border-radius: 15px;
   width: 450px;
   min-height: 160px;
-  margin: auto auto 22px;
+  margin: 22px auto;
 }
 
 .song-name {
@@ -144,4 +144,13 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
   transform: translateY(-40%);
+}
+
+@media (max-width: 478px) {
+  .player {
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.70);
+  }
 }

@@ -78,7 +78,6 @@ const Tracks = () => {
           </div>
         </>
       )}
-      {tracksState.tracksLoading && <span className="loader"></span>}
       <div className="page-back" onClick={() => window.history.back()} />
       <div className="tracks-list">
         <span
@@ -90,55 +89,61 @@ const Tracks = () => {
         >
           {!tracksState.tracks.length && "No tracks yet"}
         </span>
-        {tracks.map((track, index) => (
-          <div
-            className={`track ${
-              currentTrack && currentTrack.title === track.title && "isPlaying"
-            }`}
-            key={index}
-            onClick={() => onTrackClick(track)}
-          >
-            <div className="trackInfo">
-              <h4>{track.title}</h4>
-              <span>{track.duration}</span>
-            </div>
-            {userState.user?.role === "admin" && (
-              <div className="admin-buttons">
-                <span
-                  className="delete"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    void onDelete(track._id);
-                  }}
-                >
-                  &#x2715;
-                </span>
-                {track.isPublished ? (
+        {tracksState.tracksLoading ? (
+          <span className="loader"></span>
+        ) : (
+          tracks.map((track, index) => (
+            <div
+              className={`track ${
+                currentTrack &&
+                currentTrack.title === track.title &&
+                "isPlaying"
+              }`}
+              key={index}
+              onClick={() => onTrackClick(track)}
+            >
+              <div className="trackInfo">
+                <h4>{track.title}</h4>
+                <span>{track.duration}</span>
+              </div>
+              {userState.user?.role === "admin" && (
+                <div className="admin-buttons">
                   <span
+                    className="delete"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      void onTogglePublishedClick(track._id);
-                    }}
-                  >
-                    &#10004;
-                  </span>
-                ) : (
-                  <span
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void onTogglePublishedClick(track._id);
+                      void onDelete(track._id);
                     }}
                   >
                     &#x2715;
                   </span>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+                  {track.isPublished ? (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(track._id);
+                      }}
+                    >
+                      &#10004;
+                    </span>
+                  ) : (
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        void onTogglePublishedClick(track._id);
+                      }}
+                    >
+                      &#x2715;
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </>
   );
