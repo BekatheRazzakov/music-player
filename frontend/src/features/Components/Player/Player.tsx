@@ -18,10 +18,10 @@ const Player = () => {
   const userState = useAppSelector((state) => state.userState);
   const tracks = useAppSelector((state) => {
     if (
-      userState.user &&
-      userState.user.role !== "admin" &&
-      state.tracksState &&
-      state.tracksState.tracks
+      !userState.user ||
+      (userState.user.role !== "admin" &&
+        state.tracksState &&
+        state.tracksState.tracks)
     ) {
       return state.tracksState.tracks.filter((track) => track.isPublished);
     }
