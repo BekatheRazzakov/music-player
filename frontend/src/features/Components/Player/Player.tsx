@@ -106,6 +106,7 @@ const Player = () => {
         }
       });
     }
+    // DO NOT ADD "nextTrack" dependency!
   }, []);
 
   if (
