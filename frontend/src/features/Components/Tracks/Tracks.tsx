@@ -33,19 +33,17 @@ const Tracks = () => {
   }, [dispatch, id]);
 
   const onTrackClick = (track: ITrack) => {
-    if (userState.user) {
-      if (currentTrack?._id !== track._id) {
-        dispatch(
-          postTrackToHistory({
-            track: track._id,
-            token: userState.user?.token,
-          }),
-        );
-      }
-      dispatch(setCurrentTrack(track));
-      dispatch(setShowPlayer(true));
-      dispatch(setTrackChange(true));
+    if (currentTrack?._id !== track._id && userState.user) {
+      dispatch(
+        postTrackToHistory({
+          track: track._id,
+          token: userState.user?.token,
+        }),
+      );
     }
+    dispatch(setCurrentTrack(track));
+    dispatch(setShowPlayer(true));
+    dispatch(setTrackChange(true));
   };
 
   const onDelete = async (trackId: string) => {
