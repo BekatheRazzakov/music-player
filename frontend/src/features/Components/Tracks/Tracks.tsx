@@ -21,11 +21,7 @@ const Tracks = () => {
   const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
   const album = useAppSelector((state) => state.tracksState.album);
-  let tracks = tracksState.tracks as ITrack[];
-
-  if (userState.user?.role !== "admin" && tracks) {
-    tracks = tracks.filter((track) => track.isPublished);
-  }
+  const tracks = tracksState.tracks as ITrack[];
 
   useEffect(() => {
     dispatch(getArtists());

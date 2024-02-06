@@ -7,22 +7,42 @@ import auth from "../middleware/auth";
 import permit from "../middleware/permit";
 import { upload } from "../multer";
 import { cloudinaryFileUploadMethod } from "../uploader";
+import User from "../models/User";
 
 const tracksRouter = express();
 
 tracksRouter.get("", async (req, res) => {
   try {
+    const token = req.get("Authorization");
+    const user = await User.findOne({ token });
+    let result: ITrack[] = [];
     if (req.query.album) {
       const queryId = req.query.album as string;
-      const result: ITrack[] = await Track.find({ album: queryId }).sort(
-        "trackNumber",
-      );
       const album: IAlbum | null = await Album.findOne({
         _id: req.query.album,
       }).populate("artist");
+
+      if (user && user.role === "admin") {
+        result = await Track.find({
+          album: queryId,
+        }).sort("trackNumber");
+      } else if (user || !user) {
+        result = await Track.find({
+          album: queryId,
+          isPublished: true,
+        }).sort("trackNumber");
+      }
+
       return res.send({ tracks: result, album });
     } else {
-      const result = await Track.find();
+      if (user && user.role === "admin") {
+        result = await Track.find().sort("trackNumber");
+      } else if (user || !user) {
+        result = await Track.find({
+          isPublished: true,
+        }).sort("trackNumber");
+      }
+
       return res.send(result);
     }
   } catch {

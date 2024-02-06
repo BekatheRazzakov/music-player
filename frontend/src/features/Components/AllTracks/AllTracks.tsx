@@ -30,12 +30,6 @@ const AllTracks = () => {
     dispatch(getTracks(""))
       .unwrap()
       .then((r) => {
-        if (userState.user && userState.user.role !== "admin" && r) {
-          dispatch(
-            setGlobalTracks(r.filter((track: ITrack) => track.isPublished)),
-          );
-          return setTracks(r.filter((track: ITrack) => track.isPublished));
-        }
         dispatch(setGlobalTracks(r));
         setTracks(r);
       });

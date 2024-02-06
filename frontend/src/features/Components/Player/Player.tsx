@@ -15,18 +15,7 @@ const Player = () => {
   const [playbackPosition, setPlaybackPosition] = useState(1);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
-  const userState = useAppSelector((state) => state.userState);
-  const tracks = useAppSelector((state) => {
-    if (
-      !userState.user ||
-      (userState.user.role !== "admin" &&
-        state.tracksState &&
-        state.tracksState.tracks)
-    ) {
-      return state.tracksState.tracks.filter((track) => track.isPublished);
-    }
-    return state.tracksState.tracks;
-  });
+  const tracks = useAppSelector((state) => state.tracksState.tracks);
   const currentTrack = useAppSelector(
     (state) => state.tracksState.currentTrack,
   );
