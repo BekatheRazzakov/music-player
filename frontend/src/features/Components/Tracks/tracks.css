@@ -20,7 +20,7 @@
 }
 
 .tracks-list {
-  height: 365px;
+  max-height: 500px;
   overflow-y: auto;
   margin-top: 10px;
 }
@@ -58,6 +58,7 @@
 @media (max-width: 478px) {
   .tracks-list {
     height: unset;
+    max-height: unset;
   }
 
   .track {

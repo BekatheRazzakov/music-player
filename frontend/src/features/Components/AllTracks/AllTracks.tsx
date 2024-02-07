@@ -68,7 +68,10 @@ const AllTracks = () => {
           style={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "20px",
+            marginTop:
+              tracksState && tracksState.tracks && !tracksState.tracks.length
+                ? "20px"
+                : "0",
           }}
         >
           {tracksState &&
