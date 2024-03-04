@@ -21,9 +21,10 @@ import AllTracks from "./features/Components/AllTracks/AllTracks";
 const App = () => {
   const showPlayer = useAppSelector((state) => state.tracksState.showPlayer);
   const userState = useAppSelector((state) => state.userState);
+  const theme = useAppSelector((state) => state.userState.theme);
 
   return (
-    <div className="App">
+    <div className={`App ${theme ? "light" : ""}`}>
       <Toolbar />
       <Menu />
       <div className="board">

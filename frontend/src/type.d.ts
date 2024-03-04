@@ -120,6 +120,7 @@ interface IUsersState {
   loginLoading: boolean;
   loginError: GlobalError | null;
   logoutLoading: boolean;
+  theme: string;
 }
 
 export interface RegisterResponse {

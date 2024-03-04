@@ -13,6 +13,11 @@
   background-position: center;
   background-repeat: no-repeat;
   margin: 0;
+  transition: 0.6s;
+}
+
+.light {
+  background-image: url("./assets/background-light.jpg");
 }
 
 .App::before {
@@ -29,7 +34,6 @@
 .toolbar {
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 0 10%;
   min-height: 80px;
@@ -57,6 +61,15 @@
 .toolbar,
 .menu {
   background: rgba(45, 45, 45, 0.38);
+  backdrop-filter: blur(15px);
+  transition: 0.6s;
+}
+
+.light .board,
+.light .player,
+.light .toolbar,
+.light .menu {
+  background: rgba(159, 159, 159, 0.38);
   backdrop-filter: blur(15px);
 }
 
@@ -275,6 +288,33 @@ form {
   transition: 0.3s;
 }
 
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  width: 55px;
+  height: 25px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  margin: 0 auto;
+}
+
+.theme-switcher-inner {
+  margin-left: 3px;
+  width: 17px;
+  height: 17px;
+  background-image: url("./assets/night-mode.png");
+  background-size: contain;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.light .theme-switcher-inner {
+  margin-left: 33px;
+  background-image: url("./assets/light-mode.png");
+  width: 19px;
+  height: 19px
+}
+
 @media (max-width: 478px) {
   .toolbar {
     padding: 0 5%;
@@ -294,5 +334,9 @@ form {
     border-top: 0.5px solid rgba(255, 255, 255, 0.7);
     margin: 0;
     padding: 20px 0 0;
+  }
+
+  .theme-switcher {
+    margin: 0 0 0 20px;
   }
 }

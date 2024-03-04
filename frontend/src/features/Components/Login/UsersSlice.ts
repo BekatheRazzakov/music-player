@@ -9,6 +9,7 @@ const initialState: IUsersState = {
   loginLoading: false,
   loginError: null,
   logoutLoading: false,
+  theme: "dark",
 };
 
 const UsersSlice = createSlice({
@@ -18,6 +19,9 @@ const UsersSlice = createSlice({
     resetErrors: (state) => {
       state.loginError = null;
       state.registerError = null;
+    },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -76,4 +80,4 @@ const UsersSlice = createSlice({
 });
 
 export const userReducer = UsersSlice.reducer;
-export const { resetErrors } = UsersSlice.actions;
+export const { resetErrors, setTheme } = UsersSlice.actions;

@@ -18,7 +18,7 @@ import { userReducer } from "../features/Components/Login/UsersSlice";
 const usersPersistConfig = {
   key: "musicApp:users",
   storage,
-  whitelist: ["user"],
+  whitelist: ["user", "theme"],
 };
 
 const rootReducer = combineReducers({
