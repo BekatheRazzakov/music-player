@@ -36,6 +36,7 @@ const AllTracks = () => {
   }, [dispatch, userState.user]);
 
   const onTrackClick = (track: ITrack) => {
+    dispatch(setGlobalTracks(tracks));
     if (currentTrack?._id !== track._id && userState.user) {
       dispatch(
         postTrackToHistory({

@@ -8,11 +8,13 @@ import { ITracksState } from "../../../type";
 
 const initialState: ITracksState = {
   tracks: [],
+  currentTracksList: [],
   tracksLoading: false,
   album: null,
   tracksHistory: [],
   historyLoading: false,
   currentTrack: null,
+  currentTrackIndex: 0,
   trackChanged: false,
   showPlayer: false,
 };
@@ -33,11 +35,14 @@ const TracksSlice = createSlice({
     setCurrentTrack: (state, action) => {
       state.currentTrack = action.payload;
     },
+    setCurrentTrackIndex: (state, action) => {
+      state.currentTrackIndex = action.payload;
+    },
     setTrackChange: (state, action) => {
       state.trackChanged = action.payload;
     },
     setGlobalTracks: (state, action) => {
-      state.tracks = action.payload;
+      state.currentTracksList = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -84,4 +89,5 @@ export const {
   setTrackChange,
   setShowPlayer,
   setGlobalTracks,
+  setCurrentTrackIndex,
 } = TracksSlice.actions;

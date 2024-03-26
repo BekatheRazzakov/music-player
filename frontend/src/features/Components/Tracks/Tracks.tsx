@@ -9,7 +9,12 @@ import {
 } from "./tracksThunks";
 import { getArtists } from "../Artist/artistsThunks";
 import { ITrack } from "../../../type";
-import { setCurrentTrack, setShowPlayer, setTrackChange } from "./tracksSlice";
+import {
+  setCurrentTrack,
+  setGlobalTracks,
+  setShowPlayer,
+  setTrackChange,
+} from "./tracksSlice";
 import "./tracks.css";
 
 const Tracks = () => {
@@ -29,6 +34,7 @@ const Tracks = () => {
   }, [dispatch, id]);
 
   const onTrackClick = (track: ITrack) => {
+    dispatch(setGlobalTracks(tracks));
     if (currentTrack?._id !== track._id && userState.user) {
       dispatch(
         postTrackToHistory({

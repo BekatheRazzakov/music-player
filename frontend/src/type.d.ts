@@ -104,11 +104,13 @@ export interface IAlbumsState {
 
 export interface ITracksState {
   tracks: ITrack[];
+  currentTracksList: ITrack[];
   tracksLoading: boolean;
   album: IAlbum | null;
   tracksHistory: IGetSingleTrackHistory[];
   historyLoading: boolean;
   currentTrack: ITrack | null;
+  currentTrackIndex: number;
   trackChanged: boolean;
   showPlayer: boolean;
 }

@@ -1,21 +1,21 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./player.css";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { setCurrentTrack, setTrackChange } from "../Tracks/tracksSlice";
-import { useLocation } from "react-router-dom";
+import {
+  setCurrentTrack,
+  setCurrentTrackIndex,
+  setTrackChange,
+} from "../Tracks/tracksSlice";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playbackPosition, setPlaybackPosition] = useState(1);
+  const [playbackPosition, setPlaybackPosition] = useState(0);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
-  const tracks = useAppSelector((state) => state.tracksState.tracks);
+  const tracks = useAppSelector((state) => state.tracksState.currentTracksList);
+  const currentTrackIndex = useAppSelector(
+    (state) => state.tracksState.currentTrackIndex,
+  );
   const currentTrack = useAppSelector(
     (state) => state.tracksState.currentTrack,
   );
@@ -23,93 +23,58 @@ const Player = () => {
     (state) => state.tracksState.trackChanged,
   );
   const dispatch = useAppDispatch();
-  const location = useLocation();
 
   const prevTrack = () => {
-    if (currentTrack && location.pathname !== "/all") {
-      if (tracks[0].album !== currentTrack.album) {
-        dispatch(setCurrentTrack(tracks[0]));
-        return dispatch(setTrackChange(true));
-      }
+    if (!currentTrack) return;
 
-      const trackIndex = tracks.indexOf(currentTrack);
-
-      if (trackIndex === 0) {
-        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
-      }
-      return dispatch(setTrackChange(true));
-    } else if (currentTrack) {
-      const trackIndex = tracks ? tracks.indexOf(currentTrack) : 1;
-
-      if (trackIndex === 0) {
-        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex - 1]));
-      }
-      return dispatch(setTrackChange(true));
+    if (currentTrackIndex === 0) {
+      dispatch(setCurrentTrack(tracks[tracks.length - 1]));
+    } else {
+      dispatch(setCurrentTrack(tracks[currentTrackIndex - 1]));
+      dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
     }
+    return dispatch(setTrackChange(true));
   };
 
-  const nextTrack = useCallback(() => {
-    if (currentTrack && location.pathname !== "/all") {
-      if (tracks[0].album !== currentTrack.album) {
-        dispatch(setCurrentTrack(tracks[0]));
-        return dispatch(setTrackChange(true));
-      }
+  const nextTrack = () => {
+    if (!currentTrack) return;
 
-      const trackIndex = tracks.indexOf(currentTrack);
-
-      if (trackIndex === tracks.length - 1) {
-        dispatch(setCurrentTrack(tracks[0]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
-      }
-      return dispatch(setTrackChange(true));
-    } else if (currentTrack) {
-      const trackIndex = tracks ? tracks.indexOf(currentTrack) : 1;
-
-      if (trackIndex === tracks.length - 1) {
-        dispatch(setCurrentTrack(tracks[0]));
-      } else {
-        dispatch(setCurrentTrack(tracks[trackIndex + 1]));
-      }
-      return dispatch(setTrackChange(true));
+    if (currentTrackIndex === tracks.length - 1) {
+      dispatch(setCurrentTrack(tracks[0]));
+    } else {
+      dispatch(setCurrentTrack(tracks[currentTrackIndex + 1]));
+      dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
     }
-  }, [currentTrack, dispatch, location.pathname, tracks]);
+    return dispatch(setTrackChange(true));
+  };
 
   useEffect(() => {
-    if (audioRef.current) {
-      setVolume(audioRef.current?.volume);
-      audioRef.current.addEventListener("timeupdate", () => {
-        if (audioRef.current) {
-          if (
-            audioRef.current.currentTime.toFixed() ===
-            audioRef.current?.duration.toFixed()
-          ) {
-            setPaused(true);
-            nextTrack();
-          }
-          setPlaybackPosition(audioRef.current.currentTime);
-        }
-      });
+    if (!audioRef.current) return;
+    setVolume(audioRef.current?.volume);
+    if (currentTrack) {
+      dispatch(setCurrentTrackIndex(tracks.indexOf(currentTrack) || 0));
     }
-    // DO NOT ADD "nextTrack" dependency!
-  }, []);
+    const handleTimeUpdate = () => {
+      if (!audioRef.current) return;
+      setPlaybackPosition(audioRef.current.currentTime);
+    };
+    audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
 
-  if (
-    audioRef.current &&
-    trackChanged &&
-    currentTrack &&
-    currentTrack.title !== ""
-  ) {
-    dispatch(setTrackChange(false));
-    setTimeout(() => {
-      setPaused(false);
-      void audioRef.current?.play();
-    }, 50);
-  }
+    // Handle track ending
+    const handleTrackEnd = () => {
+      nextTrack(); // Calls the function to switch to the next track
+    };
+    audioRef.current.addEventListener("ended", handleTrackEnd);
+
+    // Cleanup function to remove event listeners when component unmounts or updates
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+        audioRef.current.removeEventListener("ended", handleTrackEnd);
+      }
+    };
+    // DO NOT ADD "nextTrack" dependency!
+  }, [currentTrack, dispatch, paused, trackChanged, tracks]);
 
   const formatTime = (seconds: number) => {
     const remainingSeconds = Math.floor(seconds % 60);
@@ -140,6 +105,19 @@ const Player = () => {
 
     setPaused(!paused);
   };
+
+  if (
+    audioRef.current &&
+    trackChanged &&
+    currentTrack &&
+    currentTrack.title !== ""
+  ) {
+    dispatch(setTrackChange(false));
+    setTimeout(() => {
+      setPaused(false);
+      void audioRef.current?.play();
+    }, 50);
+  }
 
   return (
     <div className="player">
