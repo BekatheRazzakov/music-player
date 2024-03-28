@@ -77,7 +77,7 @@ const AllTracks = () => {
         >
           {tracksState &&
             tracksState.tracks &&
-            !tracksState.tracks.length &&
+            !tracksState.tracks?.length &&
             "No tracks yet"}
         </span>
         {tracksState.tracksLoading ? (

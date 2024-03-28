@@ -87,7 +87,7 @@ const Tracks = () => {
             marginTop: "20px",
           }}
         >
-          {!tracksState.tracks.length && "No tracks yet"}
+          {!tracksState.tracks?.length && "No tracks yet"}
         </span>
         {tracksState.tracksLoading ? (
           <span className="loader"></span>
