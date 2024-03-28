@@ -24,8 +24,10 @@ const TracksHistory = () => {
 
   useEffect(() => {
     dispatch(resetHistory());
-    dispatch(getTracksByHistory(token));
-  }, [dispatch, token]);
+    if (userState.user) {
+      dispatch(getTracksByHistory(userState.user.token));
+    }
+  }, [dispatch, token, userState.user]);
 
   const onTrackClick = (track: ITrack) => {
     if (userState.user) {
