@@ -6,12 +6,14 @@ import {
   setCurrentTrackIndex,
   setTrackChange,
 } from "../Tracks/tracksSlice";
+import { postTrackToHistory } from "../Tracks/tracksThunks";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(0);
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
+  const userState = useAppSelector((state) => state.userState);
   const tracks = useAppSelector((state) => state.tracksState.currentTracksList);
   const currentTrackIndex = useAppSelector(
     (state) => state.tracksState.currentTrackIndex,
@@ -27,11 +29,21 @@ const Player = () => {
   const prevTrack = () => {
     if (!currentTrack) return;
 
+    const prevTrack = tracks[currentTrackIndex - 1];
+
     if (currentTrackIndex === 0) {
       dispatch(setCurrentTrack(tracks[tracks.length - 1]));
     } else {
-      dispatch(setCurrentTrack(tracks[currentTrackIndex - 1]));
+      dispatch(setCurrentTrack(prevTrack));
       dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
+    }
+    if (userState.user) {
+      dispatch(
+        postTrackToHistory({
+          token: userState.user.token,
+          track: prevTrack._id,
+        }),
+      );
     }
     return dispatch(setTrackChange(true));
   };
@@ -39,11 +51,21 @@ const Player = () => {
   const nextTrack = () => {
     if (!currentTrack) return;
 
+    const nextTrack = tracks[currentTrackIndex + 1];
+
     if (currentTrackIndex === tracks.length - 1) {
       dispatch(setCurrentTrack(tracks[0]));
     } else {
-      dispatch(setCurrentTrack(tracks[currentTrackIndex + 1]));
+      dispatch(setCurrentTrack(nextTrack));
       dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
+    }
+    if (userState.user) {
+      dispatch(
+        postTrackToHistory({
+          token: userState.user.token,
+          track: nextTrack._id,
+        }),
+      );
     }
     return dispatch(setTrackChange(true));
   };
