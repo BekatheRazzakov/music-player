@@ -29,17 +29,17 @@ export const postTrackToHistory = createAsyncThunk(
   },
 );
 
-export const getTracksByHistory = createAsyncThunk<
-  IGetSingleTrackHistory[],
-  string
->("tracks/getTracksByHistory", async () => {
-  try {
-    const req = await axiosApi("/track_history");
-    return req.data;
-  } catch (e) {
-    console.log(e);
-  }
-});
+export const getTracksByHistory = createAsyncThunk<IGetSingleTrackHistory[]>(
+  "tracks/getTracksByHistory",
+  async () => {
+    try {
+      const req = await axiosApi("/track_history");
+      return req.data;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+);
 
 export const createTrack = createAsyncThunk(
   "tracks/create",
