@@ -43,7 +43,7 @@ tracksRouter.get("", async (req, res) => {
         });
       }
 
-      return res.send(result);
+      return res.send({ tracks: result });
     }
   } catch {
     return res.sendStatus(500);
