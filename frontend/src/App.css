@@ -52,7 +52,7 @@
   display: flex;
   flex-direction: column;
   width: 350px;
-  margin: 0 auto auto;
+  margin: 0 auto 20px;
   padding: 20px 15px 10px;
   border-radius: 15px;
   overflow: hidden;
