@@ -76,6 +76,7 @@
 .board {
   backdrop-filter: blur(20px);
   overflow-y: auto;
+  flex-grow: 1;
 }
 
 .artists-list,
