@@ -8,7 +8,6 @@ import { ITracksState } from "../../../type";
 
 const initialState: ITracksState = {
   tracks: [],
-  currentTracksList: [],
   tracksLoading: false,
   album: null,
   tracksHistory: [],
@@ -42,7 +41,7 @@ const TracksSlice = createSlice({
       state.trackChanged = action.payload;
     },
     setGlobalTracks: (state, action) => {
-      state.currentTracksList = action.payload;
+      state.tracks = action.payload;
     },
   },
   extraReducers: (builder) => {

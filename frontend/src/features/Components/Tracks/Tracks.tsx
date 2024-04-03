@@ -34,18 +34,22 @@ const Tracks = () => {
   }, [dispatch, id]);
 
   const onTrackClick = (track: ITrack) => {
-    dispatch(setGlobalTracks(tracks));
-    if (currentTrack?._id !== track._id && userState.user) {
-      dispatch(
-        postTrackToHistory({
-          track: track._id,
-          token: userState.user?.token,
-        }),
-      );
+    try {
+      dispatch(setGlobalTracks(tracks));
+      if (currentTrack?._id !== track._id && userState.user) {
+        dispatch(
+          postTrackToHistory({
+            track: track._id,
+            token: userState.user?.token,
+          }),
+        );
+      }
+      dispatch(setCurrentTrack(track));
+      dispatch(setShowPlayer(true));
+      dispatch(setTrackChange(true));
+    } catch (e) {
+      console.log(e);
     }
-    dispatch(setCurrentTrack(track));
-    dispatch(setShowPlayer(true));
-    dispatch(setTrackChange(true));
   };
 
   const onDelete = async (trackId: string) => {

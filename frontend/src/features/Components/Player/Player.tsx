@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./player.css";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
@@ -14,7 +20,7 @@ const Player = () => {
   const [volume, setVolume] = useState(0);
   const [paused, setPaused] = useState(false);
   const userState = useAppSelector((state) => state.userState);
-  const tracks = useAppSelector((state) => state.tracksState.currentTracksList);
+  const tracks = useAppSelector((state) => state.tracksState.tracks);
   const currentTrackIndex = useAppSelector(
     (state) => state.tracksState.currentTrackIndex,
   );
@@ -26,55 +32,73 @@ const Player = () => {
   );
   const dispatch = useAppDispatch();
 
-  const prevTrack = () => {
-    if (!currentTrack) return;
+  const prevTrack = useCallback(() => {
+    try {
+      if (!currentTrack) return;
 
-    const prevTrack = tracks[currentTrackIndex - 1];
+      const prevTrack = tracks[currentTrackIndex - 1];
+      audioRef.current?.pause();
+      setPaused(true);
 
-    if (currentTrackIndex === 0) {
-      dispatch(setCurrentTrack(tracks[tracks.length - 1]));
-    } else {
-      dispatch(setCurrentTrack(prevTrack));
-      dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
+      if (currentTrackIndex === 0) {
+        dispatch(setCurrentTrack(tracks[tracks.length - 1]));
+      } else {
+        dispatch(setCurrentTrack(prevTrack));
+        dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
+      }
+      if (userState.user) {
+        dispatch(
+          postTrackToHistory({
+            token: userState.user.token,
+            track: prevTrack._id,
+          }),
+        );
+      }
+      dispatch(setTrackChange(true));
+    } catch (e) {
+      console.log(e);
     }
-    if (userState.user) {
-      dispatch(
-        postTrackToHistory({
-          token: userState.user.token,
-          track: prevTrack._id,
-        }),
-      );
-    }
-    return dispatch(setTrackChange(true));
-  };
+  }, [currentTrack, currentTrackIndex, dispatch, tracks, userState.user]);
 
-  const nextTrack = () => {
-    if (!currentTrack) return;
+  const nextTrack = useCallback(() => {
+    try {
+      if (!currentTrack) return;
 
-    const nextTrack = tracks[currentTrackIndex + 1];
+      const nextTrack = tracks[currentTrackIndex + 1];
+      audioRef.current?.pause();
+      setPaused(true);
 
-    if (currentTrackIndex === tracks.length - 1) {
-      dispatch(setCurrentTrack(tracks[0]));
-    } else {
-      dispatch(setCurrentTrack(nextTrack));
-      dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
+      if (currentTrackIndex === tracks.length - 1) {
+        dispatch(setCurrentTrack(tracks[0]));
+      } else {
+        dispatch(setCurrentTrack(nextTrack));
+        dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
+      }
+      if (userState.user) {
+        dispatch(
+          postTrackToHistory({
+            token: userState.user.token,
+            track: nextTrack._id,
+          }),
+        );
+      }
+      dispatch(setTrackChange(true));
+    } catch (e) {
+      console.log(e);
     }
-    if (userState.user) {
-      dispatch(
-        postTrackToHistory({
-          token: userState.user.token,
-          track: nextTrack._id,
-        }),
-      );
-    }
-    return dispatch(setTrackChange(true));
-  };
+  }, [currentTrack, currentTrackIndex, dispatch, tracks, userState.user]);
 
   useEffect(() => {
     if (!audioRef.current) return;
     setVolume(audioRef.current?.volume);
     if (currentTrack) {
-      dispatch(setCurrentTrackIndex(tracks.indexOf(currentTrack) || 0));
+      dispatch(
+        setCurrentTrackIndex(
+          tracks.indexOf(
+            tracks.filter((track) => track._id === currentTrack._id)[0],
+          ) || 0,
+        ),
+      );
     }
     const handleTimeUpdate = () => {
       if (!audioRef.current) return;
@@ -82,21 +106,26 @@ const Player = () => {
     };
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
 
-    // Handle track ending
     const handleTrackEnd = () => {
-      nextTrack(); // Calls the function to switch to the next track
+      nextTrack();
     };
     audioRef.current.addEventListener("ended", handleTrackEnd);
 
-    // Cleanup function to remove event listeners when component unmounts or updates
     return () => {
       if (audioRef.current) {
         audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
         audioRef.current.removeEventListener("ended", handleTrackEnd);
       }
     };
-    // DO NOT ADD "nextTrack" dependency!
-  }, [currentTrack, dispatch, paused, trackChanged, tracks]);
+  }, [
+    currentTrack,
+    currentTrackIndex,
+    dispatch,
+    nextTrack,
+    paused,
+    trackChanged,
+    tracks,
+  ]);
 
   const formatTime = (seconds: number) => {
     const remainingSeconds = Math.floor(seconds % 60);
@@ -128,18 +157,18 @@ const Player = () => {
     setPaused(!paused);
   };
 
-  if (
-    audioRef.current &&
-    trackChanged &&
-    currentTrack &&
-    currentTrack.title !== ""
-  ) {
-    dispatch(setTrackChange(false));
-    setTimeout(() => {
+  useEffect(() => {
+    if (audioRef.current) {
+      void audioRef.current.play();
       setPaused(false);
-      void audioRef.current?.play();
-    }, 50);
-  }
+      dispatch(setTrackChange(false));
+    }
+  }, [currentTrack, dispatch]);
+
+  useEffect(() => {
+    document.addEventListener("keyup", () => console.log("key up"));
+    document.addEventListener("keydown", () => console.log("key down"));
+  }, [nextTrack, prevTrack]);
 
   return (
     <div className="player">

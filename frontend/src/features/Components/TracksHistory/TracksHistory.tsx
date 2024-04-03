@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getTracksByHistory, postTrackToHistory } from "../Tracks/tracksThunks";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./trackHistoryCss.css";
 import dayjs from "dayjs";
 import {
@@ -26,18 +26,22 @@ const TracksHistory = () => {
   }, [dispatch]);
 
   const onTrackClick = (track: ITrack) => {
-    if (userState.user) {
-      if (currentTrack?._id !== track._id) {
-        dispatch(
-          postTrackToHistory({
-            track: track._id,
-            token: userState.user?.token,
-          }),
-        );
+    try {
+      if (userState.user) {
+        if (currentTrack?._id !== track._id) {
+          dispatch(
+            postTrackToHistory({
+              track: track._id,
+              token: userState.user?.token,
+            }),
+          );
+        }
+        dispatch(setCurrentTrack(track));
+        dispatch(setShowPlayer(true));
+        dispatch(setTrackChange(true));
       }
-      dispatch(setCurrentTrack(track));
-      dispatch(setShowPlayer(true));
-      dispatch(setTrackChange(true));
+    } catch (e) {
+      console.log(e);
     }
   };
 

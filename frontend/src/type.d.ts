@@ -104,7 +104,6 @@ export interface IAlbumsState {
 
 export interface ITracksState {
   tracks: ITrack[];
-  currentTracksList: ITrack[];
   tracksLoading: boolean;
   album: IAlbum | null;
   tracksHistory: IGetSingleTrackHistory[];

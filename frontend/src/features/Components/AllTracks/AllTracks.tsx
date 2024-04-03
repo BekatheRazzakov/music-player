@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getArtists } from "../Artist/artistsThunks";
 import { ITrack } from "../../../type";
@@ -23,31 +23,30 @@ const AllTracks = () => {
   );
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.userState);
-  const [tracks, setTracks] = useState<ITrack[]>([]);
+  const tracks = useAppSelector((state) => state.tracksState.tracks);
 
   useEffect(() => {
     dispatch(getArtists());
-    dispatch(getTracks(""))
-      .unwrap()
-      .then((r) => {
-        dispatch(setGlobalTracks(r));
-        setTracks(r);
-      });
-  }, [dispatch, userState.user]);
+    dispatch(getTracks(""));
+  }, [dispatch]);
 
   const onTrackClick = (track: ITrack) => {
-    dispatch(setGlobalTracks(tracks));
-    if (currentTrack?._id !== track._id && userState.user) {
-      dispatch(
-        postTrackToHistory({
-          track: track._id,
-          token: userState.user?.token,
-        }),
-      );
+    try {
+      dispatch(setGlobalTracks(tracks));
+      if (currentTrack?._id !== track._id && userState.user) {
+        dispatch(
+          postTrackToHistory({
+            track: track._id,
+            token: userState.user?.token,
+          }),
+        );
+      }
+      dispatch(setCurrentTrack(track));
+      dispatch(setShowPlayer(true));
+      dispatch(setTrackChange(true));
+    } catch (e) {
+      console.log(e);
     }
-    dispatch(setCurrentTrack(track));
-    dispatch(setShowPlayer(true));
-    dispatch(setTrackChange(true));
   };
 
   const onDelete = async (trackId: string) => {
@@ -69,16 +68,10 @@ const AllTracks = () => {
           style={{
             display: "flex",
             justifyContent: "center",
-            marginTop:
-              tracksState && tracksState.tracks && !tracksState.tracks.length
-                ? "20px"
-                : "0",
+            marginTop: tracks && !tracks.length ? "20px" : "0",
           }}
         >
-          {tracksState &&
-            tracksState.tracks &&
-            !tracksState.tracks?.length &&
-            "No tracks yet"}
+          {tracks && !tracks?.length && "No tracks yet"}
         </span>
         {tracksState.tracksLoading ? (
           <span className="loader"></span>
