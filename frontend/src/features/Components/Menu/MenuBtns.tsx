@@ -4,15 +4,17 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { logout } from "../Login/UserThunk";
 import { setCurrentTrack, setShowPlayer } from "../Tracks/tracksSlice";
 import "./menu.css";
+import { setTheme } from "../Login/UsersSlice";
 
 interface IProps {
   onClick: () => void;
 }
 
 const MenuBtns: React.FC<IProps> = ({ onClick }) => {
-  const location = useLocation();
-  const userState = useAppSelector((state) => state.userState);
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const theme = useAppSelector((state) => state.userState.theme);
+  const userState = useAppSelector((state) => state.userState);
 
   const onLogOut = () => {
     if (userState.user) {
@@ -71,6 +73,12 @@ const MenuBtns: React.FC<IProps> = ({ onClick }) => {
           Login
         </Link>
       )}
+      <div
+        className="theme-switcher"
+        onClick={() => dispatch(setTheme(theme === "light" ? "" : "light"))}
+      >
+        <div className="theme-switcher-inner" />
+      </div>
     </div>
   );
 };

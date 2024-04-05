@@ -7,18 +7,13 @@ import React, {
 } from "react";
 import "./player.css";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import {
-  setCurrentTrack,
-  setCurrentTrackIndex,
-  setTrackChange,
-} from "../Tracks/tracksSlice";
+import { setCurrentTrack, setCurrentTrackIndex } from "../Tracks/tracksSlice";
 import { postTrackToHistory } from "../Tracks/tracksThunks";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState(0);
   const [volume, setVolume] = useState(0);
-  const [paused, setPaused] = useState(false);
   const userState = useAppSelector((state) => state.userState);
   const tracks = useAppSelector((state) => state.tracksState.tracks);
   const currentTrackIndex = useAppSelector(
@@ -26,9 +21,6 @@ const Player = () => {
   );
   const currentTrack = useAppSelector(
     (state) => state.tracksState.currentTrack,
-  );
-  const trackChanged = useAppSelector(
-    (state) => state.tracksState.trackChanged,
   );
   const dispatch = useAppDispatch();
 
@@ -38,7 +30,6 @@ const Player = () => {
 
       const prevTrack = tracks[currentTrackIndex - 1];
       audioRef.current?.pause();
-      setPaused(true);
 
       if (currentTrackIndex === 0) {
         dispatch(setCurrentTrack(tracks[tracks.length - 1]));
@@ -54,7 +45,6 @@ const Player = () => {
           }),
         );
       }
-      dispatch(setTrackChange(true));
     } catch (e) {
       console.log(e);
     }
@@ -66,7 +56,6 @@ const Player = () => {
 
       const nextTrack = tracks[currentTrackIndex + 1];
       audioRef.current?.pause();
-      setPaused(true);
 
       if (currentTrackIndex === tracks.length - 1) {
         dispatch(setCurrentTrack(tracks[0]));
@@ -82,11 +71,29 @@ const Player = () => {
           }),
         );
       }
-      dispatch(setTrackChange(true));
     } catch (e) {
       console.log(e);
     }
   }, [currentTrack, currentTrackIndex, dispatch, tracks, userState.user]);
+
+  const skipForward = () => {
+    if (audioRef.current) {
+      const newTime = audioRef.current.currentTime + 5;
+      setPlaybackPosition(newTime);
+      audioRef.current.currentTime =
+        newTime < audioRef.current.duration
+          ? newTime
+          : audioRef.current.duration;
+    }
+  };
+
+  const skipBackward = () => {
+    if (audioRef.current) {
+      const newTime = audioRef.current.currentTime - 5;
+      setPlaybackPosition(newTime);
+      audioRef.current.currentTime = newTime > 0 ? newTime : 0;
+    }
+  };
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -100,6 +107,7 @@ const Player = () => {
         ),
       );
     }
+
     const handleTimeUpdate = () => {
       if (!audioRef.current) return;
       setPlaybackPosition(audioRef.current.currentTime);
@@ -117,15 +125,38 @@ const Player = () => {
         audioRef.current.removeEventListener("ended", handleTrackEnd);
       }
     };
-  }, [
-    currentTrack,
-    currentTrackIndex,
-    dispatch,
-    nextTrack,
-    paused,
-    trackChanged,
-    tracks,
-  ]);
+  }, [currentTrack, dispatch, nextTrack, tracks]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log(event.code);
+      switch (event.code) {
+        case "ArrowUp":
+          prevTrack();
+          break;
+        case "ArrowDown":
+          nextTrack();
+          break;
+        case "ArrowRight":
+          skipForward();
+          break;
+        case "ArrowLeft":
+          skipBackward();
+          break;
+        case "Space":
+          playPauseHandler();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [prevTrack, nextTrack]);
 
   const formatTime = (seconds: number) => {
     const remainingSeconds = Math.floor(seconds % 60);
@@ -148,27 +179,12 @@ const Player = () => {
   };
 
   const playPauseHandler = () => {
-    if (paused) {
+    if (audioRef.current?.paused) {
       void audioRef.current?.play();
     } else {
       void audioRef.current?.pause();
     }
-
-    setPaused(!paused);
   };
-
-  useEffect(() => {
-    if (audioRef.current) {
-      void audioRef.current.play();
-      setPaused(false);
-      dispatch(setTrackChange(false));
-    }
-  }, [currentTrack, dispatch]);
-
-  useEffect(() => {
-    document.addEventListener("keyup", () => console.log("key up"));
-    document.addEventListener("keydown", () => console.log("key down"));
-  }, [nextTrack, prevTrack]);
 
   return (
     <div className="player">
@@ -186,7 +202,9 @@ const Player = () => {
         </div>
         <span className="trackSwitch previous" onClick={prevTrack} />
         <span
-          className={paused ? "playPause paused" : "playPause play"}
+          className={
+            audioRef.current?.paused ? "playPause paused" : "playPause play"
+          }
           onClick={playPauseHandler}
         />
         <span className="trackSwitch next" onClick={nextTrack} />
@@ -197,7 +215,11 @@ const Player = () => {
             ? formatTime(audioRef.current?.currentTime)
             : "0:00"}
         </span>
-        <audio ref={audioRef} src={currentTrack ? currentTrack.track : ""} />
+        <audio
+          ref={audioRef}
+          src={currentTrack ? currentTrack.track : ""}
+          autoPlay
+        />
         <input
           type="range"
           step="0.01"
