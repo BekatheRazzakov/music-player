@@ -97,6 +97,32 @@
   text-decoration: none !important;
   transition: 0.1s;
   cursor: pointer;
+  opacity: 0;
+  animation: fadeInOut 5s alternate;
+  animation-timeline: view();
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) rotateX(90deg);
+  }
+  2% {
+    opacity: 0;
+    transform: scale(0.9) rotateX(90deg);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) rotateX(90deg);
+  }
 }
 
 @media (min-width: 479px) {

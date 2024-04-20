@@ -129,6 +129,13 @@ const AllTracks = () => {
             </div>
           ))
         )}
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: tracks && !tracks.length ? "0" : "20px",
+          }}
+        />
       </div>
     </>
   );
