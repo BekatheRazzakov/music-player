@@ -99,7 +99,6 @@
   cursor: pointer;
   opacity: 0;
   animation: fadeInOut 5s alternate;
-  //
   animation-timeline: view();
 }
 
